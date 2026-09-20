@@ -7,6 +7,7 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 SCRIPT="$(pwd)/.agents/skills/design-doc/scripts/check-docs-stale.sh"
+readonly SCRIPT
 
 pass=0 fail=0
 ok()  { pass=$((pass+1)); echo "ok   $1"; }
