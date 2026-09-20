@@ -7,6 +7,7 @@ last_modified: 2026-09-20
 tags: [plan, import, csv]
 sources: [worker/jobs/import/, api/internal/jobs/, web/src/features/import/]
 issues: [0001]
+designs: [worker]
 ---
 
 # Bulk import — Overview

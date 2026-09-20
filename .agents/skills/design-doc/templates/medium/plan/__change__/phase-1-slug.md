@@ -7,6 +7,7 @@ last_modified: <YYYY-MM-DD>
 tags: [plan, <topic>]
 sources: [<files this phase will touch>]
 issues: []      # issue IDs this phase resolves
+designs: []     # docs/design/ doc slugs this phase modifies
 ---
 
 # Phase 1: <title>

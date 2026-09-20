@@ -7,6 +7,7 @@ last_modified: <YYYY-MM-DD>
 tags: [plan, <topic>]
 sources: [<areas/files this plan will touch>]
 issues: []      # issue IDs this plan resolves — e.g. [0001]
+designs: []     # docs/design/ doc slugs this plan modifies — e.g. [worker]
 ---
 
 # <Change name> — Overview

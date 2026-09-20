@@ -124,11 +124,13 @@ real dependencies. Prescriptive docs — pure conventions — set
 `sources: []`. Optionally enforce the contract in CI with a check that
 fails a PR which changes a source without touching its doc.
 
-**`adrs:` / `issues:` — the machine-readable doc graph.** Design docs
-declare the ADRs governing them and the open issues affecting them; plans
-declare the issues they resolve (`issues:`); issue docs point back at the
-plan or PR that resolves them (`resolved_by:`). Prose links stay for
-human readers — frontmatter is the index a tool can walk.
+**`adrs:` / `issues:` / `designs:` / `resolved_by:` — the
+machine-readable doc graph.** Design docs declare the ADRs governing them
+(`adrs:`) and the open issues affecting them (`issues:`); plans declare
+the issues they resolve (`issues:`) and the design docs they modify
+(`designs:`); issue docs point back at the plan or PR that resolves them
+(`resolved_by:`). Prose links stay for human readers — frontmatter is the
+index a tool can walk.
 
 ### Writing rules
 
@@ -251,6 +253,7 @@ docs/
 │   ├── README.md              # system overview — spans modules and repos
 │   └── <module>.md            # living doc per module/service
 ├── plan/
+│   ├── README.md              # plan index — all changes as a table
 │   └── <change>/
 │       ├── README.md          # plan overview — context, phases, status
 │       └── phase-N-<slug>.md  # one doc per implementation phase
@@ -272,9 +275,30 @@ often "which repo does this live in".
 ### Plan docs — `docs/plan/<change>/`
 
 The medium-scale proposal doc: written before implementation, reviewed as
-a PR, updated in the same PRs that implement it. A plan dir gets a
-`README.md` overview plus one `phase-N-<slug>.md` per implementation
-phase.
+a PR, updated in the same PRs that implement it.
+
+**Format: milestone-type phases.** A phase is the smallest independently
+mergeable increment — the system must stay coherent after each one lands.
+Phase granularity *is* PR granularity: one phase ≈ one PR (a large phase
+may split into stacked PRs, but its acceptance criteria are met by those
+PRs collectively). The task checklist inside a phase doc is the finer
+breakdown below PR level. Size phases so each delivers observable
+behavior — a phase that takes weeks means split the change; a phase
+that's a refactor with no behavior isn't a milestone. A change that fits
+one PR doesn't need a directory: write a single `plan/<change>.md` in the
+phase-doc shape instead.
+
+A plan dir gets a `README.md` overview plus one `phase-N-<slug>.md` per
+implementation phase; `docs/plan/README.md` indexes all plans as a table.
+
+**How plans link the graph** — a plan declares in frontmatter:
+
+- `issues:` — the issue IDs it resolves (issue docs point back with
+  `resolved_by:`).
+- `designs:` — the `docs/design/` doc slugs it modifies. Design docs
+  describe *current* reality, so they never list in-flight plans — when a
+  phase merges, update the listed design docs in the same commit, like
+  the `sources:` contract.
 
 Overview sections:
 
