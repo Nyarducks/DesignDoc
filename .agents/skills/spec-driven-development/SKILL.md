@@ -13,6 +13,24 @@ The execution half of the docs. `design-doc` owns how design docs,
 plans, and issues are *written*; this skill owns *running* a plan —
 turning phases into PRs without losing the paper trail.
 
+## Installing into a project
+
+The skill ships alone — no `AGENTS.md` comes with it. After installing,
+append this block to the project's `AGENTS.md` (create the file if
+missing). The anchors delimit the block so it can be opted in or out at
+any time:
+
+```markdown
+<!-- spec-driven-development:start -->
+## Plan execution
+
+- Executing `docs/plan/<change>/` — confirm PR granularity before
+  dispatching; never default silently.
+- One phase ≈ one PR; the merge updates the phase status, the plan
+  index, and the `designs:` docs in the same PR.
+<!-- spec-driven-development:end -->
+```
+
 ## The flow
 
 1. **Locate the spec** — the work item is a plan (`docs/plan/<change>/`)

@@ -15,6 +15,25 @@ description: >-
 Write design docs sized to the project: pick the scale below, copy its
 template tree, and apply its conventions.
 
+## Installing into a project
+
+The skill ships alone — no `AGENTS.md`, no `docs/example/` come with it.
+After installing, append this block to the project's `AGENTS.md` (create
+the file if missing). The anchors delimit the block so it can be opted
+in or out at any time:
+
+```markdown
+<!-- design-doc:start -->
+## Design docs
+
+- Doc layout and conventions follow the `design-doc` skill —
+  `docs/design/` living docs, `docs/adr/`, `docs/issues/`, and
+  `docs/plan/` at medium scale.
+- The `sources:` contract — a commit that changes a file listed in a
+  doc's `sources:` updates that doc in the same commit.
+<!-- design-doc:end -->
+```
+
 ## Principles
 
 - **What, Why, How** — a design doc answers what the system does, why it
