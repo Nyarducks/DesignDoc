@@ -5,8 +5,8 @@ description: >-
   scale, copy its structured template tree, apply its conventions.
   Aligned with Google's design doc practice (context and goals, design
   trade-offs, alternatives considered, cross-cutting concerns).
-  Currently ships the small-scale template; medium/large conventions are
-  documented for orientation. Use when creating or updating design
+  Ships small- and medium-scale template trees; large-scale conventions
+  are documented for orientation. Use when creating or updating design
   documentation.
 ---
 
@@ -291,19 +291,9 @@ phase-doc shape instead.
 A plan dir gets a `README.md` overview plus one `phase-N-<slug>.md` per
 implementation phase; `docs/plan/README.md` indexes all plans as a table.
 
-**Confirm PR granularity before implementing a plan.** If the request
-doesn't say how to cut the work into PRs, ask before dispatching — via
-the agent's ask-question tool (`AskUserQuestion`, `ask_user_question`,
-`ask_question`, whichever the runtime exposes). Never default silently.
-Options can be situational, or use the standard set:
-
-1. **One PR for everything** — PoC/prototype work.
-2. **Smart split** — review-friendly cuts along natural boundaries.
-3. **One PR per phase** — faithful to the plan's milestone structure.
-
-When splitting into multiple PRs, prefer
-[`gh stack`](https://github.com/github/gh-stack) to manage the stack —
-it's also the escape hatch when a single-PR PoC later needs splitting.
+Executing a plan — confirming PR granularity, managing stacked PRs — is
+workflow, not doc convention: it lives in the `spec-driven-development`
+skill.
 
 **How plans link the graph** — a plan declares in frontmatter:
 
