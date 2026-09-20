@@ -45,3 +45,9 @@ Then update the scale table in `SKILL.md`.
 - SKILL.md bodies are imperative and concise — procedures and rules, not
   essays.
 - `AGENTS.md` carries must-follow rules only — no structure, no usage.
+
+## Shell script style
+
+Every shell file — scripts shipped inside skills
+(`.agents/skills/*/scripts/`) and everything under `tests/` — follows
+`docs/reference/shell-style.md`.
