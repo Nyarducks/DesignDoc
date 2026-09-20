@@ -140,8 +140,10 @@ issues: []                 # open issues affecting it — e.g. [0001, 0007]
 summarizes; any commit that changes a source file must update the doc (and
 `last_modified`) in the same commit. Keep the list as narrow as the doc's
 real dependencies. Prescriptive docs — pure conventions — set
-`sources: []`. Optionally enforce the contract in CI with a check that
-fails a PR which changes a source without touching its doc.
+`sources: []`. Enforce the contract in CI with
+`scripts/check-docs-stale.sh` (shipped with this skill): it fails a PR
+that changes a declared source without touching its doc, or that leaves
+a `sources:` path dangling after a rename/delete.
 
 **`adrs:` / `issues:` / `designs:` / `resolved_by:` — the
 machine-readable doc graph.** Design docs declare the ADRs governing them
