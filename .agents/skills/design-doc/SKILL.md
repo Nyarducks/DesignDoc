@@ -53,7 +53,7 @@ template tree, and apply its conventions.
 
 | Axis | Small | Medium | Large |
 |---|---|---|---|
-| Doc kinds | Living overview + per-component docs + ADRs | + per-change proposal docs | + dedicated security/privacy docs |
+| Doc kinds | Living overview + per-component docs + ADRs + issue list | + per-change proposal docs | + dedicated security/privacy docs |
 | When written | Same commit as the change | Before implementation; the doc PR is the design review | Before implementation; formal review gates |
 | Metadata | OKF frontmatter (`status`, `last_modified`) | + authors / reviewers on proposals | + lifecycle status, approvers, target dates |
 | Requirements | Goal/Non-Goal + short functional & non-functional bullets | Explicit functional + non-functional requirements per proposal | NFRs with measurable targets (SLOs, capacity, latency budgets) |
@@ -84,9 +84,12 @@ docs/
 ├── design/
 │   ├── README.md          # overview design doc — the entry point
 │   └── <component>.md     # one doc per component (from component.md)
-└── adr/
-    ├── README.md          # index table of ADRs
-    └── NNNN-<slug>.md     # one file per significant decision
+├── adr/
+│   ├── README.md          # index table of ADRs
+│   └── NNNN-<slug>.md     # one file per significant decision
+└── issues/
+    ├── README.md          # issues list — the table view
+    └── NNNN-<slug>.md     # optional detail doc per issue
 ```
 
 `docs/design/README.md` is the overview because GitHub renders a
@@ -181,6 +184,21 @@ Record every significant decision in the same commit that introduces it:
   write a new ADR when a decision is revisited.
 - Keep `docs/adr/README.md` as an index table.
 
+### Issues — `docs/issues/`
+
+Known problems and improvement backlog as a scannable list — issue
+trackers are poor at "show me the list", so the list lives in a doc:
+
+- `README.md` — a table: `ID | Issue | Severity | Status | Resolved by`.
+  Status: open · investigating · planned · in-progress · done ·
+  deferred · wontfix.
+- `NNNN-<slug>.md` — optional detail doc per issue (Problem → Evidence →
+  Impact → Options → Resolution); most rows never need one.
+- Line-drawing: an issue tracker owns assigned, actively-worked tasks;
+  `docs/issues/` owns the visible backlog of *known* problems. A design
+  doc's "Risks and known issues" describes design limitations — anything
+  actionable gets a row here, and a scheduled row links its plan or PR.
+
 ### Docs in the workflow
 
 - The doc PR *is* the review — reviewers read the rendered markdown, not
@@ -227,6 +245,7 @@ docs/
 │       ├── README.md          # plan overview — context, phases, status
 │       └── phase-N-<slug>.md  # one doc per implementation phase
 ├── adr/                       # same as small
+├── issues/                    # same as small — scheduled rows link their plan
 └── reference/                 # optional — API/schema inventories
 ```
 

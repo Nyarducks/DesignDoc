@@ -60,7 +60,8 @@ component (module, screen), whichever explains the design better.>
 
 ## Risks and known issues
 
-- <Operational risks, failure modes, and known holes/limitations.>
+- <Operational risks, failure modes, and known holes/limitations.
+  Actionable items get a row in [../issues/](../issues/).>
 
 ## Testing
 

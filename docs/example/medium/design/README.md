@@ -95,6 +95,8 @@ active change plans live under [../plan/](../plan/).
 - Imports of >100k rows hold a worker for minutes — no sharding yet.
 - Supplier sync is pull-once-daily; a missed window waits a full day.
 
+Actionable items are tracked in [../issues/](../issues/).
+
 ## Testing
 
 ```bash

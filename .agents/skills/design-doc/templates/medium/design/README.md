@@ -65,7 +65,8 @@ per-module docs for anything longer than a paragraph. Module-local docs
 
 ## Risks and known issues
 
-- <Operational risks, failure modes, and known holes/limitations.>
+- <Operational risks, failure modes, and known holes/limitations.
+  Actionable items get a row in [../issues/](../issues/).>
 
 ## Testing
 

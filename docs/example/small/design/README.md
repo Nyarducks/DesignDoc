@@ -81,6 +81,8 @@ the atomic-write scheme lives in [store.md](store.md).
   retry queue.
 - A feed that rewrites IDs floods the channel once, then settles.
 
+Actionable items are tracked in [../issues/](../issues/).
+
 ## Testing
 
 ```bash
