@@ -16,45 +16,18 @@ This repo packages design-doc conventions per project scale into the
 studying a reference project and distilling its conventions into a
 generic template.
 
-## Confidentiality — the hard rule
+The canonical rules live in the repo root `CONTRIBUTING.md`; this skill
+is the agent-facing procedure. The short version:
 
-A reference repo is read for **conventions only**. Nothing inside it may
-appear in a deliverable:
-
-- No real project or module names, file paths, PR/issue links, hostnames,
-  schemas, business logic, or security-posture details.
-- Naming the repo as the source — "conventions distilled from
-  `owner/repo`" in `SKILL.md`/`AGENTS.md` — is the only permitted
-  reference: attribution, not content.
+- **Nothing from a reference repo appears in a deliverable — including
+  its identity.** No repo names or links, project or module names, file
+  paths, PR/issue links, hostnames, schemas, business logic, or
+  security-posture details.
 - `templates/` and `docs/example/` use **fictional projects** — invented
   names, paths, and links only.
-
-The `design-doc` skill is the mirror image: at doc-writing time the
-target repo's real details *are* the content. The no-leak rule applies to
-template authoring only — never strip real content out of a design doc
-being written for an actual project.
-
-## What to distill (and what to leave)
-
-- **Distill** — doc kinds and their directories, section anatomy,
-  metadata conventions, status/review workflow, update discipline,
-  multi-repo handling.
-- **Leave behind** — anything that answers "what does their system do"
-  rather than "how do they document".
-
-## Per-scale deliverables
-
-Each scale ships three things:
-
-1. A section in `.agents/skills/design-doc/SKILL.md` — the conventions,
-   naming the reference repo.
-2. `.agents/skills/design-doc/templates/<scale>/` — a copy-ready tree
-   mirroring the target `docs/` layout.
-3. `docs/example/<scale>/` — the template applied to a fictional project,
-   marked as such.
-
-Then update the scale table in `SKILL.md` and the "scales so far" line in
-`AGENTS.md`.
+- The `design-doc` skill is the mirror image: at doc-writing time the
+  target repo's real details *are* the content. The no-leak rule applies
+  to template authoring only.
 
 ## Procedure
 
@@ -65,8 +38,8 @@ Then update the scale table in `SKILL.md` and the "scales so far" line in
    reference / generated) and confirm the scale fit.
 3. Write the conventions generically — describe the pattern, never the
    content.
-4. Build the template tree, then verify every file renders: frontmatter
-   parses as YAML, mermaid blocks are valid, no `<placeholders>` inside
-   diagram syntax.
-5. Write the fictional worked example end-to-end — it is what reviewers
-   judge the scale by.
+4. Ship the three deliverables per `CONTRIBUTING.md`: a `SKILL.md`
+   section, a `templates/<scale>/` tree, and a fictional
+   `docs/example/<scale>/` — then update the scale table.
+5. Verify every file renders: frontmatter parses as YAML, mermaid blocks
+   are valid, no `<placeholders>` inside diagram syntax.

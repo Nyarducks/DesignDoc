@@ -70,10 +70,10 @@ need only living docs plus ADRs; medium and up add proposals.
 
 ## Small project
 
-Conventions distilled from
-[Nyarducks/Worktreeharness](https://github.com/Nyarducks/Worktreeharness)
-(`docs/design/`, `docs/adr/`, `CONTRIBUTING.md`), a small single-repo
-project. A worked example lives in this repo at `docs/example/small/`.
+Conventions distilled from a small single-repo reference project — living
+docs under `docs/design/`, ADRs under `docs/adr/`, docs updated in the
+same commit as code. A worked example lives in this repo at
+`docs/example/small/`.
 
 ### Layout
 
@@ -205,10 +205,9 @@ Record every significant decision in the same commit that introduces it:
 
 ## Medium project
 
-Conventions distilled from
-[Nyarducks-FX/TradeLab](https://github.com/Nyarducks-FX/TradeLab), a
-multi-repo system whose main repo is a monorepo of several modules. A
-worked example lives in this repo at `docs/example/medium/`.
+Conventions distilled from a multi-repo reference system whose main repo
+is a monorepo of several modules. A worked example lives in this repo at
+`docs/example/medium/`.
 
 Medium keeps everything small has and adds **plan docs** — phased
 proposal docs written before implementation and maintained with it — plus
@@ -309,10 +308,5 @@ discoverable as organizational memory.
 
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
   — anatomy, lifecycle, and when not to write one
-- [Nyarducks/Worktreeharness](https://github.com/Nyarducks/Worktreeharness)
-  — the small-scale reference (`docs/design/`, `docs/adr/`)
-- [Nyarducks-FX/TradeLab](https://github.com/Nyarducks-FX/TradeLab)
-  — the medium-scale reference (`docs/plan/`, module-local `docs/`,
-  generated agent context)
 - [Google Open Knowledge Format v0.2](https://github.com/google/open-knowledge-format)
   — frontmatter convention
