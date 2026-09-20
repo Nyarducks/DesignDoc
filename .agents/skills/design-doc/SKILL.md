@@ -291,6 +291,20 @@ phase-doc shape instead.
 A plan dir gets a `README.md` overview plus one `phase-N-<slug>.md` per
 implementation phase; `docs/plan/README.md` indexes all plans as a table.
 
+**Confirm PR granularity before implementing a plan.** If the request
+doesn't say how to cut the work into PRs, ask before dispatching — via
+the agent's ask-question tool (`AskUserQuestion`, `ask_user_question`,
+`ask_question`, whichever the runtime exposes). Never default silently.
+Options can be situational, or use the standard set:
+
+1. **One PR for everything** — PoC/prototype work.
+2. **Smart split** — review-friendly cuts along natural boundaries.
+3. **One PR per phase** — faithful to the plan's milestone structure.
+
+When splitting into multiple PRs, prefer
+[`gh stack`](https://github.com/github/gh-stack) to manage the stack —
+it's also the escape hatch when a single-PR PoC later needs splitting.
+
 **How plans link the graph** — a plan declares in frontmatter:
 
 - `issues:` — the issue IDs it resolves (issue docs point back with
