@@ -5,12 +5,23 @@
 # on main, applies a change on a branch, then runs the script with
 # base=main and asserts on exit code and output.
 set -u
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 SCRIPT="$(pwd)/.agents/skills/design-doc/scripts/check-docs-stale.sh"
 
 pass=0 fail=0
-ok()   { pass=$((pass+1)); echo "ok   $1"; }
-bad()  { fail=$((fail+1)); echo "FAIL $1"; }
+ok()  { pass=$((pass+1)); echo "ok   $1"; }
+bad() { fail=$((fail+1)); echo "FAIL $1"; }
+
+# check <name> <want-rc> [needle] — asserts on $rc and $out.
+check() {
+  local name="$1" want_rc="$2" needle="${3:-}"
+  if [[ ${rc} -eq ${want_rc} && ( -z "${needle}" || ${out} == *"${needle}"* ) ]]; then
+    ok "${name}"
+  else
+    bad "${name}: rc=${rc} (want ${want_rc})"
+    echo "${out}"
+  fi
+}
 
 # new_repo <dir> — init a scratch repo with an initial commit on main.
 new_repo() {
@@ -26,6 +37,7 @@ commit_all() { git -C "$1" add -A && git -C "$1" commit -qm change; }
 # run_check <dir> — run the script inside the repo, base=main.
 run_check() { (cd "$1" && bash "$SCRIPT" main 2>&1); }
 
+# doc <path> <sources> — write a frontmatter doc.
 doc() {
   mkdir -p "$(dirname "$1")"
   printf -- '---\ntype: Design Doc\nsources: [%s]\n---\n# doc\n' "$2" > "$1"
@@ -37,7 +49,7 @@ mkdir -p "$r/src" "$r/docs/design"; echo x > "$r/src/a.c"
 doc "$r/docs/design/a.md" src/a.c
 commit_all "$r"
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "clean repo passes" || { bad "clean repo: rc=$rc"; echo "$out"; }
+check "clean repo passes" 0
 
 # --- case: source changed, doc untouched — STALE ----------------------
 r=$(mktemp -d); new_repo "$r"
@@ -46,8 +58,7 @@ doc "$r/docs/design/a.md" src/a.c
 commit_all "$r"; git -C "$r" checkout -qb feat
 echo y > "$r/src/a.c"; commit_all "$r"
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 1 && "$out" == *"STALE"* ]] && ok "stale doc fails" \
-  || { bad "stale doc: rc=$rc"; echo "$out"; }
+check "stale doc fails" 1 STALE
 
 # --- case: source + doc changed together — fresh ----------------------
 r=$(mktemp -d); new_repo "$r"
@@ -56,7 +67,7 @@ doc "$r/docs/design/a.md" src/a.c
 commit_all "$r"; git -C "$r" checkout -qb feat
 echo y > "$r/src/a.c"; echo update >> "$r/docs/design/a.md"; commit_all "$r"
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "same-commit update passes" || { bad "same-commit: rc=$rc"; echo "$out"; }
+check "same-commit update passes" 0
 
 # --- case: source deleted — MISSING -----------------------------------
 r=$(mktemp -d); new_repo "$r"
@@ -65,8 +76,7 @@ doc "$r/docs/design/a.md" src/a.c
 commit_all "$r"; git -C "$r" checkout -qb feat
 rm "$r/src/a.c"; commit_all "$r"
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 1 && "$out" == *"MISSING"* ]] && ok "deleted source fails" \
-  || { bad "deleted source: rc=$rc"; echo "$out"; }
+check "deleted source fails" 1 MISSING
 
 # --- case: docs/adr/ is never checked ---------------------------------
 r=$(mktemp -d); new_repo "$r"
@@ -75,14 +85,14 @@ doc "$r/docs/adr/0001-x.md" src/a.c
 commit_all "$r"; git -C "$r" checkout -qb feat
 echo y > "$r/src/a.c"; commit_all "$r"
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "adr excluded" || { bad "adr excluded: rc=$rc"; echo "$out"; }
+check "adr excluded" 0
 
 # --- case: docs/example/ sources are fictional — skipped --------------
 r=$(mktemp -d); new_repo "$r"
 doc "$r/docs/example/small/design/x.md" no/such/file.c
 commit_all "$r"; git -C "$r" checkout -qb feat
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "example excluded" || { bad "example excluded: rc=$rc"; echo "$out"; }
+check "example excluded" 0
 
 # --- case: directory source covers its tree only ----------------------
 r=$(mktemp -d); new_repo "$r"
@@ -92,24 +102,22 @@ doc "$r/docs/design/a.md" src/pkg
 commit_all "$r"; git -C "$r" checkout -qb feat
 echo y > "$r/src/pkgx/b.c"; commit_all "$r"   # sibling dir — not a match
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "dir source: sibling prefix not matched" \
-  || { bad "dir prefix: rc=$rc"; echo "$out"; }
+check "dir source: sibling prefix not matched" 0
 echo y > "$r/src/pkg/a.c"; commit_all "$r"    # inside the dir — match
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 1 && "$out" == *"STALE"* ]] && ok "dir source: nested change flagged" \
-  || { bad "dir nested: rc=$rc"; echo "$out"; }
+check "dir source: nested change flagged" 1 STALE
 
 # --- case: empty sources and no docs/ --------------------------------
 r=$(mktemp -d); new_repo "$r"
 doc "$r/docs/design/a.md" ""
 commit_all "$r"; git -C "$r" checkout -qb feat
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "empty sources passes" || { bad "empty sources: rc=$rc"; echo "$out"; }
+check "empty sources passes" 0
 
 r=$(mktemp -d); new_repo "$r"
-commit_all "$r"; git -C "$r" checkout -qb feat
+git -C "$r" checkout -qb feat
 out=$(run_check "$r"); rc=$?
-[[ $rc -eq 0 ]] && ok "no docs/ passes" || { bad "no docs: rc=$rc"; echo "$out"; }
+check "no docs/ passes" 0
 
 echo
 echo "$pass passed, $fail failed"
