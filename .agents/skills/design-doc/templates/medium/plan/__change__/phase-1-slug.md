@@ -6,6 +6,7 @@ status: not-started            # not-started | in-progress | in-review | merged 
 last_modified: <YYYY-MM-DD>
 tags: [plan, <topic>]
 sources: [<files this phase will touch>]
+issues: []      # issue IDs this phase resolves
 ---
 
 # Phase 1: <title>

@@ -6,6 +6,7 @@ status: current
 last_modified: 2026-09-20
 tags: [store, persistence]
 sources: [internal/store/store.go, internal/store/store_test.go]
+adrs: [0002]
 ---
 
 # Store

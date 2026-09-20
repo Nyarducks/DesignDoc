@@ -6,6 +6,8 @@ status: current
 last_modified: <YYYY-MM-DD>
 tags: [<topics>]
 sources: [<module paths this doc covers>]
+adrs: []        # ADR numbers governing this module
+issues: []      # open issues affecting it
 ---
 
 # <Module name>

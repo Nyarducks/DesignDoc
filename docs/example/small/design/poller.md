@@ -6,6 +6,7 @@ status: current
 last_modified: 2026-09-20
 tags: [poller, feeds]
 sources: [internal/poller/poller.go, internal/poller/poller_test.go]
+issues: [0001]
 ---
 
 # Poller

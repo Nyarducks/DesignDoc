@@ -6,6 +6,8 @@ status: current
 last_modified: 2026-09-20
 tags: [overview, architecture, design]
 sources: [docs/design]
+adrs: [0002]
+issues: [0001, 0002]
 ---
 
 # Feedping

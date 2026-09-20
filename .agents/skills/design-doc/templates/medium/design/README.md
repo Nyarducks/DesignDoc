@@ -6,6 +6,8 @@ status: current
 last_modified: <YYYY-MM-DD>
 tags: [overview, architecture, design]
 sources: [<files this doc is derived from>]  # [] if prescriptive
+adrs: []        # ADR numbers governing this design — e.g. [0002]
+issues: []      # open issues affecting it — e.g. [0001, 0007]
 ---
 
 # <System name>

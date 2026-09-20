@@ -6,6 +6,7 @@ status: planned
 last_modified: 2026-09-20
 tags: [issue, worker, scheduling]
 sources: [worker/runner/]
+resolved_by: plan/bulk-import
 ---
 
 # A single huge import occupies a worker for minutes

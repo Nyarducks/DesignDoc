@@ -6,6 +6,8 @@ status: current
 last_modified: <YYYY-MM-DD>
 tags: [<topics>]
 sources: [<implementation files this doc is derived from>]
+adrs: []        # ADR numbers governing this component
+issues: []      # open issues affecting it
 ---
 
 # <Component name>

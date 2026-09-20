@@ -112,6 +112,8 @@ status: current            # current | draft | deprecated (ADRs: accepted)
 last_modified: YYYY-MM-DD  # bump on every edit
 tags: [<topics>]
 sources: [<files the doc is derived from>]
+adrs: []                   # ADR numbers governing this doc — e.g. [0002]
+issues: []                 # open issues affecting it — e.g. [0001, 0007]
 ---
 ```
 
@@ -121,6 +123,12 @@ summarizes; any commit that changes a source file must update the doc (and
 real dependencies. Prescriptive docs — pure conventions — set
 `sources: []`. Optionally enforce the contract in CI with a check that
 fails a PR which changes a source without touching its doc.
+
+**`adrs:` / `issues:` — the machine-readable doc graph.** Design docs
+declare the ADRs governing them and the open issues affecting them; plans
+declare the issues they resolve (`issues:`); issue docs point back at the
+plan or PR that resolves them (`resolved_by:`). Prose links stay for
+human readers — frontmatter is the index a tool can walk.
 
 ### Writing rules
 
@@ -193,7 +201,9 @@ trackers are poor at "show me the list", so the list lives in a doc:
   Status: open · investigating · planned · in-progress · done ·
   deferred · wontfix.
 - `NNNN-<slug>.md` — optional detail doc per issue (Problem → Evidence →
-  Impact → Options → Resolution); most rows never need one.
+  Impact → Options → Resolution); most rows never need one. Its
+  `resolved_by:` frontmatter holds the plan/PR once scheduled — the same
+  value as the table's Resolved by column.
 - Line-drawing: an issue tracker owns assigned, actively-worked tasks;
   `docs/issues/` owns the visible backlog of *known* problems. A design
   doc's "Risks and known issues" describes design limitations — anything

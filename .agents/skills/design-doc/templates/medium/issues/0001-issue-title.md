@@ -6,6 +6,7 @@ status: open                 # open | investigating | planned | in-progress | do
 last_modified: <YYYY-MM-DD>
 tags: [issue, <topic>]
 sources: [<files involved>]
+resolved_by:    # plan/<change>/ or PR — set when scheduled
 ---
 
 # <Issue title>

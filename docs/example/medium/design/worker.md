@@ -6,6 +6,7 @@ status: current
 last_modified: 2026-09-20
 tags: [worker, jobs, import]
 sources: [worker/jobs/, worker/runner/]
+issues: [0001]
 ---
 
 # Worker
