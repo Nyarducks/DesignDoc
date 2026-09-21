@@ -27,21 +27,21 @@ description: test skill $1
 EOF
 }
 
-@test "形式が正しい skill のとき exit 0 を返す" {
+@test "valid skill exits 0" {
   mk_skill foo
   run bash "$SCRIPT" "$SKILLS"
   [ "$status" -eq 0 ]
   contains "skill layout ok"
 }
 
-@test "SKILL.md がない skill のとき違反を返す" {
+@test "missing SKILL.md reports a violation" {
   mkdir -p "$SKILLS/foo"
   run bash "$SCRIPT" "$SKILLS"
   [ "$status" -eq 1 ]
   contains "foo — missing SKILL.md"
 }
 
-@test "frontmatter の name が dir 名と一致しないとき違反を返す" {
+@test "name: not matching the directory reports a violation" {
   mkdir -p "$SKILLS/foo"
   cat > "$SKILLS/foo/SKILL.md" <<'EOF'
 ---
@@ -54,7 +54,7 @@ EOF
   contains "foo — frontmatter 'name:' missing or does not match directory"
 }
 
-@test "description がないとき違反を返す" {
+@test "missing description: reports a violation" {
   mkdir -p "$SKILLS/foo"
   cat > "$SKILLS/foo/SKILL.md" <<'EOF'
 ---
@@ -66,7 +66,7 @@ EOF
   contains "foo — frontmatter missing 'description:'"
 }
 
-@test "description が folded scalar のとき許容する" {
+@test "folded-scalar description: is accepted" {
   mkdir -p "$SKILLS/foo"
   cat > "$SKILLS/foo/SKILL.md" <<'EOF'
 ---
@@ -80,7 +80,7 @@ EOF
   [ "$status" -eq 0 ]
 }
 
-@test "scripts/ があるのに tests/ がないとき違反を返す" {
+@test "scripts/ without tests/ reports a violation" {
   mk_skill foo
   mkdir -p "$SKILLS/foo/scripts"
   printf '#!/usr/bin/env bash\n' > "$SKILLS/foo/scripts/x.sh"
@@ -90,7 +90,7 @@ EOF
   contains "foo — has scripts/ but no tests/ dir"
 }
 
-@test "script が実行可能でないとき違反を返す" {
+@test "non-executable script reports a violation" {
   mk_skill foo
   mkdir -p "$SKILLS/foo/scripts" "$SKILLS/foo/tests"
   printf '#!/usr/bin/env bash\n' > "$SKILLS/foo/scripts/x.sh"
@@ -100,7 +100,7 @@ EOF
   contains "script not executable"
 }
 
-@test "scripts/ + tests/*.bats が揃っているとき exit 0 を返す" {
+@test "scripts/ plus tests/*.bats exits 0" {
   mk_skill foo
   mkdir -p "$SKILLS/foo/scripts" "$SKILLS/foo/tests"
   printf '#!/usr/bin/env bash\n' > "$SKILLS/foo/scripts/x.sh"
@@ -111,7 +111,7 @@ EOF
   contains "skill layout ok"
 }
 
-@test "引数なしのとき skill 同梱の skills ツリーを既定で検査する" {
+@test "no args defaults to the skills tree containing the script" {
   run bash "$SCRIPT"
   [ "$status" -eq 0 ]
 }

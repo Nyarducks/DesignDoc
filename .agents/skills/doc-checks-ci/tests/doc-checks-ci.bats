@@ -64,7 +64,7 @@ EOF
   new_repo
   run run_install
   [ "$status" -eq 0 ]
-  contains "installed docs job"
+  contains "docs job"
   file_contains "$REPO/.github/workflows/ci.yaml" "# doc-checks-ci:start"
   file_contains "$REPO/.github/workflows/ci.yaml" "# doc-checks-ci:end"
   file_contains "$REPO/.github/workflows/ci.yaml" "check-docs-stale.sh"

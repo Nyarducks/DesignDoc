@@ -29,6 +29,9 @@ new_repo() {
   git -C "$REPO" config user.name test
 }
 
+# run the script inside the scratch repo.
+run_check() { (cd "$REPO" && bash "$SCRIPT" 2>&1); }
+
 # write a doc with valid frontmatter.
 good_doc() {
   mkdir -p "$(dirname "$1")"
@@ -48,14 +51,14 @@ EOF
 @test "valid doc passes" {
   new_repo
   good_doc "$REPO/docs/design/a.md"
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 0 ]
 }
 
 @test "missing frontmatter fails" {
   new_repo
   mkdir -p "$REPO/docs/design"; echo "# no fm" > "$REPO/docs/design/a.md"
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "missing frontmatter"
 }
@@ -63,7 +66,7 @@ EOF
 @test "unterminated frontmatter fails" {
   new_repo
   mkdir -p "$REPO/docs/design"; printf -- '---\ntype: Design Doc\n' > "$REPO/docs/design/a.md"
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "unterminated"
 }
@@ -79,7 +82,7 @@ last_modified: 2026-09-21
 ---
 # body
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "missing required key: status"
 }
@@ -96,7 +99,7 @@ last_modified: 2026-09-21
 ---
 # body
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "unknown type: NotAType"
 }
@@ -113,7 +116,7 @@ last_modified: 2026-09-21
 ---
 # plan
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 0 ]
 }
 
@@ -129,7 +132,7 @@ last_modified: yesterday
 ---
 # body
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "not YYYY-MM-DD"
 }
@@ -147,7 +150,7 @@ description: covers the bug: a race in teardown
 ---
 # body
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "unquoted scalar"
 }
@@ -165,7 +168,7 @@ tags: [f, r, o, n, t, e, n, d]
 ---
 # body
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "character-split"
 }
@@ -183,7 +186,7 @@ tags: [a, , b]
 ---
 # body
 EOF
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "empty item"
 }
@@ -193,7 +196,7 @@ EOF
   mkdir -p "$REPO/docs/plan/archived" "$REPO/docs/reviews"
   echo "# old plan" > "$REPO/docs/plan/archived/p.md"
   echo "# review record" > "$REPO/docs/reviews/r.md"
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 0 ]
 }
 
@@ -201,13 +204,13 @@ EOF
   new_repo
   mkdir -p "$REPO/docs/plan/archived"
   printf -- '---\ntype: Bogus\n---\n# old plan\n' > "$REPO/docs/plan/archived/p.md"
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 1 ]
   contains "unknown type"
 }
 
 @test "no docs/ passes" {
   new_repo
-  run bash "$SCRIPT"
+  run run_check
   [ "$status" -eq 0 ]
 }
