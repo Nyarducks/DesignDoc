@@ -51,3 +51,19 @@ Then update the scale table in `SKILL.md`.
 Every shell file — scripts shipped inside skills
 (`.agents/skills/*/scripts/`) and each skill's `tests/` — follows
 `docs/reference/shell-style.md`.
+
+## Requirements
+
+Working on this repo needs:
+
+- **bash, git, coreutils** — what the check scripts run on.
+- **bats** — runs each skill's tests:
+  `bats .agents/skills/*/tests/*.bats`
+- **shellcheck** — lints the shipped scripts:
+  `shellcheck .agents/skills/*/scripts/*.sh`
+- **gh** — PR workflows and `gh skill` install testing.
+
+CI additionally runs the skill layout check
+(`.agents/skills/agent-guidance/scripts/check-skills.sh`) and the
+installed `docs` job (see the `doc-checks-ci` skill) — no extra
+tooling, just the repo's own scripts.
