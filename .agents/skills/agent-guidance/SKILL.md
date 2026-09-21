@@ -40,6 +40,9 @@ verbatim copy imports whatever the source referenced.
 - **Omit private assets** — never carry over private repository names,
   internal infrastructure, or business logic. Swap worked examples for
   generic or fictional names.
+- **Rewrite samples entirely** — when deriving a sample or worked
+  example, renaming identifiers is not enough; write completely
+  different content.
 - **Ask when unsure** — importing is a responsibility, not a shortcut.
   If you cannot tell whether a passage is safe, ask a human rather than
   guessing.
