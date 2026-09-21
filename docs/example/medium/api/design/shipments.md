@@ -12,26 +12,45 @@ issues: [0001]
 
 # Shipments API
 
-## Context
+## Overview
+
+Carriers register shipments and push tracking events; the dashboard and
+integrations read shipment state and timelines. This surface is the only
+write path for tracking data.
+
+## Background and motivation
 
 - ~40 carrier integrations push tracking events; their SDKs range from
   modern HTTP clients to scheduled FTP-to-HTTP bridges that can POST
   but can't poll or hold connections open.
 - Sustained volume is ~2k events/s with 10k/s bursts (depot scan
   batches land on the hour).
-- The dashboard reads shipment state continuously; ops alert on lag,
-  so reads and writes share the same SLO window.
 - Carriers retry aggressively on any non-2xx — a `500` is replayed
   verbatim minutes later. Duplicate delivery is normal, not an edge
   case.
+- Ops audit shipments after the fact — "what did we believe at time T"
+  must be answerable.
 
-## Goal
+## Goals and non-goals
 
-Carriers register shipments and push tracking events; the dashboard and
-integrations read shipment state and timelines. This surface is the only
-write path for tracking data.
+### Goals
 
-## Contract
+- Register a shipment, ingest its events, read its state and timeline —
+  nothing else writes tracking data.
+- Writes survive client retries without double-recording.
+- Reads stay inside the SLO while ingestion bursts — no coupling.
+
+### Non-goals
+
+- No bulk import or backfill endpoint — per-shipment writes only;
+  migrations are an internal tool, not a contract.
+- No outbound carrier push — carriers poll or the dashboard uses SSE;
+  this surface never calls back.
+- No mutable status field — state is derived, always.
+
+## Detailed design
+
+### Contract
 
 | Endpoint | Verb | Effect |
 |---|---|---|
@@ -46,7 +65,18 @@ write path for tracking data.
 - `POST /events` returns `202` once the batch is durably queued; event
   *processing* is asynchronous — see [worker/design/](../../worker/design/).
 
-## Lifecycle
+| Status | When |
+|---|---|
+| 401/403 | Missing key, or key not scoped to the shipment's carrier |
+| 409 | Duplicate `event_id` (safe to ignore on retry) |
+| 422 | Malformed event payload |
+| 429 | Tenant over rate limit — see [the rate-limit plan](../../plan/api-rate-limits/) |
+| 503 | Queue unavailable — retry whole batch after `Retry-After` |
+
+### Data model
+
+A shipment's state is a fold over its append-only event stream — never
+a mutable status column:
 
 ```mermaid
 stateDiagram-v2
@@ -60,30 +90,30 @@ stateDiagram-v2
     exception --> [*]: returned_to_sender event
 ```
 
-- A shipment reaches `delivered` only via a `delivered` event — no
-  direct status writes. `exception` is re-entrant; a resolved shipment
-  resumes `in_transit`, not its prior sub-state.
-- Events may arrive out of order; `delivered` is terminal and cannot be
-  reverted by a late `depot_scan`.
+- `delivered` is terminal and can't be reverted by a late `depot_scan`;
+  `exception` is re-entrant — a resolved shipment resumes `in_transit`,
+  not its prior sub-state.
+- Two tables: `events` (append-only log, `event_id` unique) and
+  `shipments` (the folded projection the GETs serve). The worker owns
+  the fold; the API only reads the projection.
 
-## Design
+### Request flow
 
-Events are append-only: a shipment's state is a fold over its event
-stream, never a mutable status column. `POST /events` validates,
-dedupes by client `event_id`, enqueues, and acks — the worker
-recomputes state and ETA asynchronously. The GET endpoints read the
-folded projection, so ingestion latency never couples to read latency.
+```mermaid
+sequenceDiagram
+    participant C as Carrier
+    participant A as API
+    participant Q as Queue
+    participant W as Worker
 
-## Failure modes
-
-| Dependency fails | Caller sees |
-|---|---|
-| Queue enqueue error | `503` + `Retry-After`; nothing partially applied — retry the whole batch |
-| Worker lag (events queued, unprocessed) | Reads still serve; `eta` field reports `stale: true` once projection lag > 60 s |
-| Postgres read replica lag | Timeline may miss the newest seconds of events; `etag` on detail moves only when state actually changed |
-
-A carrier retrying a `503` batch is safe end to end: `event_id`
-dedupes at write, and redelivery at the worker is a no-op.
+    C->>A: POST /v1/shipments/{id}/events
+    A->>A: auth + validate + dedupe (event_id)
+    A->>Q: enqueue batch
+    A-->>C: 202 accepted
+    Q->>W: claim (SKIP LOCKED)
+    W->>W: fold events → projection + ETA
+    Note over C,W: GETs read the projection — never block on W
+```
 
 ## Decisions and alternatives
 
@@ -111,15 +141,16 @@ dedupes at write, and redelivery at the worker is a no-op.
   see [ADR-0002](../../adr/0002-redis-rate-limit-state.md) and
   [the rate-limit plan](../../plan/api-rate-limits/).
 
-## Errors
+## Failure modes
 
-| Status | When |
+| Dependency fails | Caller sees |
 |---|---|
-| 401/403 | Missing key, or key not scoped to the shipment's carrier |
-| 409 | Duplicate `event_id` (safe to ignore on retry) |
-| 422 | Malformed event payload |
-| 429 | Tenant over rate limit — see [the rate-limit plan](../../plan/api-rate-limits/) |
-| 503 | Queue unavailable — retry whole batch after `Retry-After` |
+| Queue enqueue error | `503` + `Retry-After`; nothing partially applied — retry the whole batch |
+| Worker lag (events queued, unprocessed) | Reads still serve; `eta` reports `stale: true` once projection lag > 60 s |
+| Postgres read replica lag | Timeline may miss the newest seconds of events; `etag` on detail moves only when state actually changed |
+
+A carrier retrying a `503` batch is safe end to end: `event_id`
+dedupes at write, and redelivery at the worker is a no-op.
 
 ## Security
 
@@ -127,8 +158,14 @@ Carrier keys never see another carrier's shipments; dashboard reads are
 role-scoped. Event payloads carry IDs, not PII — consignee identity
 stays in the upstream orders system.
 
-## Known issues
+## Risks and mitigations
 
-- No backpressure beyond per-tenant limits until the rate-limit plan
-  finishes; a partner can still burst within quota — tracked as
-  [issue 0001](../../issues/0001-api-no-backpressure.md).
+- Partner bursts within quota → per-tenant token buckets in
+  [the rate-limit plan](../../plan/api-rate-limits/); tracked as
+  [issue 0001](../../issues/0001-api-no-backpressure.md) until it lands.
+
+## Testing
+
+`api/internal/handlers` tests cover the lifecycle transitions above,
+`event_id` dedupe under retries, cursor stability under concurrent
+writes, and the `202`/`503` ack semantics.

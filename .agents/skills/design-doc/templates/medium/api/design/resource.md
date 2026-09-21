@@ -12,43 +12,54 @@ issues: []
 
 # <Resource> API
 
-## Context
-
-<Objective facts that constrain this surface — who calls it, at what
-volume, what the callers can and cannot do (legacy SDKs, retry
-behavior), upstream systems it must fit. Facts only, no design yet.>
-
-## Goal
+## Overview
 
 <What callers can do with this surface — the resource lifecycle in one
 paragraph.>
 
-## Contract
+## Background and motivation
+
+<Objective facts that constrain this surface — who calls it, at what
+volume, what callers can and cannot do (legacy SDKs, retry behavior),
+upstream systems it must fit. Facts only, no design yet.>
+
+## Goals and non-goals
+
+### Goals
+
+- <caller-observable outcomes this surface must deliver>
+
+### Non-goals
+
+- <reasonable-seeming scope deliberately excluded — e.g. bulk import,
+  ad-hoc query params, a second content type>
+
+## Detailed design
+
+### Contract
 
 | Endpoint | Verb | Effect |
 |---|---|---|
 | `<path>` | <GET/POST/…> | <what it does> |
 
-<Contract-level rules callers rely on — ownership scoping, state
-transitions, visibility rules. Not a schema dump; link the spec.>
+<Contract-level rules callers rely on — ownership scoping, visibility
+rules. Not a schema dump; link the spec.>
 
-## Lifecycle
+| Status | When |
+|---|---|
+| <code> | <condition> |
 
-<The resource's state machine — states, what transitions them, terminal
-states, and who can trigger each. A mermaid stateDiagram when the states
-aren't trivial.>
+### Data model
 
-## Design
+<The resource's lifecycle as a state machine — states, transitions,
+terminal states, who triggers each — plus how the data is shaped
+(append-only log, projection) where it shapes the contract. Mermaid
+stateDiagram when the states aren't trivial.>
 
-<How the surface works underneath at the invariant level — the data
-model that backs it, the flow a request takes, where state lives.
-The parts a reviewer needs to evaluate the decisions below, not an
-implementation walkthrough.>
+### Request flow
 
-## Failure modes
-
-<What each dependency failure looks like to the caller — which endpoints
-degrade, what error surfaces, what retries are safe.>
+<How a call traverses the system — what's synchronous vs async, where
+state changes land. A sequence diagram where it beats prose.>
 
 ## Decisions and alternatives
 
@@ -59,16 +70,21 @@ full analysis; the doc still shows the reasoning.>
 - **<decision>** over <rejected alternative> — <why the trade-off lands
   this way given the goals> (settled by [ADR-NNNN](../../adr/NNNN-<slug>.md))
 
-## Errors
+## Failure modes
 
-| Status | When |
-|---|---|
-| <code> | <condition> |
+<What each dependency failure looks like to the caller — which endpoints
+degrade, what error surfaces, what retries are safe. Table form.>
 
 ## Security
 
 <Auth scope per endpoint; data one caller must never see.>
 
-## Known issues
+## Risks and mitigations
 
-- <Limits and holes specific to this surface.>
+- <open risk on this surface> — <mitigation>; actionable items get a row
+  in [../../issues/](../../issues/).
+
+## Testing
+
+<What the suite covers for this surface — contract cases, idempotency,
+lifecycle transitions.>

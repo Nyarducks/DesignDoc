@@ -116,16 +116,17 @@ design docs — written for consensus and review). Small projects often
 need only living docs plus ADRs; medium and up add proposals.
 
 **What makes either kind a *design* doc** — it records decisions, not
-just behavior. Every doc states its context (objective constraints:
-who calls it, volume, SLOs, what callers can't do), its design at the
-invariant level (state machines, data flow, failure modes), and a
-**Decisions and alternatives** section where each significant choice
-names the alternative it beat and why — linking the ADR or plan that
-settled it. A doc that only says "this is how it works" is an
-implementation manual, not a design doc; if there were genuinely no
-trade-offs, the code alone was probably enough. Proposals carry the
-full analysis in a "Rejected alternatives" section; living docs keep
-the digest so the reasoning survives after the plan archives.
+just behavior. The shared spine: **Overview → Background and motivation
+(objective constraints: who calls it, volume, SLOs, what callers can't
+do) → Goals and non-goals → Detailed design (contract, data model /
+state machine, flow) → Decisions and alternatives → Failure modes →
+Risks and mitigations → Testing**. Templates adapt the spine per doc
+kind; proposals additionally carry implementation strategy and timeline
+(the plan's phases) and the full "Rejected alternatives" analysis. A
+doc that only says "this is how it works" is an implementation manual,
+not a design doc; if there were genuinely no trade-offs, the code alone
+was probably enough. Living docs keep the decision digest so the
+reasoning survives after the plan archives.
 
 ## Small project
 
@@ -352,10 +353,11 @@ unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
 - **API** — `api/design/<resource>.md`; one doc per contract surface
-  (a resource's CRUD family or endpoint group). Docs carry the
-  caller-facing context and contract, the resource's lifecycle state
-  machine, failure modes, and the decisions behind the surface —
-  not schemas.
+  (a resource's CRUD family or endpoint group) plus the `README.md` hub
+  for surface-wide conventions. Unit docs follow the shared spine:
+  overview → background → goals/non-goals → detailed design (contract,
+  lifecycle state machine, request flow) → decisions and alternatives →
+  failure modes → risks → testing — not schemas.
 - **Frontend** — `web/design/<route>.md`; one doc per route. Docs carry
   data dependencies, states, degraded behavior, and the transport and
   rendering decisions — not visual specs.

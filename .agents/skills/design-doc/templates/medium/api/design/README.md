@@ -1,7 +1,7 @@
 ---
 type: Design Doc
 title: <Service> API design
-description: The API module's design hub — contract-level invariants plus the index of per-resource docs.
+description: The API module's design hub — surface overview, conventions, and the index of per-resource docs.
 status: current
 last_modified: <YYYY-MM-DD>
 tags: [api]
@@ -12,16 +12,39 @@ issues: []
 
 # <Service> API design
 
-## Goal
+## Overview
 
-<What this API surface exists for — who calls it and what it lets them
-do. One paragraph.>
+<What this API surface is for — who calls it and what it lets them do.
+One paragraph.>
 
-## Context
+## Background and motivation
 
 <Objective facts constraining the whole surface — who the callers are,
 what they can and cannot do (legacy SDKs, firewall rules, retry
 habits), volume and SLOs. These facts justify the conventions below.>
+
+## Goals and non-goals
+
+### Goals
+
+- <caller-observable outcomes the surface must deliver>
+
+### Non-goals
+
+- <reasonable-seeming scope deliberately excluded — e.g. a query
+  language, bulk import, a second protocol>
+
+## System architecture
+
+<How the module is put together and where it sits — ingress → router →
+middleware → handlers → datastores and queues. Mermaid where a diagram
+beats prose.>
+
+```mermaid
+flowchart LR
+    %% replace with the real flow
+    Client --> LB --> Router --> Handler --> Store[(storage)]
+```
 
 ## Conventions
 
@@ -39,4 +62,20 @@ the rule.>
 
 One doc per contract surface — a resource's CRUD family or one endpoint
 group. Schemas live in the OpenAPI spec or handlers, not here — these
-docs carry the invariants a caller can rely on.
+docs carry the invariants and decisions a caller relies on.
+
+## Dependencies
+
+| Depends on | Why |
+|---|---|
+| <datastore / queue / service> | <what it provides> |
+
+## Risks and mitigations
+
+- <open risk> — <mitigation>; actionable items get a row in
+  [../../issues/](../../issues/).
+
+## Testing
+
+<The suite a change to this surface must pass — contract tests,
+ingestion cases.>
