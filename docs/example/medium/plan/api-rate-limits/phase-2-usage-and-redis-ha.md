@@ -6,7 +6,7 @@ status: in-progress
 last_modified: 2026-09-22
 tags: [plan, frontend, infra, rate-limiting]
 issues: [0001]
-designs: [web/design/README, infra/design/README, infra/design/autoscaling]
+designs: [web/design, infra/design, infra/design/autoscaling]
 ---
 
 # Phase 2: Usage meter and Redis HA

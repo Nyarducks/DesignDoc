@@ -51,7 +51,7 @@ sequenceDiagram
 | Depends on | Why |
 |---|---|
 | `api` queue table | Claim and finalize event state |
-| `infra` module | Pool sizing, queue depth alerts — see [infra/design/](../infra/design/) |
+| `infra` module | Pool sizing, queue depth alerts — see [infra/design/](../../infra/design/) |
 
 ## Key decisions
 

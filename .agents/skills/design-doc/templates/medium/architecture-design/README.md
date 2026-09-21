@@ -53,13 +53,13 @@ flowchart TB
 
 | Component | Responsibility | Doc |
 |---|---|---|
-| <module/service> | <responsibility and purpose> | [<doc>.md](<doc>.md) |
+| <module/service> | <responsibility and purpose> | [<module>/design/](../<module>/design/) |
 
 ## Component internals
 
 <Internal specs and processing flows at the invariant level; defer to
-per-module docs for anything longer than a paragraph. Module-local docs
-(`<module>/docs/`) count — link to them.>
+per-module docs for anything longer than a paragraph. Module docs live
+in `<module>/design/` subtrees — link to them.>
 
 ## Security
 
@@ -87,9 +87,8 @@ dashboards, runbook pointers.>
 
 ## In this directory
 
-| Doc | Contents |
-|---|---|
-| [<doc>.md](<doc>.md) | <what it covers> |
+This README is the only doc here — module docs live in each
+`<module>/design/` subtree.
 
 ## Notes
 

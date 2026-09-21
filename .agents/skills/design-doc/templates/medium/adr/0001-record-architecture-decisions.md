@@ -24,7 +24,7 @@ not survive squashed history.>
 Every significant architectural decision is recorded as an ADR under
 `docs/adr/NNNN-<slug>.md`, numbered sequentially, written in
 Context / Decision / Consequences form with OKF v0.2 YAML frontmatter
-(`type: ADR`). Design docs live under `docs/design/` with the same
+(`type: ADR`). Design docs live under `docs/` with the same
 frontmatter convention. Both are updated in the same commit as the change
 they describe.
 

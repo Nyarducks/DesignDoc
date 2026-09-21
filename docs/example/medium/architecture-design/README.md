@@ -5,7 +5,7 @@ description: Why this platform exists, what it does, and how the parts fit toget
 status: current
 last_modified: 2026-09-22
 tags: [overview, architecture, design]
-sources: [docs/design]
+sources: [docs/architecture-design]
 issues: [0001]
 ---
 
@@ -82,7 +82,7 @@ flowchart TB
 |---|---|---|
 | api | REST surface, event ingestion, auth, audit | [api/design/](../api/design/) |
 | web | Operator dashboard — map, timeline, alerts | [web/design/](../web/design/) |
-| worker | ETA computation, notification dispatch | [worker.md](worker.md) |
+| worker | ETA computation, notification dispatch | [worker/design/](../worker/design/) |
 | infra | Cluster topology, scaling, observability | [infra/design/](../infra/design/) |
 
 ## Component internals
@@ -124,7 +124,7 @@ Dashboards cover ingestion lag, API latency, and queue depth — see
 
 | Doc | Contents |
 |---|---|
-| [worker.md](worker.md) | Event pipeline, ETA loop, notification dispatch |
+| — | This README is the only doc here — module docs live in each `<module>/design/` subtree |
 
 ## Notes
 

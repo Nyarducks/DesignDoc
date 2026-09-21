@@ -44,7 +44,7 @@ sequenceDiagram
 
 ## Key decisions
 
-- <Decision> — see [ADR-NNNN](../adr/NNNN-<slug>.md) or the plan doc that
+- <Decision> — see [ADR-NNNN](../../adr/NNNN-<slug>.md) or the plan doc that
   settled it
 
 ## Security

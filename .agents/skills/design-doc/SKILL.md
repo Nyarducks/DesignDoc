@@ -31,8 +31,9 @@ in or out at any time:
 ## Design docs
 
 - Doc layout and conventions follow the `design-doc` skill —
-  `docs/design/` living docs, `docs/adr/`, `docs/issues/`, and
-  `docs/plan/` at medium scale.
+  `docs/design/` living docs at small scale; `docs/architecture-design/`
+  plus `docs/<module>/design/` subtrees, `docs/adr/`, `docs/issues/`,
+  and `docs/plan/` at medium scale.
 - The `sources:` contract — a commit that changes a file listed in a
   doc's `sources:` updates that doc in the same commit.
 <!-- design-doc:end -->
@@ -305,9 +306,8 @@ module-local living docs and generated agent context.
 
 ```
 docs/
-├── design/
-│   ├── README.md              # system overview — spans modules and repos
-│   └── <module>.md            # living doc for a module without a subtree
+├── architecture-design/       # system overview — spans modules and repos
+│   └── README.md
 ├── <module>/design/           # module subtree — README = module hub +
 │   │                          #   index; one doc per unit of its kind
 │   ├── README.md
@@ -349,10 +349,11 @@ kinds — copy the dirs you need:
   and repeats the mapping in a **Service impact** table with blast
   radius, so an infra change's reviewers can see who breaks.
 
-A module without a kind template keeps a flat `design/<module>.md`
-doc (`module.md` template).
+A module without a kind template uses
+`__module__/design/README.md` — the same hub shape minus the
+kind-specific index.
 
-### The overview doc — `docs/design/README.md`
+### The overview doc — `docs/architecture-design/README.md`
 
 Same section list as small, plus a **Repositories** table naming every
 repo in the system and its scope — at medium scale the first question is
@@ -391,7 +392,7 @@ skill.
 - `issues:` — the issue IDs it resolves (issue docs point back with
   `resolved_by:`).
 - `designs:` — the design docs it modifies, as paths under `docs/`
-  (e.g. `worker`, `api/design/shipments`). Design docs
+  (e.g. `worker/design`, `api/design/shipments`). Design docs
   describe *current* reality, so they never list in-flight plans — when a
   phase merges, update the listed design docs in the same commit, like
   the `sources:` contract.
