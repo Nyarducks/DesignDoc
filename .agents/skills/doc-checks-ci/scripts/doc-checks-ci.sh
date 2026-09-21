@@ -90,7 +90,9 @@ EOF
     return 1
   fi
   awk -v block="$(block)" '
-    /^jobs:[[:space:]]*(#.*)?$/ && !done { print; print block; done = 1; next }
+    /^jobs:[[:space:]]*(#.*)?$/ && !done { print; print block; done = 1; gap = 1; next }
+    gap && /^[[:space:]]*$/ { next }
+    gap { print ""; gap = 0 }
     { print }
   ' "${workflow}" > "${workflow}.tmp"
   mv "${workflow}.tmp" "${workflow}"
@@ -99,7 +101,13 @@ EOF
 
 uninstall() {
   installed || { echo "doc-checks-ci not installed in ${workflow}"; return 0; }
-  sed "/${START}/,/${END}/d" "${workflow}" > "${workflow}.tmp"
+  awk -v start="${START}" -v end="${END}" '
+    index($0, start) { inblock = 1; next }
+    inblock && index($0, end) { inblock = 0; skipblank = 1; next }
+    inblock { next }
+    skipblank && /^[[:space:]]*$/ { skipblank = 0; next }
+    { skipblank = 0; print }
+  ' "${workflow}" > "${workflow}.tmp"
   mv "${workflow}.tmp" "${workflow}"
   echo "removed docs job from ${workflow}"
 }

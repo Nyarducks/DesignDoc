@@ -144,6 +144,33 @@ EOF
   [ "$status" -ne 0 ]
 }
 
+@test "install leaves one blank line after the end anchor" {
+  new_repo; existing_ci
+  run run_install
+  [ "$status" -eq 0 ]
+  run awk '/# doc-checks-ci:end/{ getline; print; exit }' "$REPO/.github/workflows/ci.yaml"
+  [ "$output" = "" ]
+  run awk '/# doc-checks-ci:end/{ getline; getline; print; exit }' "$REPO/.github/workflows/ci.yaml"
+  [ "$output" = "  lint:" ]
+}
+
+@test "uninstall removes the trailing blank line too" {
+  new_repo; existing_ci
+  run run_install; [ "$status" -eq 0 ]
+  run run_uninstall; [ "$status" -eq 0 ]
+  run awk '/^jobs:/{ getline; print; exit }' "$REPO/.github/workflows/ci.yaml"
+  [ "$output" = "  lint:" ]
+}
+
+@test "install at end of file adds no trailing blank" {
+  new_repo
+  mkdir -p "$REPO/.github/workflows"
+  printf 'name: CI\non: push\njobs:\n' > "$REPO/.github/workflows/ci.yaml"
+  run run_install
+  [ "$status" -eq 0 ]
+  [ "$(tail -1 "$REPO/.github/workflows/ci.yaml")" = "  # doc-checks-ci:end" ]
+}
+
 @test "--workflow override" {
   new_repo
   run run_install --workflow .buildkite/pipe.yaml
