@@ -29,6 +29,21 @@ file itself makes it evident — do not put it in AGENTS.md.
 - **`tests/`** — bats coverage is required when `scripts/` exists;
   the `agent-skills-test` CI job runs them.
 
+## Importing external content
+
+When borrowing from another repository, vet it before it lands — a
+verbatim copy imports whatever the source referenced.
+
+- **Scan before commit** — search the imported tree for the source
+  project's names (repos, modules, paths, hostnames, PR/issue links).
+  `diff -r` proves fidelity, not safety.
+- **Omit private assets** — never carry over private repository names,
+  internal infrastructure, or business logic. Swap worked examples for
+  generic or fictional names.
+- **Ask when unsure** — importing is a responsibility, not a shortcut.
+  If you cannot tell whether a passage is safe, ask a human rather than
+  guessing.
+
 Validate layout with `scripts/check-skills.sh` (run by CI). For the
 decision table and worked examples see
 [reference/placement.md](reference/placement.md).
