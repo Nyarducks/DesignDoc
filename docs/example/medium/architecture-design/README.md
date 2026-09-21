@@ -114,7 +114,7 @@ decisions live in each module's `design/` subtree.
   requirements and WebSocket's bidirectional ops cost buy nothing here.
 - **Event-sourced shipment state** over a mutable status column —
   carrier events arrive out of order and are audited; see
-  [api/design/shipments.md](../api/design/shipments.md) for the surface
+  [api/design/detailed.md](../api/design/detailed.md) for the surface
   this produces.
 - **Single region** over multi-region — the carriers and their depots
   are regional; cross-region complexity can't pay for itself at this

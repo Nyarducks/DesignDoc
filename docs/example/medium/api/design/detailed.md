@@ -1,25 +1,25 @@
 ---
 type: Design Doc
-title: Shipments API
-description: Shipment CRUD and tracking-event ingestion — the contract surface carriers and the dashboard share.
+title: Freightloop API — detailed design
+description: "詳細設計 — per-resource internals: contract detail, lifecycle, request flow, failure modes."
 status: current
 last_modified: 2026-09-22
-tags: [api, shipments, ingestion]
+tags: [api, design]
 sources: [api/internal/handlers/shipments.go, api/internal/routes/v1.go]
 adrs: []
 issues: [0001]
 ---
 
-# Shipments API
+# Freightloop API — detailed design
+
+詳細設計 — per-resource internals. Scope and targets live in
+[requirements.md](requirements.md); surface-wide conventions live in
+[basic.md](basic.md).
+
+## Shipments
 
 Surface: `/v1/shipments*` — callers: carrier keys (`events:write`,
 `shipments:read`), dashboard reads.
-
-The surface-level overview, callers, and goals/non-goals live in
-[README.md](README.md) — this doc starts at the detailed design for the
-shipments resource.
-
-## Detailed design
 
 ### Contract
 
@@ -64,9 +64,9 @@ stateDiagram-v2
 - `delivered` is terminal and can't be reverted by a late `depot_scan`;
   `exception` is re-entrant — a resolved shipment resumes `in_transit`,
   not its prior sub-state.
-- Two tables: `events` (append-only log, `event_id` unique) and
-  `shipments` (the folded projection the GETs serve). The worker owns
-  the fold; the API only reads the projection.
+- `events` holds the append-only log (`event_id` unique);
+  `shipments` holds the folded projection the GETs serve. The worker
+  owns the fold; the API only reads the projection.
 
 ### Request flow
 
@@ -86,7 +86,7 @@ sequenceDiagram
     Note over C,W: GETs read the projection — never block on W
 ```
 
-## Decisions and alternatives
+### Decisions and alternatives
 
 - **Append-only event stream** over a mutable `status` column — carrier
   scans arrive out of order and get audited; a mutable status can't
@@ -112,7 +112,7 @@ sequenceDiagram
   see [ADR-0002](../../adr/0002-redis-rate-limit-state.md) and
   [the rate-limit plan](../../plan/api-rate-limits/).
 
-## Failure modes
+### Failure modes
 
 | Dependency fails | Caller sees |
 |---|---|
@@ -123,19 +123,13 @@ sequenceDiagram
 A carrier retrying a `503` batch is safe end to end: `event_id`
 dedupes at write, and redelivery at the worker is a no-op.
 
-## Security
+### Security
 
 Carrier keys never see another carrier's shipments; dashboard reads are
 role-scoped. Event payloads carry IDs, not PII — consignee identity
 stays in the upstream orders system.
 
-## Risks and mitigations
-
-- Partner bursts within quota → per-tenant token buckets in
-  [the rate-limit plan](../../plan/api-rate-limits/); tracked as
-  [issue 0001](../../issues/0001-api-no-backpressure.md) until it lands.
-
-## Testing
+### Testing
 
 `api/internal/handlers` tests cover the lifecycle transitions above,
 `event_id` dedupe under retries, cursor stability under concurrent

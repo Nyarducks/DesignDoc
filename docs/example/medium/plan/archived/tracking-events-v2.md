@@ -6,7 +6,7 @@ status: done
 last_modified: 2026-09-22
 tags: [plan, api, events]
 issues: []
-designs: [api/design/shipments]
+designs: [api/design/detailed]
 ---
 
 # Tracking events v2 — Overview

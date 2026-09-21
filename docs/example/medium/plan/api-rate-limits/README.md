@@ -6,7 +6,7 @@ status: in-progress
 last_modified: 2026-09-22
 tags: [plan, api, rate-limiting]
 issues: [0001]
-designs: [api/design/shipments, infra/design/autoscaling]
+designs: [api/design/detailed, infra/design/autoscaling]
 ---
 
 # Per-tenant API rate limits — Overview

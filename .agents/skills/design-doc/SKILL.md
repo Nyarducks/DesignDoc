@@ -121,11 +121,14 @@ just behavior. The shared spine: **Overview → Background and motivation
 do) → Goals and non-goals → Detailed design (contract, data model /
 state machine, flow) → Decisions and alternatives → Failure modes →
 Risks and mitigations → Testing**. In a `<module>/design/` subtree the
-spine splits, not repeats: the hub `README.md` carries the framing
-(overview through goals/non-goals, system architecture, conventions)
-and each unit doc opens with a one-line scope then starts at detailed
-design. Templates adapt the spine per doc kind; proposals additionally
-carry implementation strategy and timeline (the plan's phases) and the
+spine splits across docs, never repeats: the API kind maps it to the
+three-tier `requirements.md` (要件定義 — overview, background,
+goals/non-goals, requirements) / `basic.md` (基本設計 — architecture,
+conventions, contract inventory, surface-level decisions) /
+`detailed.md` (詳細設計 — per-resource internals) split, with
+`README.md` as a slim index. Templates adapt the spine per doc kind;
+proposals additionally carry implementation strategy and timeline (the
+plan's phases) and the
 full "Rejected alternatives" analysis. A doc that only says "this is
 how it works" is an implementation manual, not a design doc; if there
 were genuinely no trade-offs, the code alone was probably enough.
@@ -356,13 +359,16 @@ module hub (module-level invariants plus the index of its docs) and each
 unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
-- **API** — `api/design/<resource>.md`; one doc per contract surface
-  (a resource's CRUD family or endpoint group) plus the `README.md`
-  hub, which owns the framing (overview, background, goals/non-goals,
-  system architecture, surface-wide conventions). Unit docs skip the
-  framing — a one-line scope, then detailed design: contract,
-  lifecycle state machine, request flow → decisions and alternatives →
-  failure modes → risks → testing — not schemas.
+- **API** — `api/design/{requirements,basic,detailed}.md`; the
+  three-tier split. `requirements.md` (要件定義) owns overview,
+  background, goals/non-goals, and functional/non-functional
+  requirements — prescriptive, `sources: []`. `basic.md` (基本設計)
+  owns system architecture, surface-wide conventions, the contract
+  inventory, and the data-model overview. `detailed.md` (詳細設計)
+  holds one `##` section per contract surface: contract detail,
+  lifecycle state machine, request flow, per-resource decisions and
+  alternatives, failure modes, testing. `README.md` is a slim index —
+  no content duplicated across the three.
 - **Frontend** — `web/design/<route>.md`; one doc per route. Docs carry
   data dependencies, states, degraded behavior, and the transport and
   rendering decisions — not visual specs.
@@ -417,7 +423,7 @@ skill.
 - `issues:` — the issue IDs it resolves (issue docs point back with
   `resolved_by:`).
 - `designs:` — the design docs it modifies, as paths under `docs/`
-  (e.g. `worker/design`, `api/design/shipments`). Design docs
+  (e.g. `worker/design`, `api/design/detailed`). Design docs
   describe *current* reality, so they never list in-flight plans — when a
   phase merges, update the listed design docs in the same commit, like
   the `sources:` contract.
