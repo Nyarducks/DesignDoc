@@ -5,7 +5,7 @@ description: Why this platform exists, what it does, and how the parts fit toget
 status: current
 last_modified: 2026-09-22
 tags: [overview, architecture, design]
-sources: [docs/architecture-design]
+sources: [docs/api-design, docs/web-design, docs/worker-design, docs/infra-design]
 issues: [0001]
 ---
 
@@ -80,15 +80,15 @@ flowchart TB
 
 | Component | Responsibility | Doc |
 |---|---|---|
-| api | REST surface, event ingestion, auth, audit | [api/design/](../api/design/) |
-| web | Operator dashboard — map, timeline, alerts | [web/design/](../web/design/) |
-| worker | ETA computation, notification dispatch | [worker/design/](../worker/design/) |
-| infra | Cluster topology, scaling, observability | [infra/design/](../infra/design/) |
+| api | REST surface, event ingestion, auth, audit | [api-design/](api-design/) |
+| web | Operator dashboard — map, timeline, alerts | [web-design/](web-design/) |
+| worker | ETA computation, notification dispatch | [worker-design/](worker-design/) |
+| infra | Cluster topology, scaling, observability | [infra-design/](infra-design/) |
 
 ## Component internals
 
-Per-module docs sit in each module's `design/` subtree — see the
-Components table. Active change plans live under [../plan/](../plan/).
+Per-module docs sit in each `<module>-design/` subtree — see the
+Components table. Active change plans live under [plan/](plan/).
 
 ## Security
 
@@ -100,7 +100,7 @@ Components table. Active change plans live under [../plan/](../plan/).
 ## Decisions and alternatives
 
 The system-level choices that shaped everything below; per-module
-decisions live in each module's `design/` subtree.
+decisions live in each `<module>-design/` subtree.
 
 - **One monorepo, four modules** over per-service repos — one team
   reviews and deploys all of it; repo boundaries would add versioning
@@ -114,7 +114,7 @@ decisions live in each module's `design/` subtree.
   requirements and WebSocket's bidirectional ops cost buy nothing here.
 - **Event-sourced shipment state** over a mutable status column —
   carrier events arrive out of order and are audited; see
-  [api/design/detailed.md](../api/design/detailed.md) for the surface
+  [api-design/detailed.md](api-design/detailed.md) for the surface
   this produces.
 - **Single region** over multi-region — the carriers and their depots
   are regional; cross-region complexity can't pay for itself at this
@@ -123,7 +123,7 @@ decisions live in each module's `design/` subtree.
 ## Risks and known issues
 
 - Partner integrations can burst unbounded event traffic — no
-  backpressure yet; tracked as [issue 0001](../issues/0001-api-no-backpressure.md).
+  backpressure yet; tracked as [issue 0001](issues/0001-api-no-backpressure.md).
 - ETA model drifts during carrier-wide delays (weather, strikes).
 
 ## Testing
@@ -137,17 +137,23 @@ make verify-api        # api suite incl. ingestion contract cases
 
 Deployed from `infra/` manifests in this repo; staging previews per PR.
 Dashboards cover ingestion lag, API latency, and queue depth — see
-[infra/design/](../infra/design/) for the observability model.
+[infra-design/](infra-design/) for the observability model.
 
 ## References
 
-- Rate limiting plan: [../plan/api-rate-limits/](../plan/api-rate-limits/)
+- Rate limiting plan: [plan/api-rate-limits/](plan/api-rate-limits/)
 
 ## In this directory
 
-| Doc | Contents |
+| Path | Contents |
 |---|---|
-| — | This README is the only doc here — module docs live in each `<module>/design/` subtree |
+| [api-design/](api-design/) | API module design — requirements, basic, detailed |
+| [web-design/](web-design/) | Dashboard route docs |
+| [worker-design/](worker-design/) | Worker design — ETA pipeline, notifications |
+| [infra-design/](infra-design/) | Cluster topology, scaling, observability |
+| [plan/](plan/) | Change proposals |
+| [adr/](adr/) | Decision records |
+| [issues/](issues/) | Known issues |
 
 ## Notes
 

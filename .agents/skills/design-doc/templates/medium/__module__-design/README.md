@@ -61,7 +61,7 @@ two lines each; link the ADR or plan that settled it for the full
 analysis.>
 
 - **<decision>** over <rejected alternative> — <why> (settled by
-  [ADR-NNNN](../../adr/NNNN-<slug>.md) / the plan that shipped it)
+  [ADR-NNNN](../adr/NNNN-<slug>.md) / the plan that shipped it)
 
 ## Security
 

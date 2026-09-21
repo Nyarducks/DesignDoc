@@ -76,13 +76,13 @@ database access, ever.
 
 - PostgreSQL — shipments, events, folded projections, queue table.
 - Job queue (PG table) — durable event handoff to the worker.
-- Redis — rate-limit counters ([ADR-0002](../../adr/0002-redis-rate-limit-state.md));
+- Redis — rate-limit counters ([ADR-0002](../adr/0002-redis-rate-limit-state.md));
   request-path dependency, fails open.
 
 ## Risks and mitigations
 
 - A partner bursts beyond fair share → per-tenant token buckets landing
-  in [the rate-limit plan](../../plan/api-rate-limits/); until it
-  finishes, tracked as [issue 0001](../../issues/0001-api-no-backpressure.md).
+  in [the rate-limit plan](../plan/api-rate-limits/); until it
+  finishes, tracked as [issue 0001](../issues/0001-api-no-backpressure.md).
 - Redis on the request path → fail-open on outage; HA pair in the
   plan's phase 2.

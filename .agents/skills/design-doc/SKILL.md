@@ -31,9 +31,9 @@ in or out at any time:
 ## Design docs
 
 - Doc layout and conventions follow the `design-doc` skill —
-  `docs/design/` living docs at small scale; `docs/architecture-design/`
-  plus `docs/<module>/design/` subtrees, `docs/adr/`, `docs/issues/`,
-  and `docs/plan/` at medium scale.
+  `docs/design/` living docs at small scale; a `docs/README.md`
+  overview plus `docs/<module>-design/` subtrees, `docs/adr/`,
+  `docs/issues/`, and `docs/plan/` at medium scale.
 - The `sources:` contract — a commit that changes a file listed in a
   doc's `sources:` updates that doc in the same commit.
 <!-- design-doc:end -->
@@ -120,7 +120,7 @@ just behavior. The shared spine: **Overview → Background and motivation
 (objective constraints: who calls it, volume, SLOs, what callers can't
 do) → Goals and non-goals → Detailed design (contract, data model /
 state machine, flow) → Decisions and alternatives → Failure modes →
-Risks and mitigations → Testing**. In a `<module>/design/` subtree the
+Risks and mitigations → Testing**. In a `<module>-design/` subtree the
 spine splits across docs, never repeats: the API kind maps it to the
 three-tier `requirements.md` (overview, background,
 goals/non-goals, requirements) / `basic.md` (architecture,
@@ -329,9 +329,8 @@ module-local living docs and generated agent context.
 
 ```
 docs/
-├── architecture-design/       # system overview — spans modules and repos
-│   └── README.md
-├── <module>/design/           # module subtree — README = module hub +
+├── README.md                  # system overview — spans modules and repos
+├── <module>-design/           # module subtree — README = module hub +
 │   │                          #   index; one doc per unit of its kind
 │   ├── README.md
 │   └── <unit>.md
@@ -346,7 +345,7 @@ docs/
 ```
 
 In a monorepo a module may carry its own `docs/` (`<module>/docs/`), or a
-subtree under the central root (`docs/<module>/{design,issues,adr}/`)
+subtree under the central root (`docs/<module>-{design,issues,adr}/`)
 when one entry point matters more — either way, living docs sit nearest
 the code they describe and the overview links to them. Fact inventories
 (config tables, script lists) live inside the owning module's docs — a
@@ -354,12 +353,12 @@ shared `docs/reference/` bucket has no owner, and ownerless pages rot.
 
 ### Module design subtrees by doc kind
 
-A doc-heavy module gets `docs/<module>/design/`: the `README.md` is the
+A doc-heavy module gets `docs/<module>-design/`: the `README.md` is the
 module hub (module-level invariants plus the index of its docs) and each
 unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
-- **API** — `api/design/{requirements,basic,detailed}.md`; the
+- **API** — `api-design/{requirements,basic,detailed}.md`; the
   three-tier split. `requirements.md` (requirements definition)
   owns overview, background, goals/non-goals, and
   functional/non-functional requirements — prescriptive,
@@ -370,10 +369,10 @@ kinds — copy the dirs you need:
   lifecycle state machine, request flow, per-resource decisions and
   alternatives, failure modes, testing. `README.md` is a slim index —
   no content duplicated across the three.
-- **Frontend** — `web/design/<route>.md`; one doc per route. Docs carry
+- **Frontend** — `web-design/<route>.md`; one doc per route. Docs carry
   data dependencies, states, degraded behavior, and the transport and
   rendering decisions — not visual specs.
-- **Infrastructure** — `infra/design/<mechanism>.md`; one doc per
+- **Infrastructure** — `infra-design/<mechanism>.md`; one doc per
   mechanism. The module hub leads with the high-level topology diagram,
   a **service map** (which infra components serve which services), and
   the observability and scaling model. Each mechanism doc declares
@@ -382,10 +381,10 @@ kinds — copy the dirs you need:
   radius, so an infra change's reviewers can see who breaks.
 
 A module without a kind template uses
-`__module__/design/README.md` — the same hub shape minus the
+`__module__-design/README.md` — the same hub shape minus the
 kind-specific index.
 
-### The overview doc — `docs/architecture-design/README.md`
+### The overview doc — `docs/README.md`
 
 Same section list as small, plus a **Repositories** table naming every
 repo in the system and its scope — at medium scale the first question is
@@ -424,7 +423,7 @@ skill.
 - `issues:` — the issue IDs it resolves (issue docs point back with
   `resolved_by:`).
 - `designs:` — the design docs it modifies, as paths under `docs/`
-  (e.g. `worker/design`, `api/design/detailed`). Design docs
+  (e.g. `worker-design`, `api-design/detailed`). Design docs
   describe *current* reality, so they never list in-flight plans — when a
   phase merges, update the listed design docs in the same commit, like
   the `sources:` contract.

@@ -6,7 +6,7 @@ status: in-progress
 last_modified: 2026-09-22
 tags: [plan, frontend, infra, rate-limiting]
 issues: [0001]
-designs: [web/design, infra/design, infra/design/autoscaling]
+designs: [web-design, infra-design, infra-design/autoscaling]
 ---
 
 # Phase 2: Usage meter and Redis HA
@@ -28,7 +28,7 @@ single-node Redis, now on the request path.
 
 ## Evidence
 
-- `infra/design/` service map — Redis listed as single-node.
+- `infra-design/` service map — Redis listed as single-node.
 - Phase 1 progress log — fail-open means a Redis outage silently
   disables enforcement.
 

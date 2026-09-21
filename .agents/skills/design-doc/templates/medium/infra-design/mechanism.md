@@ -36,7 +36,7 @@ the mechanism does about each (degrade, page, fail open/closed).>
 why this tool/primitive and not the one a reader would expect.>
 
 - **<decision>** over <rejected alternative> — <why> (settled by
-  [ADR-NNNN](../../adr/NNNN-<slug>.md) / the plan that shipped it)
+  [ADR-NNNN](../adr/NNNN-<slug>.md) / the plan that shipped it)
 
 ## Service impact
 

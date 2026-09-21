@@ -59,4 +59,4 @@ one line each, why it's on the critical path.>
 ## Risks and mitigations
 
 - <open risk> — <mitigation>; actionable items get a row in
-  [../../issues/](../../issues/).
+  [../issues/](../issues/).

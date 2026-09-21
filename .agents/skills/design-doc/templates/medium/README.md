@@ -53,13 +53,13 @@ flowchart TB
 
 | Component | Responsibility | Doc |
 |---|---|---|
-| <module/service> | <responsibility and purpose> | [<module>/design/](../<module>/design/) |
+| <module/service> | <responsibility and purpose> | [<module>-design/](<module>-design/) |
 
 ## Component internals
 
 <Internal specs and processing flows at the invariant level; defer to
 per-module docs for anything longer than a paragraph. Module docs live
-in `<module>/design/` subtrees — link to them.>
+in `<module>-design/` subtrees — link to them.>
 
 ## Security
 
@@ -72,12 +72,12 @@ alternative it beat and why. One or two lines per decision; link the
 ADR or plan that settled it for the full analysis.>
 
 - **<decision>** over <rejected alternative> — <why, tied to the goals
-  and constraints above> ([ADR-NNNN](../adr/NNNN-<slug>.md))
+  and constraints above> ([ADR-NNNN](adr/NNNN-<slug>.md))
 
 ## Risks and known issues
 
 - <Operational risks, failure modes, and known holes/limitations.
-  Actionable items get a row in [../issues/](../issues/).>
+  Actionable items get a row in [issues/](issues/).>
 
 ## Testing
 
@@ -96,8 +96,12 @@ dashboards, runbook pointers.>
 
 ## In this directory
 
-This README is the only doc here — module docs live in each
-`<module>/design/` subtree.
+| Path | Contents |
+|---|---|
+| `<module>-design/` | Module design docs — hub README plus one doc per unit of its kind |
+| [plan/](plan/) | Change proposals — active plans; `archived/` holds finished ones |
+| [adr/](adr/) | Decision records |
+| [issues/](issues/) | Known issues |
 
 ## Notes
 

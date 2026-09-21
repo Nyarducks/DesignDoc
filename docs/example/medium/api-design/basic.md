@@ -75,8 +75,8 @@ rows. Column-level schema lives in `api/openapi.yaml` and migrations.
 | Depends on | Why |
 |---|---|
 | PostgreSQL | shipments, events, folded projections, queue table |
-| Job queue (PG table) | durable event handoff to the worker — see [worker/design/](../../worker/design/) |
-| Redis | rate-limit counters ([ADR-0002](../../adr/0002-redis-rate-limit-state.md)) — fails open |
+| Job queue (PG table) | durable event handoff to the worker — see [worker-design/](../worker-design/) |
+| Redis | rate-limit counters ([ADR-0002](../adr/0002-redis-rate-limit-state.md)) — fails open |
 
 ## Decisions and alternatives
 
@@ -89,12 +89,12 @@ rows. Column-level schema lives in `api/openapi.yaml` and migrations.
   when to revisit.
 - **Rate-limit counters in Redis** over per-pod buckets and over PG
   counters — limits must hold under HPA without a write per request on
-  the hot path; [ADR-0002](../../adr/0002-redis-rate-limit-state.md).
+  the hot path; [ADR-0002](../adr/0002-redis-rate-limit-state.md).
 
 ## Risks and mitigations
 
 - A partner bursts beyond fair share → per-tenant token buckets landing
-  in [the rate-limit plan](../../plan/api-rate-limits/); until it
-  finishes, tracked as [issue 0001](../../issues/0001-api-no-backpressure.md).
+  in [the rate-limit plan](../plan/api-rate-limits/); until it
+  finishes, tracked as [issue 0001](../issues/0001-api-no-backpressure.md).
 - Redis on the request path → fail-open on outage; HA pair in the
   plan's phase 2.

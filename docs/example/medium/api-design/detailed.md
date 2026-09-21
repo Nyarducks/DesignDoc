@@ -34,14 +34,14 @@ Surface: `/v1/shipments*` — callers: carrier keys (`events:write`,
 - Events are scoped to the shipment in the path — a carrier key can only
   write to its own shipments.
 - `POST /events` returns `202` once the batch is durably queued; event
-  *processing* is asynchronous — see [worker/design/](../../worker/design/).
+  *processing* is asynchronous — see [worker-design/](../worker-design/).
 
 | Status | When |
 |---|---|
 | 401/403 | Missing key, or key not scoped to the shipment's carrier |
 | 409 | Duplicate `event_id` (safe to ignore on retry) |
 | 422 | Malformed event payload |
-| 429 | Tenant over rate limit — see [the rate-limit plan](../../plan/api-rate-limits/) |
+| 429 | Tenant over rate limit — see [the rate-limit plan](../plan/api-rate-limits/) |
 | 503 | Queue unavailable — retry whole batch after `Retry-After` |
 
 ### Data model
@@ -109,8 +109,8 @@ sequenceDiagram
   ~100k rows, which large tenants hit quickly.
 - **Rate limiting via token bucket in middleware** over queue-level
   shedding — shedding punishes well-behaved tenants sharing the queue;
-  see [ADR-0002](../../adr/0002-redis-rate-limit-state.md) and
-  [the rate-limit plan](../../plan/api-rate-limits/).
+  see [ADR-0002](../adr/0002-redis-rate-limit-state.md) and
+  [the rate-limit plan](../plan/api-rate-limits/).
 
 ### Failure modes
 

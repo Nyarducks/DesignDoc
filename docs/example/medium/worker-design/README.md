@@ -13,7 +13,7 @@ issues: []
 
 ## Context
 
-- The API acks events once queued (see [api/design/](../../api/design/)),
+- The API acks events once queued (see [api-design/](../api-design/)),
   so this module owns everything after the ack — and everything that can
   go wrong after it.
 - 2k events/s sustained; a crashed worker's backlog must drain without
@@ -63,7 +63,7 @@ sequenceDiagram
 | Failure | Behavior |
 |---|---|
 | Worker crash mid-batch | Lease expiry returns the batch to the queue; reprocessing is a no-op via `event_id` |
-| DB write contention at burst | Claim rate self-limits — batches slow, queue depth rises, KEDA adds pods (see [infra/design/autoscaling](../../infra/design/autoscaling.md)) |
+| DB write contention at burst | Claim rate self-limits — batches slow, queue depth rises, KEDA adds pods (see [infra-design/autoscaling](../infra-design/autoscaling.md)) |
 | Notification channel down | Channel-specific retries with backoff; event itself is finalized — a lost alert never blocks state |
 | Poison event (always fails) | Fails the batch 3×, then parks in `dead` with the error set; never starves the queue |
 
@@ -72,7 +72,7 @@ sequenceDiagram
 | Depends on | Why |
 |---|---|
 | `api` queue table | Claim and finalize event state |
-| `infra` module | Pool sizing, queue depth alerts — see [infra/design/](../../infra/design/) |
+| `infra` module | Pool sizing, queue depth alerts — see [infra-design/](../infra-design/) |
 
 ## Decisions and alternatives
 

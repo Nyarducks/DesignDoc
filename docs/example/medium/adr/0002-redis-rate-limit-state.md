@@ -40,4 +40,4 @@ the plan.
 - A Redis outage must fail open (log + allow) or the whole API stalls;
   the middleware documents this fallback.
 - Infra gains a request-path component — see the service map in
-  [infra/design/](../infra/design/).
+  [infra-design/](../infra-design/).

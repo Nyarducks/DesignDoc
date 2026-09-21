@@ -58,9 +58,9 @@ reads and writes, not column-level schemas (those live with the code).>
 alternative it beat and why; link the settling ADR or plan.>
 
 - **<decision>** over <rejected alternative> — <why>
-  ([ADR-NNNN](../../adr/NNNN-<slug>.md))
+  ([ADR-NNNN](../adr/NNNN-<slug>.md))
 
 ## Risks and mitigations
 
 - <open risk> — <mitigation>; actionable items get a row in
-  [../../issues/](../../issues/).
+  [../issues/](../issues/).

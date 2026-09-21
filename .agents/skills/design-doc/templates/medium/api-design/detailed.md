@@ -51,7 +51,7 @@ state changes land. A sequence diagram where it beats prose.>
 and why; link the ADR or plan that settled it for the full analysis.>
 
 - **<decision>** over <rejected alternative> — <why>
-  ([ADR-NNNN](../../adr/NNNN-<slug>.md))
+  ([ADR-NNNN](../adr/NNNN-<slug>.md))
 
 ### Failure modes
 

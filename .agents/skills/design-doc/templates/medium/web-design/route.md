@@ -54,7 +54,7 @@ choice, not a bug list.>
 <Each significant choice with the alternative it beat and why.>
 
 - **<decision>** over <rejected alternative> — <why> (settled by
-  [ADR-NNNN](../../adr/NNNN-<slug>.md) / the plan that shipped it)
+  [ADR-NNNN](../adr/NNNN-<slug>.md) / the plan that shipped it)
 
 ## Security
 

@@ -87,7 +87,7 @@ when an infra change lands.
   see [autoscaling.md](autoscaling.md) for triggers and ceilings.
 - PostgreSQL is vertical-only; a managed read replica is the planned
   relief valve, not yet scheduled.
-- Redis is single-node today — the [rate-limit plan](../../plan/api-rate-limits/)
+- Redis is single-node today — the [rate-limit plan](../plan/api-rate-limits/)
   adds it to the hot path and plans an HA pair.
 
 ## Decisions and alternatives
@@ -97,7 +97,7 @@ when an infra change lands.
   the trade (vertical ceiling) is priced in the scaling model above.
 - **In-cluster Redis** over a managed cache — already deployed for the
   job queue; managed pricing didn't justify a second vendor
-  relationship. Becoming a request-path dependency ([ADR-0002](../../adr/0002-redis-rate-limit-state.md))
+  relationship. Becoming a request-path dependency ([ADR-0002](../adr/0002-redis-rate-limit-state.md))
   is what forced the HA plan.
 
 ## In this directory

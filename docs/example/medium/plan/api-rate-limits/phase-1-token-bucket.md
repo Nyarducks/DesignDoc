@@ -6,7 +6,7 @@ status: merged
 last_modified: 2026-09-22
 tags: [plan, api, rate-limiting]
 issues: [0001]
-designs: [api/design/detailed]
+designs: [api-design/detailed]
 ---
 
 # Phase 1: Token-bucket middleware
