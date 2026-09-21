@@ -12,6 +12,12 @@ issues: []
 
 # Infrastructure
 
+## Context
+
+<Objective facts constraining the platform — services and their load,
+SLOs, cost budget, team size/on-call reality. These facts justify the
+topology and tooling choices below.>
+
 ## Goal
 
 <What the platform layer provides — one paragraph on environments,

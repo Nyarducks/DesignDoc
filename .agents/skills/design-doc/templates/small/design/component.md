@@ -32,9 +32,18 @@ sequenceDiagram
     B-->>A: response
 ```
 
-## Key decisions
+## Failure modes
 
-- <Decision> — see [ADR-NNNN](../adr/NNNN-<slug>.md)
+<What each dependency failure looks like — what the component drops,
+retries, or degrades to.>
+
+## Decisions and alternatives
+
+<Each significant choice with the alternative it beat and why — one or
+two lines each; link the ADR that settled it. A decision with no
+recorded reasoning is a decision future readers will relitigate.>
+
+- **<decision>** over <rejected alternative> — <why> ([ADR-NNNN](../adr/NNNN-<slug>.md))
 
 ## Security
 

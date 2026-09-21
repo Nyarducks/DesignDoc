@@ -60,6 +60,14 @@ component (module, screen), whichever explains the design better.>
 
 - <Trust boundaries, authn/z, confinement — whatever applies.>
 
+## Decisions and alternatives
+
+<The choices that shaped the system — each with the alternative it beat
+and why. One or two lines per decision; link the ADR that settled it
+for the full record.>
+
+- **<decision>** over <rejected alternative> — <why> ([ADR-NNNN](../adr/NNNN-<slug>.md))
+
 ## Risks and known issues
 
 - <Operational risks, failure modes, and known holes/limitations.

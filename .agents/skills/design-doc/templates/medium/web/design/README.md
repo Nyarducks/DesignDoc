@@ -17,10 +17,17 @@ issues: []
 <What the app is for — who uses it and what jobs it serves. One
 paragraph.>
 
+## Context
+
+<Objective facts constraining the app — who uses it, on what hardware
+and network, how fresh the data must be for the decisions it supports.>
+
 ## Conventions
 
-<App-wide rules — data fetching layer, state model, routing scheme,
-permission gating. What every route doc below assumes.>
+<App-wide choices — data fetching layer, state model, routing scheme,
+permission gating. Each convention is a decision: state it with the
+constraint or rejected alternative that produced it, not just the
+rule.>
 
 ## In this directory
 

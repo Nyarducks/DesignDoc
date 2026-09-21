@@ -26,9 +26,22 @@ re-posting a handful of entries is preferable to a corrupt store.
 Reads happen once at startup; the in-memory map is authoritative during
 the run and flushed after each feed's entries are posted.
 
-## Key decisions
+## Failure modes
 
-- JSON file over SQLite — see [ADR-0002](../adr/0002-json-state-store.md).
+- Crash mid-write — the `.tmp` file is torn but `state.json` is intact;
+  the next run re-posts a handful of entries rather than reading a
+  corrupt store.
+- Missing or corrupt state file — treated as empty; every feed re-posts
+  its latest entries once. Loud on startup, self-healing after.
+
+## Decisions and alternatives
+
+- **JSON file** over SQLite — the dataset is `feed → marker` and must
+  stay hand-editable for debugging; SQLite buys querying this design
+  never uses ([ADR-0002](../adr/0002-json-state-store.md)).
+- **tmp+fsync+rename** over in-place writes — a torn write must cost
+  re-posts, not corruption; rename is atomic on every filesystem this
+  targets.
 
 ## Known issues
 

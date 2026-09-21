@@ -115,6 +115,18 @@ as it is (overview, component docs — updated in the same commit as code);
 design docs — written for consensus and review). Small projects often
 need only living docs plus ADRs; medium and up add proposals.
 
+**What makes either kind a *design* doc** — it records decisions, not
+just behavior. Every doc states its context (objective constraints:
+who calls it, volume, SLOs, what callers can't do), its design at the
+invariant level (state machines, data flow, failure modes), and a
+**Decisions and alternatives** section where each significant choice
+names the alternative it beat and why — linking the ADR or plan that
+settled it. A doc that only says "this is how it works" is an
+implementation manual, not a design doc; if there were genuinely no
+trade-offs, the code alone was probably enough. Proposals carry the
+full analysis in a "Rejected alternatives" section; living docs keep
+the digest so the reasoning survives after the plan archives.
+
 ## Small project
 
 Conventions distilled from a small single-repo reference project — living
@@ -219,12 +231,14 @@ Copy `templates/small/design/README.md` and fill it in. Section order:
    (data structures, algorithms) at the invariant level; defer to
    component docs for anything longer than a paragraph.
 8. **Security** — trust boundaries and enforcement.
-9. **Risks and known issues** — operational risks, failure modes, and
-   known holes.
-10. **Testing** — the commands and what they cover.
-11. **Operations** — how to run, observe, and steer the system.
-12. **References** — external links the design depends on.
-13. **Notes** — doc conventions and caveats, plus an "In this directory"
+9. **Decisions and alternatives** — the choices that shaped the system,
+   each with the alternative it beat and why; link the settling ADR.
+10. **Risks and known issues** — operational risks, failure modes, and
+    known holes.
+11. **Testing** — the commands and what they cover.
+12. **Operations** — how to run, observe, and steer the system.
+13. **References** — external links the design depends on.
+14. **Notes** — doc conventions and caveats, plus an "In this directory"
     table.
 
 ### Per-component docs — `docs/design/<component>.md`
@@ -233,7 +247,8 @@ Copy `templates/small/design/component.md`. Same frontmatter, with
 `title`/`description` scoped to the component and `sources` naming its
 implementation files. Sections: Goal (responsibility and purpose) →
 Design (internal spec and processing flow — sequence diagrams for
-interactions, flowcharts for branching) → Key decisions (link the ADRs)
+interactions, flowcharts for branching) → Failure modes → Decisions and
+alternatives (each choice, the alternative it beat, why — link the ADRs)
 → Security → Known issues → Testing → Notes.
 
 ### ADRs — `docs/adr/NNNN-<slug>.md`
@@ -337,10 +352,13 @@ unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
 - **API** — `api/design/<resource>.md`; one doc per contract surface
-  (a resource's CRUD family or endpoint group). Docs carry caller-facing
-  invariants — scoping, idempotency, error shape — not schemas.
+  (a resource's CRUD family or endpoint group). Docs carry the
+  caller-facing context and contract, the resource's lifecycle state
+  machine, failure modes, and the decisions behind the surface —
+  not schemas.
 - **Frontend** — `web/design/<route>.md`; one doc per route. Docs carry
-  data dependencies, states, and actions — not visual specs.
+  data dependencies, states, degraded behavior, and the transport and
+  rendering decisions — not visual specs.
 - **Infrastructure** — `infra/design/<mechanism>.md`; one doc per
   mechanism. The module hub leads with the high-level topology diagram,
   a **service map** (which infra components serve which services), and

@@ -97,6 +97,29 @@ Components table. Active change plans live under [../plan/](../plan/).
 - Event payloads carry shipment references only — PII stays in the
   orders system upstream.
 
+## Decisions and alternatives
+
+The system-level choices that shaped everything below; per-module
+decisions live in each module's `design/` subtree.
+
+- **One monorepo, four modules** over per-service repos — one team
+  reviews and deploys all of it; repo boundaries would add versioning
+  ceremony without isolating anything the team doesn't already own.
+- **Postgres-backed job queue** over Kafka — sustained 2k events/s is
+  far inside what a PG table plus `SKIP LOCKED` handles, and a broker
+  would be the least-operable component in the stack for this team.
+  The worker doc records when to revisit.
+- **REST + SSE** over gRPC/WebSockets for external callers — carrier
+  integrations include POST-only legacy bridges; gRPC's client
+  requirements and WebSocket's bidirectional ops cost buy nothing here.
+- **Event-sourced shipment state** over a mutable status column —
+  carrier events arrive out of order and are audited; see
+  [api/design/shipments.md](../api/design/shipments.md) for the surface
+  this produces.
+- **Single region** over multi-region — the carriers and their depots
+  are regional; cross-region complexity can't pay for itself at this
+  scope. Recorded here because revisiting it changes everything below.
+
 ## Risks and known issues
 
 - Partner integrations can burst unbounded event traffic — no

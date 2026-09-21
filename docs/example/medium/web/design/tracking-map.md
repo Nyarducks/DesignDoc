@@ -14,6 +14,16 @@ issues: []
 
 Route: `/shipments` + `/shipments/:id` — permission: `viewer` and up
 
+## Context
+
+- Dispatchers keep this screen open 8+ hours; ~5k active shipments on a
+  busy day.
+- Depot machines are old and site Wi-Fi congested — long-lived
+  connections drop and reconnect regularly.
+- "Is this truck late?" is answered in seconds from pin color; a
+  silently-stale map causes wrong dispatch calls, so freshness must be
+  visible, not assumed.
+
 ## Goal
 
 A dispatcher sees every active shipment on one map, spots delays without
@@ -51,19 +61,47 @@ sequenceDiagram
     A-->>M: timeline
 ```
 
-## Key decisions
+## Degraded behavior
 
-- SSE over polling — the map updates continuously; see the API
-  conventions in [api/design/](../../api/design/).
+Freshness is shown, not assumed — this is a design choice driven by the
+context above.
+
+- SSE dropout > 10 s → a "live updates paused" chip appears and the map
+  switches to 30 s polling. The chip clears on reconnect; there is no
+  silent stale state.
+- API 5xx on poll → last-known data stays rendered with a
+  `data as of HH:MM` timestamp; three consecutive failures escalate to
+  the error banner.
+- `eta.stale: true` in a payload renders the ETA greyed with a tooltip —
+  the API's honesty propagates to the UI.
+
+## Decisions and alternatives
+
+- **SSE** over polling and WebSockets — position updates are
+  unidirectional and continuous. Polling every 30 s was rejected:
+  dispatch decisions happen inside that window, and 5k clients polling
+  would multiply read load for worse freshness. WebSockets were
+  rejected: bidirectional capability is unused here, and
+  sticky-connection handling through the ingress LB adds ops cost for
+  zero benefit. SSE gives HTTP semantics, auto-reconnect, and
+  `Last-Event-ID` resume for free.
+- **Server-driven `stale` flag** over client-side age guessing — the
+  worker knows the projection lag; a client timer would disagree with
+  reality exactly when it matters (queue backlog).
+- **Depot-based pin clustering** over grid clustering — dispatchers
+  think in depots, not pixels; a cluster expanding to its depot's
+  shipments matches how they verbalize locations.
 
 ## Security
 
 A `viewer` sees the same data as a `dispatcher` — the role gates write
 actions elsewhere, not visibility here. Session expiry redirects to SSO.
+No consignee PII is ever rendered — pins and timelines show IDs only.
 
 ## Known issues
 
 - Clusters above ~5k pins get slow on older depot hardware — no
   viewport-level tiling yet.
-- SSE dropout falls back to 30 s polling silently; the degraded state
-  isn't surfaced in the UI.
+- SSE fallback depends on the browser's `EventSource` reconnect, which
+  some proxy appliances defeat; the 30 s poll covers this but the
+  "paused" chip can lag real disconnection by its 10 s threshold.

@@ -11,14 +11,32 @@ services: [<service names this mechanism affects>]
 
 # <Mechanism>
 
+## Context
+
+<Objective facts that constrain this mechanism — load numbers, SLOs it
+must hold, cost budget, team size that operates it. Facts only.>
+
 ## Goal
 
 <What the mechanism provides and why it exists.>
 
 ## Design
 
-<How it works at the invariant level — triggers, feedback loops,
-failure modes. Mermaid where a diagram beats prose.>
+<How it works at the invariant level — triggers, feedback loops.
+Mermaid where a diagram beats prose.>
+
+## Failure modes
+
+<What breaks, in what order, under load or dependency loss — and what
+the mechanism does about each (degrade, page, fail open/closed).>
+
+## Decisions and alternatives
+
+<Each significant choice with the alternative it beat and why — e.g.
+why this tool/primitive and not the one a reader would expect.>
+
+- **<decision>** over <rejected alternative> — <why> (settled by
+  [ADR-NNNN](../../adr/NNNN-<slug>.md) / the plan that shipped it)
 
 ## Service impact
 

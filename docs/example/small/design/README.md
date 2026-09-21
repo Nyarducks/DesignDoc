@@ -77,6 +77,18 @@ the atomic-write scheme lives in [store.md](store.md).
 - The webhook URL is a secret — read from env, never logged.
 - The state file holds entry IDs and timestamps only.
 
+## Decisions and alternatives
+
+- **Single-binary CLI over a hosted reader or a service** — nothing to
+  operate and the team lives in chat already; a service's uptime,
+  auth, and deploy surface buys nothing for one webhook.
+- **Flat-file state** over an embedded DB — see
+  [ADR-0002](../adr/0002-json-state-store.md); the dataset is feed →
+  marker and must stay inspectable by hand.
+- **Drop-on-exhausted-retries** over a durable retry queue — re-flooding
+  chat after a restart is worse than missing a few entries during a
+  webhook outage; recorded as a known issue below.
+
 ## Risks and known issues
 
 - A webhook outage drops entries after backoff is exhausted — no durable

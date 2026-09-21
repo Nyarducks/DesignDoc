@@ -17,10 +17,19 @@ issues: []
 <What this API surface exists for — who calls it and what it lets them
 do. One paragraph.>
 
+## Context
+
+<Objective facts constraining the whole surface — who the callers are,
+what they can and cannot do (legacy SDKs, firewall rules, retry
+habits), volume and SLOs. These facts justify the conventions below.>
+
 ## Conventions
 
-<Surface-wide invariants — authn/authz model, versioning rule, error
-shape, pagination, idempotency. What every resource doc below assumes.>
+<Surface-wide choices — authn/authz model, versioning rule, error
+shape, pagination, idempotency. Each convention is a decision: state it
+with the constraint or rejected alternative that produced it ("cursor
+pagination — offset is unstable under append-heavy writes"), not just
+the rule.>
 
 ## In this directory
 

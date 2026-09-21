@@ -14,6 +14,12 @@ issues: []
 
 Route: `<path>` — permission: <role/scope>
 
+## Context
+
+<Objective facts that constrain this screen — who uses it and how often,
+what decision they're trying to make, latency/freshness the task
+demands, device/browser constraints. Facts only.>
+
 ## Goal
 
 <What the user accomplishes on this screen.>
@@ -37,9 +43,18 @@ sequenceDiagram
     A-->>R: data
 ```
 
-## Key decisions
+## Degraded behavior
 
-- <Decision> — see [ADR-NNNN](../../adr/NNNN-<slug>.md)
+<What the user sees when a dependency fails or the connection drops —
+stale-data policy, retry/backoff, what stays usable offline. A design
+choice, not a bug list.>
+
+## Decisions and alternatives
+
+<Each significant choice with the alternative it beat and why.>
+
+- **<decision>** over <rejected alternative> — <why> (settled by
+  [ADR-NNNN](../../adr/NNNN-<slug>.md) / the plan that shipped it)
 
 ## Security
 

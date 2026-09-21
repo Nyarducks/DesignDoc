@@ -65,6 +65,15 @@ in `<module>/design/` subtrees — link to them.>
 
 - <Trust boundaries, authn/z, data classification.>
 
+## Decisions and alternatives
+
+<The system-level choices that shaped everything below — each with the
+alternative it beat and why. One or two lines per decision; link the
+ADR or plan that settled it for the full analysis.>
+
+- **<decision>** over <rejected alternative> — <why, tied to the goals
+  and constraints above> ([ADR-NNNN](../adr/NNNN-<slug>.md))
+
 ## Risks and known issues
 
 - <Operational risks, failure modes, and known holes/limitations.

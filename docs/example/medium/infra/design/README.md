@@ -12,6 +12,15 @@ issues: []
 
 # Infrastructure
 
+## Context
+
+- Three services on one production cluster; one small team carries the
+  pager. Every primitive below is chosen to be operable by that team —
+  no component is here because it is fashionable.
+- SLOs: dashboard P95 < 300 ms at ~500k active shipments; ingest lag
+  < 30 s sustained. Budget is a managed-database-plus-one-cluster
+  shape, not a platform org's.
+
 ## Goal
 
 One production cluster running api, web, and worker; per-PR staging
@@ -80,6 +89,16 @@ when an infra change lands.
   relief valve, not yet scheduled.
 - Redis is single-node today — the [rate-limit plan](../../plan/api-rate-limits/)
   adds it to the hot path and plans an HA pair.
+
+## Decisions and alternatives
+
+- **Single managed PostgreSQL** over self-hosted cluster or Dynamo-style
+  stores — one vertically-scaled instance is what the team can page on;
+  the trade (vertical ceiling) is priced in the scaling model above.
+- **In-cluster Redis** over a managed cache — already deployed for the
+  job queue; managed pricing didn't justify a second vendor
+  relationship. Becoming a request-path dependency ([ADR-0002](../../adr/0002-redis-rate-limit-state.md))
+  is what forced the HA plan.
 
 ## In this directory
 

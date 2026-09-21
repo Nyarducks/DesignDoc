@@ -42,10 +42,22 @@ sequenceDiagram
 - **Isolation** — each feed polls in its own goroutine with a per-request
   timeout; a hung feed can't starve the others.
 
-## Key decisions
+## Failure modes
 
-- File-based last-seen store instead of an embedded DB — see
-  [ADR-0002](../adr/0002-json-state-store.md).
+- Feed hangs or returns garbage — the per-request timeout caps it; the
+  feed's marker doesn't advance, so nothing is lost or skipped.
+- Notifier webhook down — entries back off and retry; if the run ends
+  before they post, the marker already advanced, so they're dropped
+  (accepted: a restarted run must not re-flood the channel).
+
+## Decisions and alternatives
+
+- **Dedupe by `guid`/`link`/hash key** over timestamp comparison —
+  publish timestamps lie (feeds backdate, editors bump); the key is
+  what the publisher claims the entry is.
+- **File-based last-seen store** over an embedded DB — one JSON file
+  stays inspectable by hand and has no driver dependency
+  ([ADR-0002](../adr/0002-json-state-store.md)).
 
 ## Known issues
 
