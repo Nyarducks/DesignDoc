@@ -6,6 +6,10 @@ description: >-
   sources: contract and frontmatter checks on every PR. Self-contained
   (the check scripts ship inside this skill); opt in or out with one
   command.
+metadata:
+  author: Nyarducks
+  license: MIT
+  url: https://github.com/Nyarducks/DesignDoc
 ---
 
 # Doc checks CI

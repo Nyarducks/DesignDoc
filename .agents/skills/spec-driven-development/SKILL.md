@@ -5,6 +5,10 @@ description: >-
   dispatching work, keep phases as milestones (one phase ≈ one PR), and
   keep plan docs' status in sync as work lands. Pairs with the
   design-doc skill, which owns how plans and design docs are written.
+metadata:
+  author: Nyarducks
+  license: MIT
+  url: https://github.com/Nyarducks/DesignDoc
 ---
 
 # Spec-driven development

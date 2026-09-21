@@ -1,6 +1,10 @@
 ---
 name: agent-guidance
 description: Placement rules for agent-facing guidance — what belongs in always-injected AGENTS.md, on-demand SKILL.md bodies, skill reference/ docs, and skill scripts/tests. Use when writing or editing AGENTS.md, CLAUDE.md, or anything under .agents/skills/.
+metadata:
+  author: Nyarducks
+  license: MIT
+  url: https://github.com/Nyarducks/DesignDoc
 ---
 
 # Agent Guidance

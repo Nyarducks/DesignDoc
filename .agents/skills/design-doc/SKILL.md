@@ -8,6 +8,10 @@ description: >-
   Ships small- and medium-scale template trees; large-scale conventions
   are documented for orientation. Use when creating or updating design
   documentation.
+metadata:
+  author: Nyarducks
+  license: MIT
+  url: https://github.com/Nyarducks/DesignDoc
 ---
 
 # Design docs

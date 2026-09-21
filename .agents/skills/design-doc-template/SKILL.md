@@ -7,6 +7,10 @@ description: >-
   internals. Use when adding a new scale or changing what a scale's docs
   should look like. For writing a design doc for a real project, use the
   design-doc skill instead.
+metadata:
+  author: Nyarducks
+  license: MIT
+  url: https://github.com/Nyarducks/DesignDoc
 ---
 
 # Design doc template authoring
