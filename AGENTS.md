@@ -8,7 +8,8 @@ Design-doc conventions packaged as agent skills, organized by project scale.
    `.agents/skills/<name>/SKILL.md`.
 2. **Skill split** — `design-doc` writes docs, `design-doc-template`
    authors them, `spec-driven-development` executes plans,
-   `doc-checks-ci` wires the check scripts into a project's CI. Template
+   `doc-checks-ci` wires the check scripts into a project's CI, and
+   `agent-guidance` decides where agent-facing guidance lives. Template
    rules live in `CONTRIBUTING.md`; its no-leak rule is non-negotiable.
 3. **Every scale ships a template tree + fictional example** —
    `templates/<scale>/` mirrors the target `docs/` layout;

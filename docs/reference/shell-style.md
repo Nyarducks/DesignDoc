@@ -9,7 +9,7 @@ sources: []
 ---
 
 Applies to every shell file: scripts shipped inside skills
-(`.agents/skills/*/scripts/`) and everything under `tests/`.
+(`.agents/skills/*/scripts/`) and each skill's `tests/`.
 
 ## 1. Safety Header
 

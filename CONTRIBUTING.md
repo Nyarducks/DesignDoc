@@ -49,5 +49,5 @@ Then update the scale table in `SKILL.md`.
 ## Shell script style
 
 Every shell file — scripts shipped inside skills
-(`.agents/skills/*/scripts/`) and everything under `tests/` — follows
+(`.agents/skills/*/scripts/`) and each skill's `tests/` — follows
 `docs/reference/shell-style.md`.

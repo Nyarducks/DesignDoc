@@ -11,6 +11,7 @@ scale — pick a scale, copy its template tree, apply its conventions.
 | `.agents/skills/design-doc-template/` | The template-authoring skill — how scales get distilled |
 | `.agents/skills/spec-driven-development/` | The plan-execution skill — PR granularity, stacked PRs |
 | `.agents/skills/doc-checks-ci/` | CI wiring for the check scripts — anchored workflow job, one-command opt-in/out |
+| `.agents/skills/agent-guidance/` | Placement rules for agent-facing guidance — AGENTS.md vs SKILL.md vs `reference/`/`scripts/`/`tests/` |
 | `.agents/skills/design-doc/templates/<scale>/` | Copy-ready `docs/` trees |
 | `docs/example/<scale>/` | Worked examples (fictional projects) |
 
