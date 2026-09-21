@@ -1,7 +1,7 @@
 ---
 type: Design Doc
-title: <Service> API — requirements
-description: Requirements — what the API surface must deliver, for whom, under what constraints.
+title: <Service> API — requirements definition
+description: Requirements definition — what the API surface must deliver, for whom, under what constraints.
 status: current
 last_modified: <YYYY-MM-DD>
 tags: [api, requirements]
@@ -10,7 +10,7 @@ adrs: []
 issues: []
 ---
 
-# <Service> API — requirements
+# <Service> API — requirements definition
 
 The "what and why" for this surface. Design choices live in
 [basic.md](basic.md) and [detailed.md](detailed.md); this doc defines

@@ -360,9 +360,10 @@ unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
 - **API** — `api/design/{requirements,basic,detailed}.md`; the
-  three-tier split. `requirements.md` owns overview,
-  background, goals/non-goals, and functional/non-functional
-  requirements — prescriptive, `sources: []`. `basic.md`
+  three-tier split. `requirements.md` (requirements definition)
+  owns overview, background, goals/non-goals, and
+  functional/non-functional requirements — prescriptive,
+  `sources: []`. `basic.md`
   owns system architecture, surface-wide conventions, the contract
   inventory, and the data-model overview. `detailed.md`
   holds one `##` section per contract surface: contract detail,
