@@ -194,3 +194,32 @@ EOF
   [ "$status" -eq 0 ]
   contains "not installed"
 }
+
+@test "round trip preserves a blank line after jobs:" {
+  new_repo
+  mkdir -p "$REPO/.github/workflows"
+  cat > "$REPO/.github/workflows/ci.yaml" <<'EOF'
+name: CI
+on: push
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+EOF
+  cp "$REPO/.github/workflows/ci.yaml" "$REPO/ci.orig"
+  run run_install; [ "$status" -eq 0 ]
+  file_contains "$REPO/.github/workflows/ci.yaml" "# doc-checks-ci:start"
+  run run_uninstall; [ "$status" -eq 0 ]
+  run diff "$REPO/ci.orig" "$REPO/.github/workflows/ci.yaml"
+  [ "$status" -eq 0 ]
+}
+
+@test "uninstall fails honestly when the end anchor is missing" {
+  new_repo; existing_ci
+  run run_install; [ "$status" -eq 0 ]
+  sed -i '/# doc-checks-ci:end/d' "$REPO/.github/workflows/ci.yaml"
+  run run_uninstall
+  [ "$status" -eq 1 ]
+  contains "end anchor"
+  file_contains "$REPO/.github/workflows/ci.yaml" "lint:"
+}

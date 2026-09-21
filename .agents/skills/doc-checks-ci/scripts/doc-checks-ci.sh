@@ -89,11 +89,15 @@ EOF
     echo "${workflow} has no 'jobs:' mapping — add the docs job manually" >&2
     return 1
   fi
+  # Blank lines straight after `jobs:` belong to the original file — the
+  # block lands below them, so uninstall (which drops the block plus the
+  # one blank it adds) restores the file byte-for-byte.
   awk -v block="$(block)" '
-    /^jobs:[[:space:]]*(#.*)?$/ && !done { print; print block; done = 1; gap = 1; next }
-    gap && /^[[:space:]]*$/ { next }
-    gap { print ""; gap = 0 }
+    /^jobs:[[:space:]]*(#.*)?$/ && !done { print; pending = 1; next }
+    pending && /^[[:space:]]*$/ { print; next }
+    pending { print block; print ""; pending = 0; done = 1 }
     { print }
+    END { if (pending) print block }
   ' "${workflow}" > "${workflow}.tmp"
   mv "${workflow}.tmp" "${workflow}"
   echo "installed docs job into ${workflow}"
@@ -101,6 +105,10 @@ EOF
 
 uninstall() {
   installed || { echo "doc-checks-ci not installed in ${workflow}"; return 0; }
+  if ! grep -qF "${END}" "${workflow}"; then
+    echo "${workflow} has the start anchor but no end anchor — fix or remove the block manually" >&2
+    return 1
+  fi
   awk -v start="${START}" -v end="${END}" '
     index($0, start) { inblock = 1; next }
     inblock && index($0, end) { inblock = 0; skipblank = 1; next }
