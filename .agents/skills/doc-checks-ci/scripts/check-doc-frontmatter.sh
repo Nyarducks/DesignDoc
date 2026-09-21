@@ -36,7 +36,7 @@ err() { echo "FRONTMATTER: $1 — $2"; violations=$((violations + 1)); }
 
 is_archive() {
   case "$1" in
-    docs/plan/archived/* | docs/reviews/*) return 0 ;;
+    */plan/archived/* | */reviews/*) return 0 ;;
     *) return 1 ;;
   esac
 }

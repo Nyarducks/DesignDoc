@@ -6,7 +6,7 @@ status: in-progress            # draft | in-progress | done | dropped
 last_modified: <YYYY-MM-DD>
 tags: [plan, <topic>]
 issues: []      # issue IDs this plan resolves — e.g. [0001]
-designs: []     # docs/design/ doc slugs this plan modifies — e.g. [worker]
+designs: []     # design docs this plan modifies — paths under docs/, e.g. [worker, api/design/shipments]
 ---
 
 # <Change name> — Overview

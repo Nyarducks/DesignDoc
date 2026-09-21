@@ -6,7 +6,7 @@ status: not-started            # not-started | in-progress | in-review | merged 
 last_modified: <YYYY-MM-DD>
 tags: [plan, <topic>]
 issues: []      # issue IDs this phase resolves
-designs: []     # docs/design/ doc slugs this phase modifies
+designs: []     # design docs this phase modifies — paths under docs/, e.g. [worker, api/design/shipments]
 ---
 
 # Phase 1: <title>

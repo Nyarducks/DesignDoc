@@ -1,9 +1,9 @@
 ---
 type: Reference
-title: Stockpilot — Plans
-description: Per-change plans for Stockpilot — written before implementation, updated by the PRs that implement them. No hand-maintained index; each plan's frontmatter carries its own status, issues, and designs.
+title: Freightloop — Plans
+description: Per-change plans for Freightloop — written before implementation, updated by the PRs that implement them. No hand-maintained index; each plan's frontmatter carries its own status, issues, and designs.
 status: current
-last_modified: 2026-09-20
+last_modified: 2026-09-22
 tags: [plan]
 sources: []
 ---
@@ -13,7 +13,7 @@ sources: []
 Per-change proposal docs — written before implementation, reviewed as a
 PR, updated by the PRs that implement them. One directory per change;
 a change that fits a single PR is a lone `<change>.md` in this directory.
-*(Fictional example — the Stockpilot project.)*
+*(Fictional example — the Freightloop project.)*
 
 ## Finding plans
 

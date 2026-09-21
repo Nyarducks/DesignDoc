@@ -109,7 +109,7 @@ while IFS= read -r doc; do
     printf 'STALE    %s — sources changed without a doc update:%s\n' "${doc}" "${touched}"
     status=1
   fi
-done < <(find docs -name '*.md' -not -path 'docs/adr/*' -not -path 'docs/plan/archived/*' -not -path 'docs/reviews/*' -not -path 'docs/example/*')
+done < <(find docs -name '*.md' -not -path '*/adr/*' -not -path '*/plan/archived/*' -not -path '*/reviews/*' -not -path 'docs/example/*')
 
 if [[ "${status}" -eq 0 ]]; then
   echo "docs fresh: declared sources exist and none changed without its doc"

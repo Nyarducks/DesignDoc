@@ -162,6 +162,8 @@ tags: [<topics>]
 sources: [<files the doc is derived from>]
 adrs: []                   # ADR numbers governing this doc — e.g. [0002]
 issues: []                 # open issues affecting it — e.g. [0001, 0007]
+services: []               # infra docs only — services a change to this
+                           # mechanism affects — e.g. [api, worker]
 ---
 ```
 
@@ -305,7 +307,11 @@ module-local living docs and generated agent context.
 docs/
 ├── design/
 │   ├── README.md              # system overview — spans modules and repos
-│   └── <module>.md            # living doc per module/service
+│   └── <module>.md            # living doc for a module without a subtree
+├── <module>/design/           # module subtree — README = module hub +
+│   │                          #   index; one doc per unit of its kind
+│   ├── README.md
+│   └── <unit>.md
 ├── plan/
 │   ├── README.md              # plan conventions — the dir listing is the index
 │   ├── <change>/
@@ -313,8 +319,7 @@ docs/
 │   │   └── phase-N-<slug>.md  # one doc per implementation phase
 │   └── archived/              # done/dropped plans — frozen records
 ├── adr/                       # same as small
-├── issues/                    # same as small — scheduled rows link their plan
-└── <module>/                  # module subtrees — own {design,issues,adr}
+└── issues/                    # same as small — scheduled rows link their plan
 ```
 
 In a monorepo a module may carry its own `docs/` (`<module>/docs/`), or a
@@ -323,6 +328,29 @@ when one entry point matters more — either way, living docs sit nearest
 the code they describe and the overview links to them. Fact inventories
 (config tables, script lists) live inside the owning module's docs — a
 shared `docs/reference/` bucket has no owner, and ownerless pages rot.
+
+### Module design subtrees by doc kind
+
+A doc-heavy module gets `docs/<module>/design/`: the `README.md` is the
+module hub (module-level invariants plus the index of its docs) and each
+unit doc follows the module's kind. Templates ship the three canonical
+kinds — copy the dirs you need:
+
+- **API** — `api/design/<resource>.md`; one doc per contract surface
+  (a resource's CRUD family or endpoint group). Docs carry caller-facing
+  invariants — scoping, idempotency, error shape — not schemas.
+- **Frontend** — `web/design/<route>.md`; one doc per route. Docs carry
+  data dependencies, states, and actions — not visual specs.
+- **Infrastructure** — `infra/design/<mechanism>.md`; one doc per
+  mechanism. The module hub leads with the high-level topology diagram,
+  a **service map** (which infra components serve which services), and
+  the observability and scaling model. Each mechanism doc declares
+  `services:` in frontmatter — the services a change to it affects —
+  and repeats the mapping in a **Service impact** table with blast
+  radius, so an infra change's reviewers can see who breaks.
+
+A module without a kind template keeps a flat `design/<module>.md`
+doc (`module.md` template).
 
 ### The overview doc — `docs/design/README.md`
 
@@ -362,7 +390,8 @@ skill.
 
 - `issues:` — the issue IDs it resolves (issue docs point back with
   `resolved_by:`).
-- `designs:` — the `docs/design/` doc slugs it modifies. Design docs
+- `designs:` — the design docs it modifies, as paths under `docs/`
+  (e.g. `worker`, `api/design/shipments`). Design docs
   describe *current* reality, so they never list in-flight plans — when a
   phase merges, update the listed design docs in the same commit, like
   the `sources:` contract.
