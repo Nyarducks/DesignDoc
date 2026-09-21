@@ -120,6 +120,49 @@ git -C "$r" checkout -qb feat
 out=$(run_check "$r"); rc=$?
 check "no docs/ passes" 0
 
+# --- case: block-style sources: list is honored ------------------------
+r=$(mktemp -d); new_repo "$r"
+mkdir -p "$r/src" "$r/docs/design"; echo x > "$r/src/a.c"
+cat > "$r/docs/design/a.md" <<'EOF'
+---
+type: Design Doc
+sources:
+  - src/a.c
+---
+# doc
+EOF
+commit_all "$r"; git -C "$r" checkout -qb feat
+echo y > "$r/src/a.c"; commit_all "$r"
+out=$(run_check "$r"); rc=$?
+check "block-style sources flagged" 1 STALE
+
+# --- case: docs/plan/archived/ is never checked ------------------------
+r=$(mktemp -d); new_repo "$r"
+mkdir -p "$r/src" "$r/docs/plan/archived/old"; echo x > "$r/src/a.c"
+doc "$r/docs/plan/archived/old/README.md" src/a.c
+commit_all "$r"; git -C "$r" checkout -qb feat
+echo y > "$r/src/a.c"; commit_all "$r"
+out=$(run_check "$r"); rc=$?
+check "archived plan excluded" 0
+
+# --- case: docs/reviews/ records are never checked ---------------------
+r=$(mktemp -d); new_repo "$r"
+mkdir -p "$r/src" "$r/docs/reviews"; echo x > "$r/src/a.c"
+doc "$r/docs/reviews/r.md" src/a.c
+commit_all "$r"; git -C "$r" checkout -qb feat
+echo y > "$r/src/a.c"; commit_all "$r"
+out=$(run_check "$r"); rc=$?
+check "review records excluded" 0
+
+# --- case: an active plan carrying sources: is still checked -----------
+r=$(mktemp -d); new_repo "$r"
+mkdir -p "$r/src" "$r/docs/plan/p"; echo x > "$r/src/a.c"
+doc "$r/docs/plan/p/README.md" src/a.c
+commit_all "$r"; git -C "$r" checkout -qb feat
+echo y > "$r/src/a.c"; commit_all "$r"
+out=$(run_check "$r"); rc=$?
+check "active plan sources still enforced" 1 STALE
+
 echo
 echo "$pass passed, $fail failed"
 [[ $fail -eq 0 ]]

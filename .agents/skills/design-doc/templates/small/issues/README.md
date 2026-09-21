@@ -1,3 +1,13 @@
+---
+type: Reference
+title: Issues
+description: Known problems and improvement backlog — the list view; detail docs are NNNN-<slug>.md.
+status: current
+last_modified: <YYYY-MM-DD>
+tags: [issues]
+sources: []
+---
+
 # Issues
 
 Known problems and improvement backlog — the list view. An issue that

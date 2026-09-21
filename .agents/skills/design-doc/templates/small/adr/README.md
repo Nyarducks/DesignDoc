@@ -1,3 +1,13 @@
+---
+type: Reference
+title: ADR index
+description: Architecture decision records — numbered point-in-time decisions, one file each.
+status: current
+last_modified: <YYYY-MM-DD>
+tags: [adr]
+sources: []
+---
+
 # Architecture decision records
 
 ADRs record significant decisions in Context / Decision / Consequences

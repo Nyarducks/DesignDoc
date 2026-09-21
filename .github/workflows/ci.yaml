@@ -12,10 +12,14 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Fixture tests
+      - name: Fixture tests — stale
         run: bash tests/test_check_docs_stale.sh
+      - name: Fixture tests — frontmatter
+        run: bash tests/test_check_doc_frontmatter.sh
       - name: Dogfood — docs freshness on this repo
         run: bash .agents/skills/design-doc/scripts/check-docs-stale.sh
+      - name: Dogfood — docs frontmatter on this repo
+        run: bash .agents/skills/design-doc/scripts/check-doc-frontmatter.sh
 
   lint:
     runs-on: ubuntu-latest

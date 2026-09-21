@@ -1,3 +1,13 @@
+---
+type: Reference
+title: Feedping — Issues
+description: Known problems and improvement backlog for Feedping — the list view; detail docs are NNNN-<slug>.md.
+status: current
+last_modified: 2026-09-20
+tags: [issues]
+sources: []
+---
+
 # Issues
 
 Known problems and improvement backlog — the list view. An issue that

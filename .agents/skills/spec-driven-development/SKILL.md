@@ -26,7 +26,7 @@ any time:
 
 - Executing `docs/plan/<change>/` — confirm PR granularity before
   dispatching; never default silently.
-- One phase ≈ one PR; the merge updates the phase status, the plan
+- One phase ≈ one PR; the merge updates the plan's `status:` and phase
   index, and the `designs:` docs in the same PR.
 <!-- spec-driven-development:end -->
 ```
@@ -42,8 +42,11 @@ any time:
    independently mergeable increment, roughly one PR. The task checklist
    in the phase doc is the finer breakdown below PR level.
 4. **Keep the docs in sync** — when a phase merges, update its status
-   table, the plan overview's phase index, and the design docs listed in
-   `designs:` — in the same commit or PR.
+   table, the plan overview's phase index, the plan's `status:`
+   frontmatter, and the design docs listed in `designs:` — in the same
+   commit or PR. `docs/plan/README.md` has no per-plan table to update —
+   the directory listing is the index. When a plan reaches `done` or
+   `dropped`, move it to `docs/plan/archived/`.
 
 ## Confirm PR granularity — always ask
 

@@ -5,7 +5,6 @@ description: Accept a CSV upload, parse and validate every row, persist a staged
 status: in-progress
 last_modified: 2026-09-20
 tags: [plan, import, csv]
-sources: [worker/jobs/import/validate.go, api/internal/jobs/import_handler.go]
 designs: [worker]
 ---
 

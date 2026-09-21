@@ -1,3 +1,13 @@
+---
+type: Reference
+title: Feedping — ADR index
+description: Architecture decision records for Feedping — numbered point-in-time decisions, one file each.
+status: current
+last_modified: 2026-09-20
+tags: [adr]
+sources: []
+---
+
 # Architecture decision records
 
 ADRs record significant decisions in Context / Decision / Consequences

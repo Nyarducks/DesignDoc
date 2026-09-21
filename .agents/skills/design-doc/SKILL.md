@@ -34,6 +34,12 @@ in or out at any time:
 <!-- design-doc:end -->
 ```
 
+Record the install's provenance — a `metadata:` block or comment in the
+installed `SKILL.md` naming the upstream repo and the tree/commit SHA
+vendored. It makes drift-checking mechanical: diff the installed tree
+against that SHA to surface local edits, and diff upstream HEAD against
+it to see what the install is missing.
+
 ## Principles
 
 - **What, Why, How** — a design doc answers what the system does, why it
@@ -53,9 +59,26 @@ in or out at any time:
 - **Show, don't only tell** — use mermaid sequence diagrams for
   interactions and flowcharts for structure/branching wherever a diagram
   beats prose. System design docs should nearly always carry one.
-- **Split by component** — one doc per functional unit or physical
-  component (module, screen). Choose the split that best explains the
-  system's purpose and design.
+- **Split by unit of change** — a doc's boundary is its `sources:` set
+  and its invariants: if two sections change on different triggers,
+  answer different questions, or carry disjoint `sources:` lists, they
+  are two docs. Group units only when they share a single contract or
+  decision that no member owns alone. Never group by theme — a doc that
+  needs a table of contents to navigate unrelated sections is already
+  too big. When unsure, split: small docs compose via the index README.
+- **Granularity follows the doc kind** — API docs split by contract
+  surface (one endpoint or one resource's CRUD family), screen specs by
+  route, subsystem docs by mechanism, cross-cutting docs by shared
+  contract. Do not force one granularity rule across kinds.
+- **Overlapping `sources:` need different questions** — two docs may
+  cover the same code only when they answer different levels of
+  question (design doc = why/invariants; reference = what/spec). If one
+  source change forces the *same* edit in both, merge or re-scope.
+- **Sections name mechanisms, not events** — "Job persistence", never
+  "Fix 2" — fix history belongs in plans and ADRs.
+- **Hard-to-document is a finding** — when a doc resists clean
+  boundaries (scattered sources, no clear invariant), record the
+  underlying design weakness in `issues/` instead of writing around it.
 - **Know when not to write** — if the design is unambiguous (no real
   trade-offs, no alternatives worth weighing), skip the doc. Design docs
   earn their overhead through consensus and early issue detection.
@@ -102,7 +125,7 @@ same commit as code. A worked example lives in this repo at
 docs/
 ├── design/
 │   ├── README.md          # overview design doc — the entry point
-│   └── <component>.md     # one doc per component (from component.md)
+│   └── <component>.md     # one doc per unit of change (from component.md)
 ├── adr/
 │   ├── README.md          # index table of ADRs
 │   └── NNNN-<slug>.md     # one file per significant decision
@@ -115,8 +138,10 @@ docs/
 directory's `README.md` — the entry point is structured like every other
 doc, not a plain index. Root docs stay slim: `README.md` is quick start
 only, `AGENTS.md` is must-follow rules only — structure and usage live in
-`docs/`. Optionally add `docs/reference/` for fact inventories (config
-tables, script lists) as the project grows.
+`docs/`. Fact inventories (config tables, script lists) live with the
+design doc that owns them; a shared `docs/reference/` bucket collects
+ownerless pages that rot — reserve it for genuinely cross-cutting
+inventories.
 
 ### Frontmatter (OKF v0.2)
 
@@ -124,7 +149,7 @@ Every doc under `docs/` carries YAML frontmatter:
 
 ```yaml
 ---
-type: Design Doc           # Design Doc | ADR | Reference
+type: Design Doc           # Design Doc | ADR | Reference | Plan | Issue
 title: <title>
 description: <one line — what it covers and why>
 status: current            # current | draft | deprecated (ADRs: accepted)
@@ -143,7 +168,10 @@ real dependencies. Prescriptive docs — pure conventions — set
 `sources: []`. Enforce the contract in CI with
 `scripts/check-docs-stale.sh` (shipped with this skill): it fails a PR
 that changes a declared source without touching its doc, or that leaves
-a `sources:` path dangling after a rename/delete.
+a `sources:` path dangling after a rename/delete. Its companion
+`check-doc-frontmatter.sh` validates the frontmatter itself — required
+keys, the `type` enum, `last_modified` shape — because a malformed
+header silently escapes the sources check.
 
 **`adrs:` / `issues:` / `designs:` / `resolved_by:` — the
 machine-readable doc graph.** Design docs declare the ADRs governing them
@@ -274,18 +302,22 @@ docs/
 │   ├── README.md              # system overview — spans modules and repos
 │   └── <module>.md            # living doc per module/service
 ├── plan/
-│   ├── README.md              # plan index — all changes as a table
-│   └── <change>/
-│       ├── README.md          # plan overview — context, phases, status
-│       └── phase-N-<slug>.md  # one doc per implementation phase
+│   ├── README.md              # plan conventions — the dir listing is the index
+│   ├── <change>/
+│   │   ├── README.md          # plan overview — context, phases, status
+│   │   └── phase-N-<slug>.md  # one doc per implementation phase
+│   └── archived/              # done/dropped plans — frozen records
 ├── adr/                       # same as small
 ├── issues/                    # same as small — scheduled rows link their plan
-└── reference/                 # optional — API/schema inventories
+└── <module>/                  # module subtrees — own {design,issues,adr}
 ```
 
-In a monorepo a module may carry its own `docs/` (`<module>/docs/`) —
-living docs sit nearest the code they describe; the overview links to
-them.
+In a monorepo a module may carry its own `docs/` (`<module>/docs/`), or a
+subtree under the central root (`docs/<module>/{design,issues,adr}/`)
+when one entry point matters more — either way, living docs sit nearest
+the code they describe and the overview links to them. Fact inventories
+(config tables, script lists) live inside the owning module's docs — a
+shared `docs/reference/` bucket has no owner, and ownerless pages rot.
 
 ### The overview doc — `docs/design/README.md`
 
@@ -310,7 +342,12 @@ one PR doesn't need a directory: write a single `plan/<change>.md` in the
 phase-doc shape instead.
 
 A plan dir gets a `README.md` overview plus one `phase-N-<slug>.md` per
-implementation phase; `docs/plan/README.md` indexes all plans as a table.
+implementation phase. `docs/plan/README.md` holds the conventions only —
+the directory listing plus each plan's `status:`/`issues:`/`designs:`
+frontmatter is the index; a hand-maintained table conflicts on every
+parallel plan PR. When a plan reaches `done` or `dropped`, move its file
+or directory to `docs/plan/archived/` and record the delivering PR in
+the body.
 
 Executing a plan — confirming PR granularity, managing stacked PRs — is
 workflow, not doc convention: it lives in the `spec-driven-development`
@@ -324,6 +361,11 @@ skill.
   describe *current* reality, so they never list in-flight plans — when a
   phase merges, update the listed design docs in the same commit, like
   the `sources:` contract.
+
+Plan docs omit `sources:` — a plan records a point-in-time change, not a
+living derivation, so the `sources:` contract does not apply to it. The
+phase-merge workflow (see `spec-driven-development`) keeps plans in sync
+instead.
 
 Overview sections:
 
@@ -353,7 +395,9 @@ but keep them at trade-off level, not line-by-line.
 
 Machine-generated context — code indexes, task→file routing maps,
 dependency graphs — lives in its own tree, marked as generated and
-regenerated by scripts or a skill, ideally with a freshness check in CI.
+regenerated by scripts or a skill, with the regeneration wired into CI
+or the dev loop. A generated tree whose regeneration has lapsed rots
+silently — worse than no tree; do not create one without the loop.
 Never hand-edit generated docs; fix the generator. A curated agent
 entrypoint doc (task → "read these files first" table, component map,
 read-order guidance, do-not-read list) pays for itself quickly at this
@@ -368,8 +412,9 @@ Useful for audits — but they are records, not design docs.
 
 - The plan doc PR *is* the design review; phase status tracks reality and
   is updated in the same PR as the code.
-- Living docs follow the small-scale `sources:` contract; plan docs'
-  `sources` cover the files the phases will touch.
+- Living docs follow the small-scale `sources:` contract; plans are
+  point-in-time records kept in sync by the phase-merge workflow, not
+  the contract.
 - Multi-repo changes: one plan dir per repo, cross-linked; shared
   contracts get reference docs both sides cite.
 

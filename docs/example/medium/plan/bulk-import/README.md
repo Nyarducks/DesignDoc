@@ -5,7 +5,6 @@ description: CSV bulk import for products and stock — async jobs with per-row 
 status: in-progress
 last_modified: 2026-09-20
 tags: [plan, import, csv]
-sources: [worker/jobs/import/, api/internal/jobs/, web/src/features/import/]
 issues: [0001]
 designs: [worker]
 ---

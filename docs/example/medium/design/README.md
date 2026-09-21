@@ -6,7 +6,7 @@ status: current
 last_modified: 2026-09-20
 tags: [overview, architecture, design]
 sources: [docs/design]
-issues: [0001, 0002]
+issues: [0001]
 ---
 
 # Stockpilot
