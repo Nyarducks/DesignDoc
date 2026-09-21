@@ -1,10 +1,11 @@
 ---
 name: doc-checks-ci
 description: >-
-  Wire the design-doc check scripts into a project's CI workflow —
-  installs an anchored docs job into .github/workflows/ci.yaml that runs
-  the sources: contract and frontmatter checks on every PR. Opt in or
-  out with one command; requires the design-doc skill.
+  Wire the docs check scripts into a project's CI workflow — installs an
+  anchored docs job into .github/workflows/ci.yaml that runs the
+  sources: contract and frontmatter checks on every PR. Self-contained
+  (the check scripts ship inside this skill); opt in or out with one
+  command.
 ---
 
 # Doc checks CI
@@ -12,8 +13,9 @@ description: >-
 The enforcement half of design docs: the `sources:` contract and OKF
 frontmatter only hold if CI actually runs the checks. This skill
 installs a `docs` job into the project's workflow that runs
-`check-docs-stale.sh` and `check-doc-frontmatter.sh` from the
-`design-doc` skill — install that skill first.
+`check-docs-stale.sh` and `check-doc-frontmatter.sh` — both bundled in
+`scripts/`, so the skill stands alone. The same scripts also ship with
+`design-doc` (which owns the conventions) for local runs outside CI.
 
 ## Installing into a project
 
@@ -27,7 +29,7 @@ any time:
 ## Docs CI checks
 
 - `.github/workflows/ci.yaml` carries an anchored `docs` job
-  (`# doc-checks-ci:start/end`) running the design-doc check scripts —
+  (`# doc-checks-ci:start/end`) running the bundled check scripts —
   a PR that changes a doc's declared `sources:` must update the doc in
   the same PR, and frontmatter must stay valid.
 - Manage it with `doc-checks-ci.sh` (`install` / `uninstall` /
@@ -46,8 +48,8 @@ From the repo root:
 ```
 
 Flags: `--workflow PATH` (default `.github/workflows/ci.yaml`),
-`--scripts-dir PATH` (default `.agents/skills/design-doc/scripts` —
-point elsewhere if the design-doc skill lives at a custom path).
+`--scripts-dir PATH` (default `.agents/skills/doc-checks-ci/scripts` —
+the bundled copies; point elsewhere only to run different checks).
 
 ## How it works
 
@@ -67,9 +69,12 @@ point elsewhere if the design-doc skill lives at a custom path).
 
 ## Notes
 
-- The job references the check scripts *inside* the installed
-  `design-doc` skill — removing that skill without uninstalling the CI
-  job breaks the workflow. Uninstall here first.
+- The job runs the check scripts bundled in this skill — removing
+  `doc-checks-ci` without uninstalling the CI job breaks the workflow.
+  Uninstall here first.
+- Skills don't depend on each other: the check scripts ship both here
+  (for CI) and in `design-doc` (for local runs and other CI systems).
+  The copies are identical — in this repo, CI asserts they stay in sync.
 - The anchors are the opt-in/out mechanism — the same convention as the
   `AGENTS.md` blocks. Keep edits outside them so `uninstall` stays
   surgical.

@@ -171,8 +171,8 @@ that changes a declared source without touching its doc, or that leaves
 a `sources:` path dangling after a rename/delete. Its companion
 `check-doc-frontmatter.sh` validates the frontmatter itself — required
 keys, the `type` enum, `last_modified` shape — because a malformed
-header silently escapes the sources check. Wire both into the project's
-workflow with the `doc-checks-ci` skill.
+header silently escapes the sources check. Wire them into the project's
+workflow with the `doc-checks-ci` skill, which ships its own copies.
 
 **`adrs:` / `issues:` / `designs:` / `resolved_by:` — the
 machine-readable doc graph.** Design docs declare the ADRs governing them

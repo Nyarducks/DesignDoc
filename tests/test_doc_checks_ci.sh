@@ -68,6 +68,7 @@ filecheck "  has docs job" "$r/.github/workflows/ci.yaml" "  docs:"
 filecheck "  has start anchor" "$r/.github/workflows/ci.yaml" "# doc-checks-ci:start"
 filecheck "  has stale run" "$r/.github/workflows/ci.yaml" "check-docs-stale.sh"
 filecheck "  has frontmatter run" "$r/.github/workflows/ci.yaml" "check-doc-frontmatter.sh"
+filecheck "  uses bundled scripts" "$r/.github/workflows/ci.yaml" "doc-checks-ci/scripts/"
 
 # --- case: install into an existing workflow preserves jobs ------------
 r=$(mktemp -d); new_repo "$r"; existing_ci "$r"
@@ -132,6 +133,12 @@ out=$(run_in "$r" install --workflow .github/workflows/docs.yaml); rc=$?
 check "custom workflow path" 0 "installed"
 filecheck "  wrote that file" "$r/.github/workflows/docs.yaml" "# doc-checks-ci:start"
 nocheck "  ci.yaml untouched" "$r/.github/workflows/docs.yaml" "make test"
+
+# --- case: --scripts-dir overrides the referenced path ------------------
+r=$(mktemp -d); new_repo "$r"
+out=$(run_in "$r" install --scripts-dir scripts); rc=$?
+check "custom scripts dir" 0 "created"
+filecheck "  run line uses it" "$r/.github/workflows/ci.yaml" "bash scripts/check-docs-stale.sh"
 
 echo
 echo "$pass passed, $fail failed"

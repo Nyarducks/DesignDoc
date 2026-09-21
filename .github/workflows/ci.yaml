@@ -22,6 +22,11 @@ jobs:
         run: bash .agents/skills/design-doc/scripts/check-docs-stale.sh
       - name: Dogfood — docs frontmatter on this repo
         run: bash .agents/skills/design-doc/scripts/check-doc-frontmatter.sh
+      - name: Check-script copies stay in sync across skills
+        run: |
+          for s in check-docs-stale.sh check-doc-frontmatter.sh; do
+            diff ".agents/skills/design-doc/scripts/$s" ".agents/skills/doc-checks-ci/scripts/$s"
+          done
 
   lint:
     runs-on: ubuntu-latest

@@ -2,10 +2,10 @@
 # doc-checks-ci.sh — install or remove the docs-checks CI job.
 #
 # Adds an anchored `docs` job to the project's CI workflow that runs the
-# design-doc skill's check scripts (the sources: contract and OKF
-# frontmatter). The block is delimited by `# doc-checks-ci:start` /
-# `# doc-checks-ci:end` comments, so opting out is one command and the
-# edit merges cleanly.
+# bundled check scripts (the sources: contract and OKF frontmatter) —
+# this skill is self-contained and needs no other skill installed. The
+# block is delimited by `# doc-checks-ci:start` / `# doc-checks-ci:end`
+# comments, so opting out is one command and the edit merges cleanly.
 #
 # Usage:
 #   doc-checks-ci.sh install   [--workflow PATH] [--scripts-dir PATH]
@@ -13,7 +13,7 @@
 #   doc-checks-ci.sh status    [--workflow PATH]
 #
 # Defaults: --workflow    .github/workflows/ci.yaml
-#           --scripts-dir .agents/skills/design-doc/scripts
+#           --scripts-dir .agents/skills/doc-checks-ci/scripts
 set -euo pipefail
 
 readonly START='# doc-checks-ci:start'
@@ -29,7 +29,7 @@ cmd="${1:-}"
 shift || true
 
 workflow=".github/workflows/ci.yaml"
-scripts_dir=".agents/skills/design-doc/scripts"
+scripts_dir=".agents/skills/doc-checks-ci/scripts"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --workflow)    workflow="${2:?--workflow needs a path}"; shift 2 ;;
