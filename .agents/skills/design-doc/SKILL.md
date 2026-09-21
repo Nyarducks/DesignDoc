@@ -120,13 +120,17 @@ just behavior. The shared spine: **Overview → Background and motivation
 (objective constraints: who calls it, volume, SLOs, what callers can't
 do) → Goals and non-goals → Detailed design (contract, data model /
 state machine, flow) → Decisions and alternatives → Failure modes →
-Risks and mitigations → Testing**. Templates adapt the spine per doc
-kind; proposals additionally carry implementation strategy and timeline
-(the plan's phases) and the full "Rejected alternatives" analysis. A
-doc that only says "this is how it works" is an implementation manual,
-not a design doc; if there were genuinely no trade-offs, the code alone
-was probably enough. Living docs keep the decision digest so the
-reasoning survives after the plan archives.
+Risks and mitigations → Testing**. In a `<module>/design/` subtree the
+spine splits, not repeats: the hub `README.md` carries the framing
+(overview through goals/non-goals, system architecture, conventions)
+and each unit doc opens with a one-line scope then starts at detailed
+design. Templates adapt the spine per doc kind; proposals additionally
+carry implementation strategy and timeline (the plan's phases) and the
+full "Rejected alternatives" analysis. A doc that only says "this is
+how it works" is an implementation manual, not a design doc; if there
+were genuinely no trade-offs, the code alone was probably enough.
+Living docs keep the decision digest so the reasoning survives after
+the plan archives.
 
 ## Small project
 
@@ -353,10 +357,11 @@ unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
 - **API** — `api/design/<resource>.md`; one doc per contract surface
-  (a resource's CRUD family or endpoint group) plus the `README.md` hub
-  for surface-wide conventions. Unit docs follow the shared spine:
-  overview → background → goals/non-goals → detailed design (contract,
-  lifecycle state machine, request flow) → decisions and alternatives →
+  (a resource's CRUD family or endpoint group) plus the `README.md`
+  hub, which owns the framing (overview, background, goals/non-goals,
+  system architecture, surface-wide conventions). Unit docs skip the
+  framing — a one-line scope, then detailed design: contract,
+  lifecycle state machine, request flow → decisions and alternatives →
   failure modes → risks → testing — not schemas.
 - **Frontend** — `web/design/<route>.md`; one doc per route. Docs carry
   data dependencies, states, degraded behavior, and the transport and

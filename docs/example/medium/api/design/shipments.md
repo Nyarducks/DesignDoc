@@ -12,41 +12,12 @@ issues: [0001]
 
 # Shipments API
 
-## Overview
+Surface: `/v1/shipments*` — callers: carrier keys (`events:write`,
+`shipments:read`), dashboard reads.
 
-Carriers register shipments and push tracking events; the dashboard and
-integrations read shipment state and timelines. This surface is the only
-write path for tracking data.
-
-## Background and motivation
-
-- ~40 carrier integrations push tracking events; their SDKs range from
-  modern HTTP clients to scheduled FTP-to-HTTP bridges that can POST
-  but can't poll or hold connections open.
-- Sustained volume is ~2k events/s with 10k/s bursts (depot scan
-  batches land on the hour).
-- Carriers retry aggressively on any non-2xx — a `500` is replayed
-  verbatim minutes later. Duplicate delivery is normal, not an edge
-  case.
-- Ops audit shipments after the fact — "what did we believe at time T"
-  must be answerable.
-
-## Goals and non-goals
-
-### Goals
-
-- Register a shipment, ingest its events, read its state and timeline —
-  nothing else writes tracking data.
-- Writes survive client retries without double-recording.
-- Reads stay inside the SLO while ingestion bursts — no coupling.
-
-### Non-goals
-
-- No bulk import or backfill endpoint — per-shipment writes only;
-  migrations are an internal tool, not a contract.
-- No outbound carrier push — carriers poll or the dashboard uses SSE;
-  this surface never calls back.
-- No mutable status field — state is derived, always.
+The surface-level overview, callers, and goals/non-goals live in
+[README.md](README.md) — this doc starts at the detailed design for the
+shipments resource.
 
 ## Detailed design
 

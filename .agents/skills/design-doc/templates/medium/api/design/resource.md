@@ -12,27 +12,11 @@ issues: []
 
 # <Resource> API
 
-## Overview
+Surface: `<base path>` — callers: <key scopes / audiences>
 
-<What callers can do with this surface — the resource lifecycle in one
-paragraph.>
-
-## Background and motivation
-
-<Objective facts that constrain this surface — who calls it, at what
-volume, what callers can and cannot do (legacy SDKs, retry behavior),
-upstream systems it must fit. Facts only, no design yet.>
-
-## Goals and non-goals
-
-### Goals
-
-- <caller-observable outcomes this surface must deliver>
-
-### Non-goals
-
-- <reasonable-seeming scope deliberately excluded — e.g. bulk import,
-  ad-hoc query params, a second content type>
+<One line of scope. The surface-level overview, background, and
+goals/non-goals live in [README.md](README.md) — this doc starts at the
+detailed design for its resource.>
 
 ## Detailed design
 
