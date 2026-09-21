@@ -122,10 +122,10 @@ do) → Goals and non-goals → Detailed design (contract, data model /
 state machine, flow) → Decisions and alternatives → Failure modes →
 Risks and mitigations → Testing**. In a `<module>/design/` subtree the
 spine splits across docs, never repeats: the API kind maps it to the
-three-tier `requirements.md` (要件定義 — overview, background,
-goals/non-goals, requirements) / `basic.md` (基本設計 — architecture,
+three-tier `requirements.md` (overview, background,
+goals/non-goals, requirements) / `basic.md` (architecture,
 conventions, contract inventory, surface-level decisions) /
-`detailed.md` (詳細設計 — per-resource internals) split, with
+`detailed.md` (per-resource internals) split, with
 `README.md` as a slim index. Templates adapt the spine per doc kind;
 proposals additionally carry implementation strategy and timeline (the
 plan's phases) and the
@@ -360,11 +360,11 @@ unit doc follows the module's kind. Templates ship the three canonical
 kinds — copy the dirs you need:
 
 - **API** — `api/design/{requirements,basic,detailed}.md`; the
-  three-tier split. `requirements.md` (要件定義) owns overview,
+  three-tier split. `requirements.md` owns overview,
   background, goals/non-goals, and functional/non-functional
-  requirements — prescriptive, `sources: []`. `basic.md` (基本設計)
+  requirements — prescriptive, `sources: []`. `basic.md`
   owns system architecture, surface-wide conventions, the contract
-  inventory, and the data-model overview. `detailed.md` (詳細設計)
+  inventory, and the data-model overview. `detailed.md`
   holds one `##` section per contract surface: contract detail,
   lifecycle state machine, request flow, per-resource decisions and
   alternatives, failure modes, testing. `README.md` is a slim index —

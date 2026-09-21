@@ -1,7 +1,7 @@
 ---
 type: Design Doc
 title: <Service> API — requirements
-description: 要件定義 — what the API surface must deliver, for whom, under what constraints.
+description: Requirements — what the API surface must deliver, for whom, under what constraints.
 status: current
 last_modified: <YYYY-MM-DD>
 tags: [api, requirements]
@@ -12,7 +12,7 @@ issues: []
 
 # <Service> API — requirements
 
-要件定義 — the "what and why" for this surface. Design choices live in
+The "what and why" for this surface. Design choices live in
 [basic.md](basic.md) and [detailed.md](detailed.md); this doc defines
 the targets they must satisfy.
 

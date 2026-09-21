@@ -1,7 +1,7 @@
 ---
 type: Design Doc
 title: Freightloop API — requirements
-description: 要件定義 — what the API surface must deliver, for whom, under what constraints.
+description: Requirements — what the API surface must deliver, for whom, under what constraints.
 status: current
 last_modified: 2026-09-22
 tags: [api, requirements]
@@ -12,7 +12,7 @@ issues: [0001]
 
 # Freightloop API — requirements
 
-要件定義 — the "what and why" for this surface. Design choices live in
+The "what and why" for this surface. Design choices live in
 [basic.md](basic.md) and [detailed.md](detailed.md); this doc defines
 the targets they must satisfy.
 

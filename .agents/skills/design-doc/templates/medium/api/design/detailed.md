@@ -1,7 +1,7 @@
 ---
 type: Design Doc
 title: <Service> API — detailed design
-description: "詳細設計 — per-resource internals: contract detail, lifecycle, request flow, failure modes."
+description: "Detailed design — per-resource internals: contract detail, lifecycle, request flow, failure modes."
 status: current
 last_modified: <YYYY-MM-DD>
 tags: [api, design]
@@ -12,7 +12,7 @@ issues: []
 
 # <Service> API — detailed design
 
-詳細設計 — per-resource internals. Scope and targets live in
+Per-resource internals. Scope and targets live in
 [requirements.md](requirements.md); surface-wide conventions live in
 [basic.md](basic.md). One `##` section per contract surface.
 

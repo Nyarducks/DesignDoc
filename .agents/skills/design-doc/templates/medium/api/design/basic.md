@@ -1,7 +1,7 @@
 ---
 type: Design Doc
 title: <Service> API — basic design
-description: 基本設計 — surface-level architecture, conventions, and contract inventory.
+description: Basic design — surface-level architecture, conventions, and contract inventory.
 status: current
 last_modified: <YYYY-MM-DD>
 tags: [api, design]
@@ -12,7 +12,7 @@ issues: []
 
 # <Service> API — basic design
 
-基本設計 — how the surface is put together. What it must satisfy lives
+How the surface is put together. What it must satisfy lives
 in [requirements.md](requirements.md); per-resource internals live in
 [detailed.md](detailed.md).
 
