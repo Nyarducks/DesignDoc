@@ -19,14 +19,10 @@ Scales so far: `small`, `medium`.
 
 ## Requirements
 
-- [GitHub CLI](https://cli.github.com/) (`gh`) — PR workflows and skill
-  installation.
-  - `gh skill` requires **gh v2.90.0+**; this repo's skills live under
-    the hidden `.agents/` dir, so pass `--allow-hidden-dirs`.
-  - [`gh stack`](https://github.com/github/gh-stack) — only when
-    `spec-driven-development` splits work into stacked PRs:
-    `gh extension install github/gh-stack` (requires gh v2.0+). Its own
-    agent skill ships via `gh skill install github/gh-stack`.
+| Tool | Needed for |
+|---|---|
+| [GitHub CLI](https://cli.github.com/) (`gh` v2.90.0+) | PR workflows; `gh skill install` — this repo's skills live under the hidden `.agents/` dir, so pass `--allow-hidden-dirs` |
+| [`gh stack`](https://github.com/github/gh-stack) | Only when `spec-driven-development` splits work into stacked PRs — `gh extension install github/gh-stack` (gh v2.0+); its own agent skill ships via `gh skill install github/gh-stack` |
 
 ## Installation
 

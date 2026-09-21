@@ -54,14 +54,12 @@ Every shell file — scripts shipped inside skills
 
 ## Requirements
 
-Working on this repo needs:
-
-- **bash, git, coreutils** — what the check scripts run on.
-- **bats** — runs each skill's tests:
-  `bats .agents/skills/*/tests/*.bats`
-- **shellcheck** — lints the shipped scripts:
-  `shellcheck .agents/skills/*/scripts/*.sh`
-- **gh** — PR workflows and `gh skill` install testing.
+| Tool | Needed for |
+|---|---|
+| bash, git, coreutils | runtime of the check scripts |
+| bats | each skill's tests — `bats .agents/skills/*/tests/*.bats` |
+| shellcheck | lint the shipped scripts — `shellcheck .agents/skills/*/scripts/*.sh` |
+| gh | PR workflows and `gh skill` install testing |
 
 CI additionally runs the skill layout check
 (`.agents/skills/agent-guidance/scripts/check-skills.sh`) and the
