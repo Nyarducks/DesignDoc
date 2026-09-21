@@ -16,6 +16,8 @@ jobs:
         run: bash tests/test_check_docs_stale.sh
       - name: Fixture tests — frontmatter
         run: bash tests/test_check_doc_frontmatter.sh
+      - name: Fixture tests — CI installer
+        run: bash tests/test_doc_checks_ci.sh
       - name: Dogfood — docs freshness on this repo
         run: bash .agents/skills/design-doc/scripts/check-docs-stale.sh
       - name: Dogfood — docs frontmatter on this repo
