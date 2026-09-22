@@ -1,3 +1,12 @@
+---
+type: Reference
+title: Archived issues
+description: Done, deferred, and wontfix issues — frozen point-in-time records kept for history.
+status: current
+tags: [issues]
+sources: []
+---
+
 # Archived issues
 
 Done, deferred, and wontfix issues move here — point-in-time records
