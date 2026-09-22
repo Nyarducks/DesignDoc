@@ -28,7 +28,7 @@ any time:
 <!-- spec-driven-development:start -->
 ## Plan execution
 
-- Executing `docs/plan/<change>/` — confirm PR granularity before
+- Executing `docs/plan/NNNN-<change>/` — confirm PR granularity before
   dispatching; never default silently.
 - One phase ≈ one PR; the merge updates the plan's `status:` and phase
   index, and the `designs:` docs in the same PR.
@@ -37,7 +37,7 @@ any time:
 
 ## The flow
 
-1. **Locate the spec** — the work item is a plan (`docs/plan/<change>/`)
+1. **Locate the spec** — the work item is a plan (`docs/plan/NNNN-<change>/`)
    or an issue whose `resolved_by:` names one. If no plan exists and the
    change is non-trivial, write it first using `design-doc` conventions;
    if it fits one PR, skip the plan.

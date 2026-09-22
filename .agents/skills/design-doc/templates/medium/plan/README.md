@@ -11,8 +11,10 @@ sources: []
 # Plans
 
 Per-change proposal docs — written before implementation, reviewed as a
-PR, updated by the PRs that implement them. One directory per change;
-a change that fits a single PR is a lone `<change>.md` in this directory.
+PR, updated by the PRs that implement them. One `NNNN-<change>/`
+directory per change — numbered like ADRs and issues so the listing
+orders them; a change that fits a single PR is a lone `NNNN-<change>.md`
+in this directory.
 
 ## Finding plans
 

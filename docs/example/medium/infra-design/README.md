@@ -87,7 +87,7 @@ when an infra change lands.
   see [autoscaling.md](autoscaling.md) for triggers and ceilings.
 - PostgreSQL is vertical-only; a managed read replica is the planned
   relief valve, not yet scheduled.
-- Redis is single-node today — the [rate-limit plan](../plan/api-rate-limits/)
+- Redis is single-node today — the [rate-limit plan](../plan/0002-api-rate-limits/)
   adds it to the hot path and plans an HA pair.
 
 ## Decisions and alternatives

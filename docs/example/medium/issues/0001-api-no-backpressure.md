@@ -6,7 +6,7 @@ status: in-progress
 last_modified: 2026-09-22
 tags: [issue, api, reliability]
 sources: [api/internal/handlers/shipments.go]
-resolved_by: ../plan/api-rate-limits/
+resolved_by: ../plan/0002-api-rate-limits/
 ---
 
 # API has no backpressure on ingestion bursts
@@ -40,6 +40,6 @@ for every carrier — a noisy-neighbor failure with no mitigation today.
 
 ## Resolution
 
-Scheduled as [plan api-rate-limits](../plan/api-rate-limits/) — phase 1
+Scheduled as [plan 0002](../plan/0002-api-rate-limits/) — phase 1
 lands the token bucket; phase 2 surfaces usage in the dashboard and
 makes the counter store HA.

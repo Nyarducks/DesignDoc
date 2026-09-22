@@ -152,11 +152,12 @@ docs/
 │   ├── README.md          # overview design doc — the entry point
 │   └── <component>.md     # one doc per unit of change (from component.md)
 ├── adr/
-│   ├── README.md          # index table of ADRs
+│   ├── README.md          # ADR conventions — the numbered files are the index
 │   └── NNNN-<slug>.md     # one file per significant decision
 └── issues/
-    ├── README.md          # issues list — the table view
-    └── NNNN-<slug>.md     # optional detail doc per issue
+    ├── README.md          # issue conventions — the numbered files are the index
+    ├── NNNN-<slug>.md     # one file per issue
+    └── archived/          # done/deferred/wontfix issues — frozen records
 ```
 
 `docs/design/README.md` is the overview because GitHub renders a
@@ -272,24 +273,30 @@ Record every significant decision in the same commit that introduces it:
   itself.
 - Immutable point-in-time records — never edit one to track code drift;
   write a new ADR when a decision is revisited.
-- Keep `docs/adr/README.md` as an index table.
+- `docs/adr/README.md` carries conventions only — no index table; every
+  parallel ADR PR would edit the same rows. The numbered filenames sort
+  in the directory listing — the listing is the index.
 
 ### Issues — `docs/issues/`
 
-Known problems and improvement backlog as a scannable list — issue
-trackers are poor at "show me the list", so the list lives in a doc:
+Known problems and improvement backlog as a scannable directory — issue
+trackers are poor at "show me the list", so the list lives in docs:
 
-- `README.md` — a table: `ID | Issue | Severity | Status | Resolved by`.
-  Status: open · investigating · planned · in-progress · done ·
-  deferred · wontfix.
-- `NNNN-<slug>.md` — optional detail doc per issue (Problem → Evidence →
-  Impact → Options → Resolution); most rows never need one. Its
-  `resolved_by:` frontmatter holds the plan/PR once scheduled — the same
-  value as the table's Resolved by column.
+- `NNNN-<slug>.md` — one file per issue, numbered like ADRs so the
+  directory listing orders them. No index table — every parallel issue
+  PR would edit the same rows. A file can stay thin: frontmatter plus a
+  Problem paragraph is enough; grow it with Evidence → Impact →
+  Options → Resolution when the issue earns it.
+- `status:` frontmatter — open · investigating · planned · in-progress
+  are active; done · deferred · wontfix move the file to `archived/` in
+  the closing PR, so the directory shows only live issues.
+- `resolved_by:` — the plan or PR once scheduled.
+- `README.md` — conventions only, not a list.
 - Line-drawing: an issue tracker owns assigned, actively-worked tasks;
   `docs/issues/` owns the visible backlog of *known* problems. A design
   doc's "Risks and known issues" describes design limitations — anything
-  actionable gets a row here, and a scheduled row links its plan or PR.
+  actionable gets a file here, and a scheduled issue links its plan or
+  PR.
 
 ### Docs in the workflow
 
@@ -336,12 +343,12 @@ docs/
 │   └── <unit>.md
 ├── plan/
 │   ├── README.md              # plan conventions — the dir listing is the index
-│   ├── <change>/
+│   ├── NNNN-<change>/         # one dir per change, numbered like ADRs
 │   │   ├── README.md          # plan overview — context, phases, status
 │   │   └── phase-N-<slug>.md  # one doc per implementation phase
 │   └── archived/              # done/dropped plans — frozen records
-├── adr/                       # same as small
-└── issues/                    # same as small — scheduled rows link their plan
+├── adr/                       # same as small — numbered files, no index table
+└── issues/                    # same as small — plus archived/ for closed ones
 ```
 
 In a monorepo a module may carry its own `docs/` (`<module>/docs/`), or a
@@ -390,10 +397,12 @@ Same section list as small, plus a **Repositories** table naming every
 repo in the system and its scope — at medium scale the first question is
 often "which repo does this live in".
 
-### Plan docs — `docs/plan/<change>/`
+### Plan docs — `docs/plan/NNNN-<change>/`
 
 The medium-scale proposal doc: written before implementation, reviewed as
-a PR, updated in the same PRs that implement it.
+a PR, updated in the same PRs that implement it. Plans are numbered like
+ADRs and issues — `NNNN-<slug>` per file or directory — so the directory
+listing orders them and parallel plan PRs never fight over names.
 
 **Format: milestone-type phases.** A phase is the smallest independently
 mergeable increment — the system must stay coherent after each one lands.
@@ -403,8 +412,8 @@ PRs collectively). The task checklist inside a phase doc is the finer
 breakdown below PR level. Size phases so each delivers observable
 behavior — a phase that takes weeks means split the change; a phase
 that's a refactor with no behavior isn't a milestone. A change that fits
-one PR doesn't need a directory: write a single `plan/<change>.md` in the
-phase-doc shape instead.
+one PR doesn't need a directory: write a single `plan/NNNN-<change>.md`
+in the phase-doc shape instead.
 
 A plan dir gets a `README.md` overview plus one `phase-N-<slug>.md` per
 implementation phase. `docs/plan/README.md` holds the conventions only —

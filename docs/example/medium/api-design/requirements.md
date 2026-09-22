@@ -82,7 +82,7 @@ database access, ever.
 ## Risks and mitigations
 
 - A partner bursts beyond fair share → per-tenant token buckets landing
-  in [the rate-limit plan](../plan/api-rate-limits/); until it
+  in [the rate-limit plan](../plan/0002-api-rate-limits/); until it
   finishes, tracked as [issue 0001](../issues/0001-api-no-backpressure.md).
 - Redis on the request path → fail-open on outage; HA pair in the
   plan's phase 2.

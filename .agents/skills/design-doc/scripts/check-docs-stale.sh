@@ -12,6 +12,7 @@
 #   docs/adr/             immutable records — a revisited decision gets
 #                         a new ADR, never an edit
 #   docs/plan/archived/   frozen plans — done/dropped plans never update
+#   docs/issues/archived/ closed issues — done/deferred/wontfix records
 #   docs/reviews/         review records — audits, not living docs
 #   docs/example/         worked examples; their declared sources are
 #                         fictional
@@ -109,7 +110,7 @@ while IFS= read -r doc; do
     printf 'STALE    %s — sources changed without a doc update:%s\n' "${doc}" "${touched}"
     status=1
   fi
-done < <(find docs -name '*.md' -not -path '*/adr/*' -not -path '*/plan/archived/*' -not -path '*/reviews/*' -not -path 'docs/example/*')
+done < <(find docs -name '*.md' -not -path '*/adr/*' -not -path '*/plan/archived/*' -not -path '*/issues/archived/*' -not -path '*/reviews/*' -not -path 'docs/example/*')
 
 if [[ "${status}" -eq 0 ]]; then
   echo "docs fresh: declared sources exist and none changed without its doc"

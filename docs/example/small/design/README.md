@@ -92,8 +92,9 @@ the atomic-write scheme lives in [store.md](store.md).
 ## Risks and known issues
 
 - A webhook outage drops entries after backoff is exhausted — no durable
-  retry queue.
-- A feed that rewrites IDs floods the channel once, then settles.
+  retry queue ([issue 0002](../issues/0002-webhook-retry.md)).
+- A feed that rewrites IDs floods the channel once, then settles
+  ([issue 0001](../issues/0001-guid-rewrites-spam.md)).
 
 Actionable items are tracked in [../issues/](../issues/).
 

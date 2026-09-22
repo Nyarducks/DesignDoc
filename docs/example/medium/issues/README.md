@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Freightloop — Issues
-description: Known problems and improvement backlog for Freightloop — the list view; detail docs are NNNN-<slug>.md.
+description: Known problems and improvement backlog for Freightloop — one NNNN-<slug>.md file per issue; closed ones move to archived/.
 status: current
 last_modified: 2026-09-22
 tags: [issues]
@@ -10,15 +10,32 @@ sources: []
 
 # Issues
 
-Known problems and improvement backlog — the list view. An issue that
-needs detail gets `NNNN-<slug>.md` in this directory; an issue that gets
-scheduled becomes a plan (`docs/plan/<change>/`) — link it in Resolved
-by. *(Fictional example — the Freightloop project.)*
+Known problems and improvement backlog. One file per issue,
+`NNNN-<slug>.md` — numbered like ADRs so the directory listing orders
+them. An issue that gets scheduled becomes a plan
+(`docs/plan/NNNN-<change>/`) or a code change; set `resolved_by:` in its
+frontmatter. *(Fictional example — the Freightloop project.)*
 
-| ID | Issue | Severity | Status | Resolved by |
-|---|---|---|---|---|
-| [0001](0001-api-no-backpressure.md) | Partner integrations can burst unbounded event traffic | high | in-progress | [api-rate-limits](../plan/api-rate-limits/) |
-| 0002 | ETA model drifts during carrier-wide delays | medium | open | — |
+## Finding issues
 
-Status legend: open · investigating · planned · in-progress · done ·
-deferred · wontfix
+There is intentionally **no index table** — every parallel issue PR
+would edit the same rows.
+
+- **Active**: files directly under `docs/issues/` (excluding this README
+  and `archived/`).
+- **Archived**: [`archived/`](archived/) — `done`, `deferred`, and
+  `wontfix` issues keep their history there.
+- Each issue's frontmatter carries `status` and `resolved_by` — query
+  those instead of a list:
+
+  ```bash
+  grep -rl '^status: open' docs/issues/ --include='*.md'
+  ```
+
+## Conventions
+
+- Status legend: `open` · `investigating` · `planned` · `in-progress` —
+  active; `done` · `deferred` · `wontfix` — move the file to
+  `archived/` in the closing PR.
+- A file can stay thin — frontmatter plus a Problem paragraph is enough;
+  grow it when the issue needs evidence or options.

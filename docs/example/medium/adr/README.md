@@ -1,6 +1,6 @@
 ---
 type: Reference
-title: Freightloop — ADR index
+title: Freightloop — ADRs
 description: Architecture decision records — numbered point-in-time decisions, one file each.
 status: current
 last_modified: 2026-09-22
@@ -17,7 +17,6 @@ the change that introduces the decision. ADRs are immutable point-in-time
 records — write a new ADR when a decision is revisited. *(Fictional
 example — the Freightloop project.)*
 
-| ADR | Decision |
-|---|---|
-| [0001](0001-record-architecture-decisions.md) | Record architecture decisions — this convention itself |
-| [0002](0002-redis-rate-limit-state.md) | Rate-limit counters live in shared Redis, not per-pod memory |
+There is intentionally **no index table** — every parallel ADR PR would
+edit the same rows. The numbered filenames sort in the directory listing;
+the listing is the index.

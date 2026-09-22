@@ -124,7 +124,8 @@ decisions live in each `<module>-design/` subtree.
 
 - Partner integrations can burst unbounded event traffic — no
   backpressure yet; tracked as [issue 0001](issues/0001-api-no-backpressure.md).
-- ETA model drifts during carrier-wide delays (weather, strikes).
+- ETA model drifts during carrier-wide delays (weather, strikes) —
+  [issue 0002](issues/0002-eta-model-drift.md).
 
 ## Testing
 
@@ -141,7 +142,7 @@ Dashboards cover ingestion lag, API latency, and queue depth — see
 
 ## References
 
-- Rate limiting plan: [plan/api-rate-limits/](plan/api-rate-limits/)
+- Rate limiting plan: [plan/0002-api-rate-limits/](plan/0002-api-rate-limits/)
 
 ## In this directory
 

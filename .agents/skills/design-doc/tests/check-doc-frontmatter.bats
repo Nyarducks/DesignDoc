@@ -193,10 +193,11 @@ EOF
 
 @test "archives exempt" {
   new_repo
-  mkdir -p "$REPO/docs/plan/archived" "$REPO/docs/reviews" "$REPO/docs/example/medium/plan/archived"
+  mkdir -p "$REPO/docs/plan/archived" "$REPO/docs/reviews" "$REPO/docs/example/medium/plan/archived" "$REPO/docs/issues/archived"
   echo "# old plan" > "$REPO/docs/plan/archived/p.md"
   echo "# review record" > "$REPO/docs/reviews/r.md"
   echo "# nested archive" > "$REPO/docs/example/medium/plan/archived/x.md"
+  echo "# closed issue" > "$REPO/docs/issues/archived/i.md"
   run run_check
   [ "$status" -eq 0 ]
 }

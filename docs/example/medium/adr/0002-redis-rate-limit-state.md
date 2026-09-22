@@ -15,7 +15,7 @@ Accepted
 
 ## Context
 
-Per-tenant rate limiting ([plan api-rate-limits](../plan/api-rate-limits/))
+Per-tenant rate limiting ([plan 0002](../plan/0002-api-rate-limits/))
 needs a counter visible to every api pod. Options weighed:
 
 - **In-process per-pod counters** — zero dependencies, but each pod gets

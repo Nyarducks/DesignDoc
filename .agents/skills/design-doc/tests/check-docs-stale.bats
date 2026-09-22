@@ -167,6 +167,16 @@ EOF
   [ "$status" -eq 0 ]
 }
 
+@test "archived issue excluded" {
+  new_repo
+  mkdir -p "$REPO/src" "$REPO/docs/issues/archived"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/issues/archived/old.md" src/a.c
+  commit_all; git -C "$REPO" checkout -qb feat
+  echo y > "$REPO/src/a.c"; commit_all
+  run run_check
+  [ "$status" -eq 0 ]
+}
+
 @test "review records excluded" {
   new_repo
   mkdir -p "$REPO/src" "$REPO/docs/reviews"; echo x > "$REPO/src/a.c"

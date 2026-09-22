@@ -6,9 +6,10 @@
 # fields that check relies on.
 #
 # Rules:
-#   - Live docs MUST carry frontmatter. Archives — docs/plan/archived/
-#     and docs/reviews/ — are point-in-time records: frontmatter is
-#     optional, but when present it is validated like any other doc.
+#   - Live docs MUST carry frontmatter. Archives — docs/plan/archived/,
+#     docs/issues/archived/, docs/reviews/ — are point-in-time records:
+#     frontmatter is optional, but when present it is validated like any
+#     other doc.
 #   - Frontmatter is --- delimited and contains the required keys:
 #       type, title, status, last_modified
 #   - type ∈ {Design Doc, ADR, Reference, Plan, Issue}
@@ -36,7 +37,7 @@ err() { echo "FRONTMATTER: $1 — $2"; violations=$((violations + 1)); }
 
 is_archive() {
   case "$1" in
-    */plan/archived/* | */reviews/*) return 0 ;;
+    */plan/archived/* | */issues/archived/* | */reviews/*) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -45,7 +46,7 @@ while IFS= read -r file; do
   # --- delimiters: first line must be exactly ---, and a closing ---
   # must exist before any non-frontmatter content.
   if ! head -n 1 "$file" | grep -qx -- '---'; then
-    is_archive "$file" || err "$file" "missing frontmatter (archives exempt: plan/archived/, reviews/)"
+    is_archive "$file" || err "$file" "missing frontmatter (archives exempt: plan/archived/, issues/archived/, reviews/)"
     continue
   fi
   if ! awk 'NR>1 && /^---/{found=1; exit} END{exit !found}' "$file"; then

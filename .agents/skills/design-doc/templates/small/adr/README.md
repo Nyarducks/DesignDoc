@@ -1,6 +1,6 @@
 ---
 type: Reference
-title: ADR index
+title: ADRs
 description: Architecture decision records — numbered point-in-time decisions, one file each.
 status: current
 last_modified: <YYYY-MM-DD>
@@ -16,6 +16,6 @@ form, numbered sequentially as `NNNN-<slug>.md`, with OKF v0.2 frontmatter
 the change that introduces the decision. ADRs are immutable point-in-time
 records — write a new ADR when a decision is revisited.
 
-| ADR | Decision |
-|---|---|
-| [0001](0001-record-architecture-decisions.md) | Record architecture decisions — this convention itself |
+There is intentionally **no index table** — every parallel ADR PR would
+edit the same rows. The numbered filenames sort in the directory listing;
+the listing is the index.

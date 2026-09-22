@@ -41,7 +41,7 @@ Surface: `/v1/shipments*` — callers: carrier keys (`events:write`,
 | 401/403 | Missing key, or key not scoped to the shipment's carrier |
 | 409 | Duplicate `event_id` (safe to ignore on retry) |
 | 422 | Malformed event payload |
-| 429 | Tenant over rate limit — see [the rate-limit plan](../plan/api-rate-limits/) |
+| 429 | Tenant over rate limit — see [the rate-limit plan](../plan/0002-api-rate-limits/) |
 | 503 | Queue unavailable — retry whole batch after `Retry-After` |
 
 ### Data model
@@ -110,7 +110,7 @@ sequenceDiagram
 - **Rate limiting via token bucket in middleware** over queue-level
   shedding — shedding punishes well-behaved tenants sharing the queue;
   see [ADR-0002](../adr/0002-redis-rate-limit-state.md) and
-  [the rate-limit plan](../plan/api-rate-limits/).
+  [the rate-limit plan](../plan/0002-api-rate-limits/).
 
 ### Failure modes
 
