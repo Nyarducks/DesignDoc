@@ -6,6 +6,7 @@ status: open                 # open | investigating | planned | in-progress | do
 tags: [issue, <topic>]
 sources: [<files involved>]
 resolved_by:    # design-docs/NNNN-<change>/ or PR — set when scheduled
+closed_pr:      # the PR that closed it — set when archiving to archived/
 ---
 
 # <Issue title>

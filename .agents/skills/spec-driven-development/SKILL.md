@@ -50,8 +50,10 @@ any time:
    table, the design doc's phase index and `status:` frontmatter, and
    the living architecture docs listed in `designs:` — in the same
    commit or PR. `docs/design-docs/README.md` has no per-doc table to
-   update — the directory listing is the index. When a design doc
-   reaches `done` or `dropped`, move it to `docs/design-docs/archived/`.
+   update — the directory listing is the index. The PR that ships the
+   last phase (or drops the doc) archives it in the same PR — moves it
+   to `docs/design-docs/archived/`, sets the terminal `status:`, and
+   records `closed_pr:` — so nothing is left behind as `in-progress`.
 
 The design doc's `README.md` stays self-contained — reviewers read it
 alone for the design and rationale; phase files carry execution detail

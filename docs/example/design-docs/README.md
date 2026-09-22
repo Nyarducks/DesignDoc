@@ -54,9 +54,11 @@ frontmatter and forces every parallel doc PR to edit the same rows.
   README alone. When a phase merges, the doc's `status:`/phase index
   and the living docs listed in `designs:` are updated in the same
   commit.
-- When a doc reaches `done` (or `dropped`), move its file or directory
-  to `archived/`, set `status:` accordingly, and record the delivering
-  PR in the body (e.g. "delivered via #123").
+- **The delivering PR archives the doc** — the PR that ships the last
+  phase (or drops the proposal) moves the file or directory to
+  `archived/` in the same PR, sets `status: done`/`dropped`, and
+  records `closed_pr: <PR number>` in frontmatter. No post-merge
+  archive step.
 - Design docs omit `sources:` — they record a point-in-time change
   rather than a living derivation; the `sources:` contract applies to
   `docs/architecture/` docs only.

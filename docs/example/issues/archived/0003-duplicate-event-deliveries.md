@@ -6,6 +6,7 @@ status: done
 tags: [issue, api, ingestion]
 sources: [api/internal/handlers/shipments.go]
 resolved_by: "#58"
+closed_pr: "#58"
 ---
 
 # Duplicate event deliveries on client retry

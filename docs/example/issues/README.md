@@ -34,7 +34,8 @@ would edit the same rows.
 ## Conventions
 
 - Status legend: `open` · `investigating` · `planned` · `in-progress` —
-  active; `done` · `deferred` · `wontfix` — move the file to
-  `archived/` in the closing PR.
+  active; `done` · `deferred` · `wontfix` — the closing PR moves the
+  file to `archived/` and records `closed_pr: <PR number>` in
+  frontmatter.
 - A file can stay thin — frontmatter plus a Problem paragraph is enough;
   grow it when the issue needs evidence or options.

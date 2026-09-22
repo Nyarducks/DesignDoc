@@ -6,6 +6,7 @@ status: in-review            # draft | in-review | in-progress | done | dropped
 tags: [<topic>]
 issues: []      # issue IDs this resolves — e.g. [0001]
 designs: []     # living docs this changes — paths under docs/, e.g. [architecture/worker, architecture/api/shipments]
+closed_pr:      # the PR that shipped/dropped it — set when archiving to archived/
 ---
 
 # <Change name> — Overview

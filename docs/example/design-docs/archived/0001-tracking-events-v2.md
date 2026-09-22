@@ -6,6 +6,7 @@ status: done
 tags: [design-doc, api, events]
 issues: []
 designs: [architecture/api/shipments]
+closed_pr: "#121"
 ---
 
 # Tracking events v2 — Overview

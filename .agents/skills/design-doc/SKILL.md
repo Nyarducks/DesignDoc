@@ -165,6 +165,8 @@ adrs: []                   # ADR numbers governing this doc — e.g. [0002]
 issues: []                 # open issues affecting it — e.g. [0001, 0007]
 services: []               # infra docs only — services a change to this
                            # mechanism affects — e.g. [api, worker]
+closed_pr:                 # design docs / issues only — the PR that
+                           # shipped/dropped/closed it; set when archiving
 ---
 ```
 
@@ -295,8 +297,10 @@ them and parallel doc PRs never fight over names.
 - **No index table** — `design-docs/README.md` holds conventions only;
   the listing plus each doc's `status:`/`issues:`/`designs:` frontmatter
   is the index.
-- **Archiving** — `done` or `dropped` moves the file or directory to
-  `design-docs/archived/`; record the delivering PR in the body.
+- **Archiving** — the PR that ships the last phase (or drops the
+  proposal) moves the file or directory to `design-docs/archived/` in
+  the same PR, sets `status: done`/`dropped`, and records `closed_pr:` —
+  no post-merge archive step, nothing left in-flight as `in-progress`.
 
 ## ADRs — `docs/adr/NNNN-<slug>.md`
 
@@ -319,8 +323,8 @@ Known problems and improvement backlog as a scannable directory:
   table. A file can stay thin — frontmatter plus a Problem paragraph;
   grow it with Evidence → Impact → Options → Resolution as earned.
 - `status:` — open · investigating · planned · in-progress are active;
-  done · deferred · wontfix move the file to `archived/` in the closing
-  PR.
+  done · deferred · wontfix: the closing PR moves the file to
+  `archived/` and records `closed_pr:` in frontmatter.
 - `resolved_by:` — the design doc or PR once scheduled.
 - Line-drawing: an issue tracker owns assigned, actively-worked tasks;
   `docs/issues/` owns the visible backlog of *known* problems.
@@ -380,9 +384,10 @@ central index as organizational memory.
 4. **Proposing a change** — write `design-docs/NNNN-<change>.md` (one
    PR) or `NNNN-<change>/` (multi-PR); link the issues it resolves.
 5. **Making a significant decision** — add `docs/adr/NNNN-<slug>.md`.
-6. **Closing out** — when a design doc ships or drops, move it to
-   `design-docs/archived/`; when an issue closes, move it to
-   `issues/archived/`.
+6. **Closing out** — the delivering PR archives the record: move a
+   shipped/dropped design doc to `design-docs/archived/` or a closed
+   issue to `issues/archived/`, set the terminal `status:`, and record
+   `closed_pr:` — all in that same PR.
 
 ## References
 

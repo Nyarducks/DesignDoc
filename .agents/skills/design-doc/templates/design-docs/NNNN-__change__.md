@@ -7,6 +7,7 @@ tags: [design-doc, <topic>]
 issues: []             # issue numbers this resolves — e.g. [0001]
 designs: []            # living docs this change updates — e.g. [architecture/api]
 adrs: []               # ADR numbers this change produces or revises
+closed_pr:             # the PR that shipped/dropped it — set when archiving to archived/
 ---
 
 # <NNNN — short title>

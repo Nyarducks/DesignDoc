@@ -10,5 +10,5 @@ sources: []
 # Archived design docs
 
 Done and dropped design docs live here — frozen records of the decision
-at the time. Don't edit them; the architecture docs carry the living
-truth.
+at the time. Each records its delivering PR in `closed_pr:` frontmatter.
+Don't edit them; the architecture docs carry the living truth.
