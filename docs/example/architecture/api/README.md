@@ -1,7 +1,7 @@
 ---
 type: Architecture
 title: Freightloop API
-description: The API module's design hub — what the surface must deliver, surface-wide conventions, and the index of per-surface docs.
+description: The API service's doc hub — what the surface must deliver, surface-wide conventions, and the index of per-surface docs.
 status: current
 last_modified: 2026-09-22
 tags: [api]

@@ -87,7 +87,7 @@ flowchart TB
 
 ## Component internals
 
-Per-module docs sit in `architecture/<module>/` — see the
+Per-service docs sit in `architecture/<service>/` — see the
 Components table. Active change proposals live under
 [design-docs/](design-docs/).
 
@@ -100,10 +100,10 @@ Components table. Active change proposals live under
 
 ## Decisions and alternatives
 
-The system-level choices that shaped everything below; per-module
-decisions live in each `architecture/<module>/` subtree.
+The system-level choices that shaped everything below; per-service
+decisions live in each `architecture/<service>/` subtree.
 
-- **One monorepo, four modules** over per-service repos — one team
+- **One monorepo** over per-service repos — one team
   reviews and deploys all of it; repo boundaries would add versioning
   ceremony without isolating anything the team doesn't already own.
 - **Postgres-backed job queue** over Kafka — sustained 2k events/s is
@@ -131,7 +131,7 @@ decisions live in each `architecture/<module>/` subtree.
 ## Testing
 
 ```bash
-make verify            # lint + unit + integration for all modules
+make verify            # lint + unit + integration for all components
 make verify-api        # api suite incl. ingestion contract cases
 ```
 
@@ -149,7 +149,7 @@ Dashboards cover ingestion lag, API latency, and queue depth — see
 
 | Path | Contents |
 |---|---|
-| [architecture/](architecture/) | Living docs — one subtree per module |
+| [architecture/](architecture/) | Living docs — one subtree per service |
 | [design-docs/](design-docs/) | Change proposals — `archived/` holds finished ones |
 | [adr/](adr/) | Decision records |
 | [issues/](issues/) | Known issues — `archived/` holds closed ones |

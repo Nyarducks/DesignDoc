@@ -1,7 +1,7 @@
 ---
 type: Architecture
 title: Worker — event processing and dispatch
-description: How the worker module consumes tracking events — ETA recomputation, notification dispatch, and retry rules.
+description: How the worker service consumes tracking events — ETA recomputation, notification dispatch, and retry rules.
 status: current
 last_modified: 2026-09-22
 tags: [worker, jobs, events]
@@ -14,7 +14,7 @@ issues: []
 ## Context
 
 - The API acks events once queued (see [api/](../api/)),
-  so this module owns everything after the ack — and everything that can
+  so this service owns everything after the ack — and everything that can
   go wrong after it.
 - 2k events/s sustained; a crashed worker's backlog must drain without
   human action.
@@ -72,7 +72,7 @@ sequenceDiagram
 | Depends on | Why |
 |---|---|
 | `api` queue table | Claim and finalize event state |
-| `infra` module | Pool sizing, queue depth alerts — see [infra/](../infra/) |
+| `infra/` | Pool sizing, queue depth alerts — see [infra/](../infra/) |
 
 ## Decisions and alternatives
 
