@@ -1,13 +1,13 @@
 ---
 name: design-doc
 description: >-
-  Write and maintain design docs sized to the project's scale — pick the
-  scale, copy its structured template tree, apply its conventions.
-  Aligned with Google's design doc practice (context and goals, design
-  trade-offs, alternatives considered, cross-cutting concerns).
-  Ships small- and medium-scale template trees; large-scale conventions
-  are documented for orientation. Use when creating or updating design
-  documentation.
+  Write and maintain design docs with a single scale-independent
+  pattern — living docs under docs/architecture/, proposals under
+  docs/design-docs/, decisions under docs/adr/, issues under
+  docs/issues/. Copy the template tree, apply the conventions. Aligned
+  with Google's design doc practice (context and goals, design
+  trade-offs, alternatives considered, cross-cutting concerns). Use when
+  creating or updating design documentation.
 metadata:
   author: Nyarducks
   license: MIT
@@ -16,8 +16,9 @@ metadata:
 
 # Design docs
 
-Write design docs sized to the project: pick the scale below, copy its
-template tree, and apply its conventions.
+One documentation pattern for any project size — copy `templates/` into
+`docs/` and apply the conventions below. Scale changes depth and review
+formality, not the layout.
 
 ## Installing into a project
 
@@ -31,9 +32,8 @@ in or out at any time:
 ## Design docs
 
 - Doc layout and conventions follow the `design-doc` skill —
-  `docs/design/` living docs at small scale; a `docs/README.md`
-  overview plus `docs/<module>-design/` subtrees, `docs/adr/`,
-  `docs/issues/`, and `docs/plan/` at medium scale.
+  `docs/architecture/` living docs, `docs/design-docs/` proposals,
+  `docs/adr/` decision records, `docs/issues/` known problems.
 - The `sources:` contract — a commit that changes a file listed in a
   doc's `sources:` updates that doc in the same commit.
 <!-- design-doc:end -->
@@ -49,8 +49,7 @@ it to see what the install is missing.
 
 - **What, Why, How** — a design doc answers what the system does, why it
   was made and why it is needed, and how the parts fit — at design level.
-  Every doc opens with the why: the pitch and Background sections carry
-  it.
+  Every doc opens with the why.
 - **Trade-offs are the point** — the doc records *why this design* over
   the alternatives, not how to implement it. A doc that reads as an
   implementation manual should have been code instead.
@@ -80,7 +79,7 @@ it to see what the install is missing.
   question (design doc = why/invariants; reference = what/spec). If one
   source change forces the *same* edit in both, merge or re-scope.
 - **Sections name mechanisms, not events** — "Job persistence", never
-  "Fix 2" — fix history belongs in plans and ADRs.
+  "Fix 2" — fix history belongs in design docs and ADRs.
 - **Hard-to-document is a finding** — when a doc resists clean
   boundaries (scattered sources, no clear invariant), record the
   underlying design weakness in `issues/` instead of writing around it.
@@ -88,100 +87,80 @@ it to see what the install is missing.
   trade-offs, no alternatives worth weighing), skip the doc. Design docs
   earn their overhead through consensus and early issue detection.
 
-## Pick a scale
+## Layout
 
-| Scale | Signals | Template |
-|---|---|---|
-| Small | One repo, one maintainer or a small team, a handful of components | `templates/small/` — conventions below |
-| Medium | Multiple services/modules or a growing team; designs need consensus before implementation | `templates/medium/` — conventions below |
-| Large | Multiple teams/repos; cross-team review, launch gates | not yet distilled — see "Large" below |
+`templates/` mirrors the target `docs/` tree — copy it and rename:
 
-### How the docs change with scale
+```
+docs/
+├── README.md                    # system overview — the entry point
+├── architecture/                # LIVING DOCS — the system as it is
+│   ├── README.md                #   architecture conventions
+│   ├── glossary.md              #   ubiquitous domain terms
+│   ├── <service>/               #   one dir per service or coherent
+│   │   ├── README.md            #     subsystem: hub + index of its docs
+│   │   └── <topic>.md           #     one doc per unit of change —
+│   │                            #     a contract surface, route, mechanism
+│   └── <component>.md           #   flat file while one page says it;
+│                                #   promote to a dir when it grows docs
+├── design-docs/                 # PROPOSALS — point-in-time changes
+│   ├── README.md                #   conventions — the listing is the index
+│   ├── NNNN-<change>.md         #   a change that fits one PR
+│   ├── NNNN-<change>/           #   a multi-PR change
+│   │   ├── README.md            #     self-contained design doc
+│   │   └── phase-N-<slug>.md    #     per-phase execution surface
+│   └── archived/                #   done/dropped docs — frozen records
+├── adr/
+│   ├── README.md                # ADR conventions — no index table
+│   └── NNNN-<slug>.md           # one file per significant decision
+└── issues/
+    ├── README.md                # issue conventions — no index table
+    ├── NNNN-<slug>.md           # one file per issue
+    └── archived/                # done/deferred/wontfix — frozen records
+```
 
-| Axis | Small | Medium | Large |
-|---|---|---|---|
-| Doc kinds | Living overview + per-component docs + ADRs + issue list | + per-change proposal docs | + dedicated security/privacy docs |
-| When written | Same commit as the change | Before implementation; the doc PR is the design review | Before implementation; formal review gates |
-| Metadata | OKF frontmatter (`status`, `last_modified`) | + authors / reviewers on proposals | + lifecycle status, approvers, target dates |
-| Requirements | Goal/Non-Goal + short functional & non-functional bullets | Explicit functional + non-functional requirements per proposal | NFRs with measurable targets (SLOs, capacity, latency budgets) |
-| Alternatives | ADR Context records options + trade-offs | "Alternatives considered" section per proposal | Required, often quantitative analysis |
-| Risks & ops | Risks/known-issues sections in living docs | Per-proposal rollout and ops plan | Risk register, launch checklist, dedicated ops review |
-| Review | Self + PR review | Wider PR review, comment threads | Design review meetings, cross-team sign-off |
-| Length | ~1–3 pages per doc | ~5–10 pages | 10–20 pages; split the problem beyond that |
+Two doc *kinds* do the work: **living docs** describe the system as it
+is (`architecture/` — updated in the same commit as code); **proposal
+docs** describe a change before it is built (`design-docs/` — written
+for consensus, frozen once shipped). ADRs and issues sit alongside as
+cross-cutting records.
 
-Two doc *kinds* recur at every scale: **living docs** describe the system
-as it is (overview, component docs — updated in the same commit as code);
-**proposal docs** describe a change before it is built (Google-style
-design docs — written for consensus and review). Small projects often
-need only living docs plus ADRs; medium and up add proposals.
+Root docs stay slim: `README.md` is quick start only, `AGENTS.md` is
+must-follow rules only — structure and usage live in `docs/`. Fact
+inventories (config tables, script lists) live with the doc that owns
+them; a shared `docs/reference/` bucket collects ownerless pages that
+rot — reserve it for genuinely cross-cutting inventories.
 
 **What makes either kind a *design* doc** — it records decisions, not
 just behavior. The shared spine: **Overview → Background and motivation
 (objective constraints: who calls it, volume, SLOs, what callers can't
 do) → Goals and non-goals → Detailed design (contract, data model /
 state machine, flow) → Decisions and alternatives → Failure modes →
-Risks and mitigations → Testing**. In a `<module>-design/` subtree the
-spine splits across docs, never repeats: the API kind maps it to the
-three-tier `requirements.md` (overview, background,
-goals/non-goals, requirements) / `basic.md` (architecture,
-conventions, contract inventory, surface-level decisions) /
-`detailed.md` (per-resource internals) split, with
-`README.md` as a slim index. Templates adapt the spine per doc kind;
-proposals additionally carry implementation strategy and timeline (the
-plan's phases) and the
-full "Rejected alternatives" analysis. A doc that only says "this is
-how it works" is an implementation manual, not a design doc; if there
-were genuinely no trade-offs, the code alone was probably enough.
-Living docs keep the decision digest so the reasoning survives after
-the plan archives.
+Risks and mitigations → Testing**. In an `architecture/<service>/`
+subtree the spine splits across docs, never repeats: the `README.md`
+hub carries overview, context, goals, and surface-wide conventions; each
+`<topic>.md` carries one unit's contract, lifecycle, flow, decisions,
+and failure modes. A doc that only says "this is how it works" is an
+implementation manual, not a design doc; if there were genuinely no
+trade-offs, the code alone was probably enough. Living docs keep the
+decision digest so the reasoning survives after the proposal archives.
 
-## Small project
-
-Conventions distilled from a small single-repo reference project — living
-docs under `docs/design/`, ADRs under `docs/adr/`, docs updated in the
-same commit as code. A worked example lives in this repo at
-`docs/example/small/`.
-
-### Layout
-
-`templates/small/` mirrors the target `docs/` tree — copy it and rename:
-
-```
-docs/
-├── design/
-│   ├── README.md          # overview design doc — the entry point
-│   └── <component>.md     # one doc per unit of change (from component.md)
-├── adr/
-│   ├── README.md          # ADR conventions — the numbered files are the index
-│   └── NNNN-<slug>.md     # one file per significant decision
-└── issues/
-    ├── README.md          # issue conventions — the numbered files are the index
-    ├── NNNN-<slug>.md     # one file per issue
-    └── archived/          # done/deferred/wontfix issues — frozen records
-```
-
-`docs/design/README.md` is the overview because GitHub renders a
-directory's `README.md` — the entry point is structured like every other
-doc, not a plain index. Root docs stay slim: `README.md` is quick start
-only, `AGENTS.md` is must-follow rules only — structure and usage live in
-`docs/`. Fact inventories (config tables, script lists) live with the
-design doc that owns them; a shared `docs/reference/` bucket collects
-ownerless pages that rot — reserve it for genuinely cross-cutting
-inventories.
-
-### Frontmatter (OKF v0.2)
+## Frontmatter (OKF v0.2)
 
 Every doc under `docs/` carries YAML frontmatter:
 
 ```yaml
 ---
-type: Design Doc           # Design Doc | ADR | Reference | Plan | Issue
+type: Architecture         # Architecture | Design Doc | ADR | Reference | Plan | Issue
 title: <title>
 description: <one line — what it covers and why>
-status: current            # current | draft | deprecated (ADRs: accepted)
+status: current            # living docs: current | deprecated
+                           # design docs: draft | in-review | in-progress | done | dropped
+                           # issues: open | investigating | planned | in-progress | done | deferred | wontfix
+                           # ADRs: accepted | superseded | ...
 last_modified: YYYY-MM-DD  # bump on every edit
 tags: [<topics>]
-sources: [<files the doc is derived from>]
+sources: [<files the doc is derived from>]   # architecture docs only
 adrs: []                   # ADR numbers governing this doc — e.g. [0002]
 issues: []                 # open issues affecting it — e.g. [0001, 0007]
 services: []               # infra docs only — services a change to this
@@ -189,11 +168,11 @@ services: []               # infra docs only — services a change to this
 ---
 ```
 
-**The `sources:` contract** — a doc derived from code lists the files it
-summarizes; any commit that changes a source file must update the doc (and
-`last_modified`) in the same commit. Keep the list as narrow as the doc's
-real dependencies. Prescriptive docs — pure conventions — set
-`sources: []`. Enforce the contract in CI with
+**The `sources:` contract** — a living doc derived from code lists the
+files it summarizes; any commit that changes a source file must update
+the doc (and `last_modified`) in the same commit. Keep the list as
+narrow as the doc's real dependencies. Prescriptive docs — pure
+conventions — set `sources: []`. Enforce the contract in CI with
 `scripts/check-docs-stale.sh` (shipped with this skill): it fails a PR
 that changes a declared source without touching its doc, or that leaves
 a `sources:` path dangling after a rename/delete. Its companion
@@ -203,27 +182,23 @@ header silently escapes the sources check. Wire them into the project's
 workflow with the `doc-checks-ci` skill, which ships its own copies.
 
 **`adrs:` / `issues:` / `designs:` / `resolved_by:` — the
-machine-readable doc graph.** Design docs declare the ADRs governing them
-(`adrs:`) and the open issues affecting them (`issues:`); plans declare
-the issues they resolve (`issues:`) and the design docs they modify
-(`designs:`); issue docs point back at the plan or PR that resolves them
-(`resolved_by:`). Prose links stay for human readers — frontmatter is the
-index a tool can walk.
+machine-readable doc graph.** Living docs declare the ADRs governing
+them (`adrs:`) and the open issues affecting them (`issues:`); design
+docs declare the issues they resolve (`issues:`) and the living docs
+they modify (`designs:`); issue docs point back at the design doc or PR
+that resolves them (`resolved_by:`). Prose links stay for human readers
+— frontmatter is the index a tool can walk.
 
-### Writing rules
+## Living docs — `docs/architecture/`
 
-- **Update docs in the same commit** as the behavior change.
-- **Checkable claims only** — no counts or universal quantifiers over
-  code-derived facts ("every agent implements …", "28 checks") unless a
-  test asserts them; enumerate the matrix or name the exception instead.
-- **Don't restate files** — if reading a file answers it (config layout,
-  versions, job lists), point at the file or state the rule behind it.
-- **Link neighbors** — `docs/design/README.md` is the entry point; every
-  doc links the docs it depends on.
+Updated in the same commit as the behavior they describe; `sources:`
+lists what they're derived from.
 
-### The overview doc — `docs/design/README.md`
+### The overview — `docs/README.md`
 
-Copy `templates/small/design/README.md` and fill it in. Section order:
+The system entry point, structured like every other doc (GitHub renders
+a directory's `README.md`). Section order — the template carries
+`<!-- -->` prompt comments under each heading:
 
 1. **Title + pitch** — what it is, why it was made, why it is needed.
 2. **Goal / Non-Goal** — what it does; what it deliberately does not.
@@ -233,274 +208,178 @@ Copy `templates/small/design/README.md` and fill it in. Section order:
    **non-functional** (the qualities and constraints it must hold).
 4. **Background** — the problem context that motivated it; objective
    facts only.
-5. **High-level architecture** — a mermaid diagram of the whole system.
-6. **Components** — table of parts (modules, classes) with each part's
-   responsibility and purpose, linking to per-component docs.
-7. **Component internals** — per-part internal spec and processing flow
-   (data structures, algorithms) at the invariant level; defer to
-   component docs for anything longer than a paragraph.
-8. **Security** — trust boundaries and enforcement.
-9. **Decisions and alternatives** — the choices that shaped the system,
-   each with the alternative it beat and why; link the settling ADR.
-10. **Risks and known issues** — operational risks, failure modes, and
-    known holes.
-11. **Testing** — the commands and what they cover.
-12. **Operations** — how to run, observe, and steer the system.
-13. **References** — external links the design depends on.
-14. **Notes** — doc conventions and caveats, plus an "In this directory"
-    table.
+5. **Repositories** — multi-repo systems only; drop for a single repo.
+6. **High-level architecture** — a mermaid diagram of the whole system.
+7. **Components** — table of parts with each part's responsibility,
+   linking the per-service docs.
+8. **Component internals** — per-part flow at the invariant level; defer
+   to the service docs beyond a paragraph.
+9. **Security** — trust boundaries and enforcement.
+10. **Decisions and alternatives** — the choices that shaped the system;
+    link the settling ADR.
+11. **Risks and known issues** — operational risks and known holes;
+    actionable items get a file in `issues/`.
+12. **Testing** — the commands and what they cover.
+13. **Operations** — how to run, observe, and steer the system.
+14. **References**, **Notes**, and an "In this directory" table.
 
-### Per-component docs — `docs/design/<component>.md`
+### Service subtrees — `architecture/<service>/`
 
-Copy `templates/small/design/component.md`. Same frontmatter, with
-`title`/`description` scoped to the component and `sources` naming its
-implementation files. Sections: Goal (responsibility and purpose) →
-Design (internal spec and processing flow — sequence diagrams for
-interactions, flowcharts for branching) → Failure modes → Decisions and
-alternatives (each choice, the alternative it beat, why — link the ADRs)
-→ Security → Known issues → Testing → Notes.
+One directory per service or coherent subsystem (`api`, `web`, `worker`,
+`infra`…). The `README.md` is the hub: context and goals, invariants,
+surface-wide conventions, the index of its docs. Each `<topic>.md`
+documents one unit of change. The templates ship three canonical kinds —
+copy the dirs you need:
 
-### ADRs — `docs/adr/NNNN-<slug>.md`
+- **API** — `api/README.md` hub + one `<resource>.md` per contract
+  surface. Keep surface docs at contract level — endpoint tables,
+  lifecycle state machines, request flow, caller-visible semantics.
+  **Never inline schemas or field lists**: link the OpenAPI/protobuf
+  source of truth (and list it in `sources:`); inlined schemas rot. A
+  cross-cutting policy that outgrows the hub's Conventions section gets
+  its own file — `authentication.md`, `error-handling.md`,
+  `versioning.md`.
+- **Frontend** — `web/README.md` hub + one `<route>.md` per route:
+  data dependencies, states, degraded behavior, transport and rendering
+  decisions — not visual specs.
+- **Infrastructure** — `infra/README.md` hub (topology diagram, service
+  map, observability, scaling model) + one `<mechanism>.md` per
+  mechanism. Each mechanism doc declares `services:` in frontmatter and
+  repeats the mapping in a Service impact table with blast radius, so
+  an infra change's reviewers can see who breaks.
+
+A service with no kind template uses `architecture/__service__/` — the
+hub shape minus the kind-specific index. A part of the system too small
+for a directory stays a flat `architecture/<component>.md`; when it
+grows several docs, promote it to a directory named after it.
+
+### Glossary — `architecture/glossary.md`
+
+The single source of truth for ubiquitous domain terms. Every other doc
+links a term instead of redefining it; a design doc defines only the
+concepts the proposal itself introduces and promotes them to the
+glossary when the change ships.
+
+## Proposal docs — `docs/design-docs/`
+
+Written before implementation, reviewed as a PR, frozen once shipped —
+then the `architecture/` docs carry the living truth. Numbered like ADRs
+and issues — `NNNN-<slug>` per file or directory — so the listing orders
+them and parallel doc PRs never fight over names.
+
+- **Shape** — a change that fits one PR is a flat `NNNN-<change>.md`; a
+  multi-PR change gets `NNNN-<change>/` with a `README.md` plus one
+  `phase-N-<slug>.md` per phase. Skip the doc entirely when the change
+  is unambiguous.
+- **The root doc is self-contained for review** — context (with a
+  `**Resolves:**` link to the issues it settles), goals/non-goals,
+  options and trade-offs, proposed architecture, rollout and migration,
+  rollback, success metrics, open questions. A reviewer reads the README
+  alone; design narrative never lives in phase files.
+- **Phase files are execution surfaces** — scope pointer, task
+  checklist, acceptance criteria, risks, progress log, PR link. A phase
+  is the smallest independently mergeable increment: one phase ≈ one
+  PR, and the system stays coherent after each lands. Executing them —
+  confirming PR granularity, managing stacked PRs — is workflow, not doc
+  convention: it lives in `spec-driven-development`.
+- **Frontmatter links** — `issues:` the IDs it resolves (issue docs
+  point back with `resolved_by:`); `designs:` the living docs it
+  modifies. When a phase merges, update the doc's status/phase index
+  and the `designs:` docs in the same commit, like the `sources:`
+  contract. Design docs themselves omit `sources:` — a proposal is a
+  point-in-time record, not a living derivation.
+- **No index table** — `design-docs/README.md` holds conventions only;
+  the listing plus each doc's `status:`/`issues:`/`designs:` frontmatter
+  is the index.
+- **Archiving** — `done` or `dropped` moves the file or directory to
+  `design-docs/archived/`; record the delivering PR in the body.
+
+## ADRs — `docs/adr/NNNN-<slug>.md`
 
 Record every significant decision in the same commit that introduces it:
 
-- Sequential number, kebab-case slug; frontmatter `type: ADR`,
-  `status: accepted`. Body: Context → Decision → Consequences.
-- ADR **Context** is where alternatives and their trade-offs live — the
-  small-scale home for what Google calls "alternatives considered".
-- `templates/small/adr/0001-record-architecture-decisions.md` doubles as
-  a project's ADR-0001 — adopt it verbatim and the convention records
+- Sequential number, kebab-case slug; `type: ADR`, `status: accepted`.
+  Body: Context → Decision → Consequences. Context is where the
+  alternatives and their trade-offs live.
+- `templates/adr/0001-record-architecture-decisions.md` doubles as a
+  project's ADR-0001 — adopt it verbatim and the convention records
   itself.
-- Immutable point-in-time records — never edit one to track code drift;
-  write a new ADR when a decision is revisited.
-- `docs/adr/README.md` carries conventions only — no index table; every
-  parallel ADR PR would edit the same rows. The numbered filenames sort
-  in the directory listing — the listing is the index.
+- Immutable point-in-time records — write a new ADR when a decision is
+  revisited. No index table; the numbered listing is the index.
 
-### Issues — `docs/issues/`
+## Issues — `docs/issues/`
 
-Known problems and improvement backlog as a scannable directory — issue
-trackers are poor at "show me the list", so the list lives in docs:
+Known problems and improvement backlog as a scannable directory:
 
-- `NNNN-<slug>.md` — one file per issue, numbered like ADRs so the
-  directory listing orders them. No index table — every parallel issue
-  PR would edit the same rows. A file can stay thin: frontmatter plus a
-  Problem paragraph is enough; grow it with Evidence → Impact →
-  Options → Resolution when the issue earns it.
-- `status:` frontmatter — open · investigating · planned · in-progress
-  are active; done · deferred · wontfix move the file to `archived/` in
-  the closing PR, so the directory shows only live issues.
-- `resolved_by:` — the plan or PR once scheduled.
-- `README.md` — conventions only, not a list.
-- Line-drawing: an issue tracker owns assigned, actively-worked tasks;
-  `docs/issues/` owns the visible backlog of *known* problems. A design
-  doc's "Risks and known issues" describes design limitations — anything
-  actionable gets a file here, and a scheduled issue links its plan or
+- `NNNN-<slug>.md` — one file per issue, numbered like ADRs. No index
+  table. A file can stay thin — frontmatter plus a Problem paragraph;
+  grow it with Evidence → Impact → Options → Resolution as earned.
+- `status:` — open · investigating · planned · in-progress are active;
+  done · deferred · wontfix move the file to `archived/` in the closing
   PR.
+- `resolved_by:` — the design doc or PR once scheduled.
+- Line-drawing: an issue tracker owns assigned, actively-worked tasks;
+  `docs/issues/` owns the visible backlog of *known* problems.
 
-### Docs in the workflow
+## Writing rules
 
-- The doc PR *is* the review — reviewers read the rendered markdown, not
-  a meeting invite.
-- `docs/design/README.md` answers the newcomer's first question: "where
-  is the design doc?"
-- The `sources:` contract plus same-commit updates is the small-scale
-  substitute for Google's maintenance phase — staleness fails in review,
-  not a year later.
+- **Update docs in the same commit** as the behavior change.
+- **Checkable claims only** — no counts or universal quantifiers over
+  code-derived facts ("every agent implements …", "28 checks") unless a
+  test asserts them; enumerate the matrix or name the exception instead.
+- **Don't restate files** — if reading a file answers it (config layout,
+  versions, job lists), point at the file or state the rule behind it.
+- **Link neighbors** — `docs/README.md` is the entry point; every doc
+  links the docs it depends on.
 
-### Procedure
+## Docs in the workflow
 
-1. **Starting a project's docs** — copy `templates/small/` to `docs/`;
-   fill in `design/README.md`, rename `component.md` per component, keep
-   `adr/0001-…` if the project records decisions.
-2. **Adding or changing a component** — write or update its doc; update
-   the overview's Components and "In this directory" tables.
-3. **Changing behavior** — update every doc whose `sources:` intersects
-   the changed files, in the same commit; bump `last_modified`.
-4. **Making a significant decision** — add `docs/adr/NNNN-<slug>.md` and
-   index it.
+- The design doc PR *is* the review — reviewers read the rendered
+  markdown, not a meeting invite.
+- `docs/README.md` answers the newcomer's first question: "where is the
+  design doc?"
+- The `sources:` contract plus same-commit updates substitutes for a
+  maintenance phase — staleness fails in review, not a year later.
+- Multi-repo changes: one design-doc dir per repo, cross-linked via a
+  Companion docs table; shared contracts get reference docs both sides
+  cite.
+- Operational docs start life as service-scoped topics —
+  `architecture/<service>/oncall.md` and the like, kept fresh by the
+  `sources:` contract. Promote them to a top-level `docs/runbooks/`
+  only when on-call search volume or quantity justifies it.
+- Generated agent-facing docs (code indexes, task→file maps) live in
+  their own tree, regenerated by scripts with the regeneration wired
+  into CI — a generated tree whose regeneration lapses rots silently.
+  Never hand-edit generated docs; fix the generator.
 
-## Medium project
+## Scaling with size
 
-Conventions distilled from a multi-repo reference system whose main repo
-is a monorepo of several modules. A worked example lives in this repo at
-`docs/example/medium/`.
+The layout is constant; what grows with scale is depth and formality —
+requirements become explicit and measurable (SLOs, capacity budgets),
+alternatives get quantitative analysis, proposals carry named reviewers
+and lifecycle status, review widens from PR comments to cross-team
+sign-off. Length runs ~1–3 pages per living doc at small scale to
+10–20 pages for a major proposal — split the problem beyond that. At
+large scale add dedicated security/privacy docs, risk registers, and a
+central index as organizational memory.
 
-Medium keeps everything small has and adds **plan docs** — phased
-proposal docs written before implementation and maintained with it — plus
-module-local living docs and generated agent context.
+## Procedure
 
-### Layout
-
-`templates/medium/` mirrors the target `docs/` tree:
-
-```
-docs/
-├── README.md                  # system overview — spans modules and repos
-├── <module>-design/           # module subtree — README = module hub +
-│   │                          #   index; one doc per unit of its kind
-│   ├── README.md
-│   └── <unit>.md
-├── plan/
-│   ├── README.md              # plan conventions — the dir listing is the index
-│   ├── NNNN-<change>/         # one dir per change, numbered like ADRs
-│   │   ├── README.md          # plan overview — context, phases, status
-│   │   └── phase-N-<slug>.md  # one doc per implementation phase
-│   └── archived/              # done/dropped plans — frozen records
-├── adr/                       # same as small — numbered files, no index table
-└── issues/                    # same as small — plus archived/ for closed ones
-```
-
-In a monorepo a module may carry its own `docs/` (`<module>/docs/`), or a
-subtree under the central root (`docs/<module>-{design,issues,adr}/`)
-when one entry point matters more — either way, living docs sit nearest
-the code they describe and the overview links to them. Fact inventories
-(config tables, script lists) live inside the owning module's docs — a
-shared `docs/reference/` bucket has no owner, and ownerless pages rot.
-
-### Module design subtrees by doc kind
-
-A doc-heavy module gets `docs/<module>-design/`: the `README.md` is the
-module hub (module-level invariants plus the index of its docs) and each
-unit doc follows the module's kind. Templates ship the three canonical
-kinds — copy the dirs you need:
-
-- **API** — `api-design/{requirements,basic,detailed}.md`; the
-  three-tier split. `requirements.md` (requirements definition)
-  owns overview, background, goals/non-goals, and
-  functional/non-functional requirements — prescriptive,
-  `sources: []`. `basic.md`
-  owns system architecture, surface-wide conventions, the contract
-  inventory, and the data-model overview. `detailed.md`
-  holds one `##` section per contract surface: contract detail,
-  lifecycle state machine, request flow, per-resource decisions and
-  alternatives, failure modes, testing. `README.md` is a slim index —
-  no content duplicated across the three.
-- **Frontend** — `web-design/<route>.md`; one doc per route. Docs carry
-  data dependencies, states, degraded behavior, and the transport and
-  rendering decisions — not visual specs.
-- **Infrastructure** — `infra-design/<mechanism>.md`; one doc per
-  mechanism. The module hub leads with the high-level topology diagram,
-  a **service map** (which infra components serve which services), and
-  the observability and scaling model. Each mechanism doc declares
-  `services:` in frontmatter — the services a change to it affects —
-  and repeats the mapping in a **Service impact** table with blast
-  radius, so an infra change's reviewers can see who breaks.
-
-A module without a kind template uses
-`__module__-design/README.md` — the same hub shape minus the
-kind-specific index.
-
-### The overview doc — `docs/README.md`
-
-Same section list as small, plus a **Repositories** table naming every
-repo in the system and its scope — at medium scale the first question is
-often "which repo does this live in".
-
-### Plan docs — `docs/plan/NNNN-<change>/`
-
-The medium-scale proposal doc: written before implementation, reviewed as
-a PR, updated in the same PRs that implement it. Plans are numbered like
-ADRs and issues — `NNNN-<slug>` per file or directory — so the directory
-listing orders them and parallel plan PRs never fight over names.
-
-**Format: milestone-type phases.** A phase is the smallest independently
-mergeable increment — the system must stay coherent after each one lands.
-Phase granularity *is* PR granularity: one phase ≈ one PR (a large phase
-may split into stacked PRs, but its acceptance criteria are met by those
-PRs collectively). The task checklist inside a phase doc is the finer
-breakdown below PR level. Size phases so each delivers observable
-behavior — a phase that takes weeks means split the change; a phase
-that's a refactor with no behavior isn't a milestone. A change that fits
-one PR doesn't need a directory: write a single `plan/NNNN-<change>.md`
-in the phase-doc shape instead.
-
-A plan dir gets a `README.md` overview plus one `phase-N-<slug>.md` per
-implementation phase. `docs/plan/README.md` holds the conventions only —
-the directory listing plus each plan's `status:`/`issues:`/`designs:`
-frontmatter is the index; a hand-maintained table conflicts on every
-parallel plan PR. When a plan reaches `done` or `dropped`, move its file
-or directory to `docs/plan/archived/` and record the delivering PR in
-the body.
-
-Executing a plan — confirming PR granularity, managing stacked PRs — is
-workflow, not doc convention: it lives in the `spec-driven-development`
-skill.
-
-**How plans link the graph** — a plan declares in frontmatter:
-
-- `issues:` — the issue IDs it resolves (issue docs point back with
-  `resolved_by:`).
-- `designs:` — the design docs it modifies, as paths under `docs/`
-  (e.g. `worker-design`, `api-design/detailed`). Design docs
-  describe *current* reality, so they never list in-flight plans — when a
-  phase merges, update the listed design docs in the same commit, like
-  the `sources:` contract.
-
-Plan docs omit `sources:` — a plan records a point-in-time change, not a
-living derivation, so the `sources:` contract does not apply to it. The
-phase-merge workflow (see `spec-driven-development`) keeps plans in sync
-instead.
-
-Overview sections:
-
-- **Status line** — created date, repos in scope, scope note ("this plan
-  is maintained with the implementation").
-- **Context** — objective facts plus an operating-assumptions table that
-  bounds the plan.
-- **Goal mapping** — which phases serve which goals.
-- **Phase index** — `phase | title | priority | status | PR`, with a
-  status legend: not started · in progress · in review · merged ·
-  deferred · dropped.
-- **Dependency order** — what ships first, what blocks what (ASCII or
-  mermaid).
-- **Rejected alternatives** — options weighed and dropped; the
-  medium-scale home of "alternatives considered".
-- **Companion plans** — a change spanning repos gets a plan dir in each
-  repo; each links the others.
-
-Phase doc anatomy: a status table (status, priority, repo, depends-on,
-blocks, PR) → **Problem** → **Evidence** → **Impact** → **Proposed
-change** → **Task checklist** → **Acceptance criteria** → **Risks and
-open questions** → **Progress log**. Plan docs may carry more
-implementation detail than living docs — they are the review artifact —
-but keep them at trade-off level, not line-by-line.
-
-### Generated and agent-facing docs
-
-Machine-generated context — code indexes, task→file routing maps,
-dependency graphs — lives in its own tree, marked as generated and
-regenerated by scripts or a skill, with the regeneration wired into CI
-or the dev loop. A generated tree whose regeneration has lapsed rots
-silently — worse than no tree; do not create one without the loop.
-Never hand-edit generated docs; fix the generator. A curated agent
-entrypoint doc (task → "read these files first" table, component map,
-read-order guidance, do-not-read list) pays for itself quickly at this
-scale.
-
-### Review archives
-
-Optional: per-file or per-PR review records under `docs/reviews/`.
-Useful for audits — but they are records, not design docs.
-
-### Docs in the workflow
-
-- The plan doc PR *is* the design review; phase status tracks reality and
-  is updated in the same PR as the code.
-- Living docs follow the small-scale `sources:` contract; plans are
-  point-in-time records kept in sync by the phase-merge workflow, not
-  the contract.
-- Multi-repo changes: one plan dir per repo, cross-linked; shared
-  contracts get reference docs both sides cite.
-
-## Large project
-
-Medium, formalized: proposals carry lifecycle status and named
-approvers; design review meetings gate implementation; dedicated
-security/privacy design docs with their own reviews; NFRs get measurable
-targets (SLOs, capacity, latency budgets); rollout, risk register, and
-ops readiness are required sections. A central index keeps proposals
-discoverable as organizational memory.
+1. **Starting a project's docs** — copy `templates/` to `docs/`; fill in
+   `README.md` and `architecture/`, keep `adr/0001-…` if the project
+   records decisions, drop the subtrees that don't apply.
+2. **Adding or changing a component** — write or update its service dir
+   or component doc; update the overview's Components and "In this
+   directory" tables.
+3. **Changing behavior** — update every living doc whose `sources:`
+   intersects the changed files, in the same commit; bump
+   `last_modified`.
+4. **Proposing a change** — write `design-docs/NNNN-<change>.md` (one
+   PR) or `NNNN-<change>/` (multi-PR); link the issues it resolves.
+5. **Making a significant decision** — add `docs/adr/NNNN-<slug>.md`.
+6. **Closing out** — when a design doc ships or drops, move it to
+   `design-docs/archived/`; when an issue closes, move it to
+   `issues/archived/`.
 
 ## References
 

@@ -1,22 +1,24 @@
 # DesignDoc
 
-Design-doc conventions packaged as agent skills, organized by project
-scale — pick a scale, copy its template tree, apply its conventions.
+Design-doc conventions packaged as agent skills — one scale-independent
+pattern: living docs under `docs/architecture/`, proposals under
+`docs/design-docs/`, decisions under `docs/adr/`, issues under
+`docs/issues/`.
 
 ## What's inside
 
 | Path | Contents |
 |---|---|
-| `.agents/skills/design-doc/` | The doc-writing skill — scale ladder, per-scale conventions |
-| `.agents/skills/design-doc-template/` | The template-authoring skill — how scales get distilled |
-| `.agents/skills/spec-driven-development/` | The plan-execution skill — PR granularity, stacked PRs |
+| `.agents/skills/design-doc/` | The doc-writing skill — layout, conventions, check scripts |
+| `.agents/skills/design-doc-template/` | The template-authoring skill — how conventions get distilled |
+| `.agents/skills/spec-driven-development/` | The design-doc execution skill — PR granularity, stacked PRs |
 | `.agents/skills/doc-checks-ci/` | CI wiring for the check scripts — anchored workflow job, one-command opt-in/out |
 | `.agents/skills/agent-guidance/` | Placement rules for agent-facing guidance — AGENTS.md vs SKILL.md vs `reference/`/`scripts/`/`tests/` |
-| `.agents/skills/design-doc/templates/<scale>/` | Copy-ready `docs/` trees |
+| `.agents/skills/design-doc/templates/` | Copy-ready `docs/` tree |
 | `docs/example/` | Worked example (fictional project) |
 
-One doc pattern — the conventions scale with project size; `small` and
-`medium` templates differ only in depth.
+One doc pattern — scale changes depth and review formality, not the
+layout.
 
 ## Requirements
 

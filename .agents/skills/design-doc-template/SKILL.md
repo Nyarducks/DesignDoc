@@ -1,12 +1,11 @@
 ---
 name: design-doc-template
 description: >-
-  Create or extend the design-doc skill's per-scale conventions,
-  templates, and worked examples — how to distill a reference project's
-  documentation approach into a generic template without leaking its
-  internals. Use when adding a new scale or changing what a scale's docs
-  should look like. For writing a design doc for a real project, use the
-  design-doc skill instead.
+  Create or extend the design-doc skill's conventions, templates, and
+  worked example — how to distill a reference project's documentation
+  approach into a generic template without leaking its internals. Use
+  when changing what the shipped docs should look like. For writing a
+  design doc for a real project, use the design-doc skill instead.
 metadata:
   author: Nyarducks
   license: MIT
@@ -15,10 +14,10 @@ metadata:
 
 # Design doc template authoring
 
-This repo packages design-doc conventions per project scale into the
-`design-doc` skill. This skill covers **authoring** that material —
-studying a reference project and distilling its conventions into a
-generic template.
+This repo packages design-doc conventions — one scale-independent
+pattern — into the `design-doc` skill. This skill covers **authoring**
+that material — studying a reference project and distilling its
+conventions into generic templates.
 
 The canonical rules live in the repo root `CONTRIBUTING.md`; this skill
 is the agent-facing procedure. The short version:
@@ -35,15 +34,18 @@ is the agent-facing procedure. The short version:
 
 ## Procedure
 
-1. Read the reference repo's doc surface — overview docs, per-component
-   docs, plans/proposals, decision records, generated or agent-facing
-   docs. Use `gh` for GitHub repos.
+1. Read the reference repo's doc surface — overview docs, per-service
+   docs, proposals, decision records, generated or agent-facing docs.
+   Use `gh` for GitHub repos.
 2. Map what you find onto the doc kinds (living / proposal / decision /
-   reference / generated) and confirm the scale fit.
+   issue / reference / generated).
 3. Write the conventions generically — describe the pattern, never the
    content.
-4. Ship the three deliverables per `CONTRIBUTING.md`: a `SKILL.md`
-   section, a `templates/<scale>/` tree, and a fictional
-   `docs/example/<scale>/` — then update the scale table.
-5. Verify every file renders: frontmatter parses as YAML, mermaid blocks
+4. Ship the deliverables per `CONTRIBUTING.md`: the `SKILL.md`
+   conventions, the `templates/` tree, and the fictional `docs/example/`
+   worked example — one tree each, not per scale.
+5. Write placeholders agents can act on — prose instructions in
+   `<!-- -->` comments under each heading; `<value>` placeholders only
+   where a value is expected (titles, paths, table cells, frontmatter).
+6. Verify every file renders: frontmatter parses as YAML, mermaid blocks
    are valid, no `<placeholders>` inside diagram syntax.

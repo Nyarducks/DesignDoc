@@ -10,7 +10,7 @@ Extended rationale and examples for the rules in `../SKILL.md`.
 | `<skill>/SKILL.md` body | when the skill's description matches the task | what an agent needs mid-task, not orientation |
 | `<skill>/reference/*.md` | only when the agent opens it | unlimited — detail lives here |
 | `<skill>/scripts/*.sh`, `tests/` | never injected | correctness enforced by running, not reading |
-| `docs/` | never injected; reached via `sources:` and links | design rationale, ADRs, plans |
+| `docs/` | never injected; reached via `sources:` and links | design rationale, ADRs, design docs |
 
 ## The self-evident test
 
@@ -38,7 +38,7 @@ or doc.
 |---|---|---|
 | "Commits to main are blocked; branch `feat/<topic>`" | AGENTS.md | needed every session; not inferable before the mistake |
 | How `cache_size` parameters map to store fields | `cache-tuning` SKILL.md / reference | only relevant mid-tuning |
-| The CI pipeline's base-SHA fallback rules | `docs/design/change-detection.md` | design rationale, linked via `sources:` |
+| The CI pipeline's base-SHA fallback rules | `docs/architecture/ci/change-detection.md` | design rationale, linked via `sources:` |
 | "A dispatcher reinstalls git hooks on `git commit`" | script header comment | runs automatically; documenting it in AGENTS.md is noise |
 | Skill layout conventions themselves | this skill | consulted only when authoring guidance |
 

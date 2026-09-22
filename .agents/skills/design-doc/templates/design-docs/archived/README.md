@@ -1,0 +1,15 @@
+---
+type: Reference
+title: Archived design docs
+description: Shipped, dropped, or superseded design docs — frozen point-in-time records.
+status: current
+last_modified: <YYYY-MM-DD>
+tags: [design-doc]
+sources: []
+---
+
+# Archived design docs
+
+Done and dropped design docs live here — frozen records of the decision
+at the time. Don't edit them; the architecture docs carry the living
+truth.
