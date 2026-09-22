@@ -45,6 +45,9 @@ frontmatter and forces every parallel doc PR to edit the same rows.
   itself. Compress, don't enumerate: interface tables and diagrams over
   endpoint walkthroughs, and link schema sources of truth instead of
   inlining payloads or field lists.
+- Domain terms come from [../architecture/glossary.md](../architecture/glossary.md)
+  — link it, don't redefine. A term the proposal introduces is
+  promoted to the glossary when the change ships.
 - A multi-phase change gets a directory: `README.md` is the design doc
   and each `phase-N-<slug>.md` is the execution surface — scope, task
   checklist, acceptance criteria, PR link, progress log; roughly one PR

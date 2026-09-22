@@ -92,13 +92,15 @@ it from being arbitrary.
 - **Auth** — partner keys scoped per carrier (`events:write`,
   `shipments:read`); dashboard calls carry the user's SSO session.
   Scoped keys over OAuth bearer flows because several carrier bridges
-  can't run a token-refresh dance.
+  can't run a token-refresh dance. Full credential, scope, and rotation
+  rules: [authentication.md](authentication.md).
 - **Versioning** — path prefix (`/v1/`); breaking changes ship a new
   prefix, never a flag. URL pinning is the only mechanism every
   integration — including FTP-bridge schedulers — actually honors.
 - **Errors** — RFC 9457 problem shape (`type`, `title`, `status`,
   `detail`, `code`). Chosen over ad-hoc `{error: "msg"}` because
-  partner SDKs key retries off a stable `code`.
+  partner SDKs key retries off a stable `code`. Status taxonomy and
+  caller retry rules: [error-handling.md](error-handling.md).
 - **Pagination** — cursor-based on every list endpoint; `next_cursor`
   is null at the end. Offset was rejected: event tables are
   append-heavy, so offsets drift under concurrent writes.
@@ -111,6 +113,9 @@ it from being arbitrary.
 | Surface | Base path | Callers | Doc |
 |---|---|---|---|
 | shipments | `/v1/shipments*` | `events:write`, `shipments:read`; dashboard | [shipments.md](shipments.md) |
+
+Shared policy docs: [authentication.md](authentication.md),
+[error-handling.md](error-handling.md).
 
 ## Data model
 

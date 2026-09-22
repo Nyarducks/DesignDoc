@@ -25,6 +25,9 @@ changes live in [../design-docs/](../design-docs/), not here.
   route, a mechanism.
 - A cross-cutting policy that outgrows a hub's Conventions section gets
   its own file — e.g. `error-handling.md`, `authentication.md`.
+- **[`glossary.md`](glossary.md)** — ubiquitous domain terms; design
+  docs link to it rather than redefining, and a term a proposal
+  introduces is promoted here when the change ships.
 
 Name docs after the thing they describe, never after a document tier —
 a change should touch one doc, not the same section in three. Docs

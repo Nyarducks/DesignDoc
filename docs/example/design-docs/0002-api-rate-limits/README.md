@@ -113,6 +113,14 @@ Phase 1 ──> Phase 2
 - **Rollback**: disable the middleware flag → requests pass through
   unchanged. Fail-open means a Redis outage never requires a rollback.
 
+## Success metrics
+
+- No repeat of the 2026-09-08 failure class: one carrier's retry loop
+  can no longer push ingest lag past the 30 s SLO.
+- 429 responses observable per tenant (`rate_limit_exceeded_total`);
+  ops can answer "why was I throttled" without a deploy.
+- Rate-limit check adds < 2 ms p99 to the ingestion path.
+
 ## Open questions
 
 - [ ] What limit applies to `GET /v1/usage` itself — unbounded reads

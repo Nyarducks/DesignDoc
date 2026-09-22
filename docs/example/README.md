@@ -143,6 +143,7 @@ Dashboards cover ingestion lag, API latency, and queue depth — see
 
 ## References
 
+- Domain terms: [architecture/glossary.md](architecture/glossary.md)
 - Rate limiting design doc: [design-docs/0002-api-rate-limits/](design-docs/0002-api-rate-limits/)
 
 ## In this directory

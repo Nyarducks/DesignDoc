@@ -13,8 +13,10 @@ issues: [0001]
 # Shipments
 
 Surface: `/v1/shipments*` — callers: carrier keys (`events:write`,
-`shipments:read`), dashboard reads. Surface-wide conventions (auth,
-versioning, errors, pagination) live in [README.md](README.md).
+`shipments:read`), dashboard reads. Surface-wide conventions live in
+[README.md](README.md); the shared credential rules in
+[authentication.md](authentication.md), the error envelope and retry
+contract in [error-handling.md](error-handling.md).
 
 ## Contract
 
