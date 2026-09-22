@@ -1,30 +1,31 @@
 # DesignDoc
 
-Design-doc conventions packaged as agent skills, organized by project
-scale — pick a scale, copy its template tree, apply its conventions.
+Design-doc conventions packaged as agent skills — one scale-independent
+pattern: living docs under `docs/architecture/`, proposals under
+`docs/design-docs/`, decisions under `docs/adr/`, issues under
+`docs/issues/`.
 
 ## What's inside
 
 | Path | Contents |
 |---|---|
-| `.agents/skills/design-doc/` | The doc-writing skill — scale ladder, per-scale conventions |
-| `.agents/skills/design-doc-template/` | The template-authoring skill — how scales get distilled |
-| `.agents/skills/spec-driven-development/` | The plan-execution skill — PR granularity, stacked PRs |
-| `.agents/skills/design-doc/templates/<scale>/` | Copy-ready `docs/` trees |
-| `docs/example/<scale>/` | Worked examples (fictional projects) |
+| `.agents/skills/design-doc/` | The doc-writing skill — layout, conventions, check scripts |
+| `.agents/skills/design-doc-template/` | The template-authoring skill — how conventions get distilled |
+| `.agents/skills/spec-driven-development/` | The design-doc execution skill — PR granularity, stacked PRs |
+| `.agents/skills/doc-checks-ci/` | CI wiring for the check scripts — anchored workflow job, one-command opt-in/out |
+| `.agents/skills/agent-guidance/` | Placement rules for agent-facing guidance — AGENTS.md vs SKILL.md vs `reference/`/`scripts/`/`tests/` |
+| `.agents/skills/design-doc/templates/` | Copy-ready `docs/` tree |
+| `docs/example/` | Worked example (fictional project) |
 
-Scales so far: `small`, `medium`.
+One doc pattern — scale changes depth and review formality, not the
+layout.
 
 ## Requirements
 
-- [GitHub CLI](https://cli.github.com/) (`gh`) — PR workflows and skill
-  installation.
-  - `gh skill` requires **gh v2.90.0+**; this repo's skills live under
-    the hidden `.agents/` dir, so pass `--allow-hidden-dirs`.
-  - [`gh stack`](https://github.com/github/gh-stack) — only when
-    `spec-driven-development` splits work into stacked PRs:
-    `gh extension install github/gh-stack` (requires gh v2.0+). Its own
-    agent skill ships via `gh skill install github/gh-stack`.
+| Tool | Needed for |
+|---|---|
+| [GitHub CLI](https://cli.github.com/) (`gh` v2.90.0+) | PR workflows; `gh skill install` — this repo's skills live under the hidden `.agents/` dir, so pass `--allow-hidden-dirs` |
+| [`gh stack`](https://github.com/github/gh-stack) | Only when `spec-driven-development` splits work into stacked PRs — `gh extension install github/gh-stack` (gh v2.0+); its own agent skill ships via `gh skill install github/gh-stack` |
 
 ## Installation
 

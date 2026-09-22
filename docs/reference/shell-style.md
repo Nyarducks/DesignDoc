@@ -3,13 +3,12 @@ type: Reference
 title: Shell Script Style Guide
 description: Style conventions for every shell file in this repo — safety header, variable naming, quoting, function scope, lint annotations.
 status: current
-last_modified: 2026-09-20
 tags: [style, bash, conventions]
 sources: []
 ---
 
 Applies to every shell file: scripts shipped inside skills
-(`.agents/skills/*/scripts/`) and everything under `tests/`.
+(`.agents/skills/*/scripts/`) and each skill's `tests/`.
 
 ## 1. Safety Header
 

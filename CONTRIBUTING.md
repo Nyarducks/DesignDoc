@@ -26,17 +26,15 @@ template authoring only.
 - **Leave behind** — anything that answers "what does their system do"
   rather than "how do they document".
 
-## Per-scale deliverables
+## Deliverables
 
-Each scale ships three things:
+The doc conventions ship three things:
 
-1. A section in `.agents/skills/design-doc/SKILL.md` — the conventions.
-2. `.agents/skills/design-doc/templates/<scale>/` — a copy-ready tree
-   mirroring the target `docs/` layout.
-3. `docs/example/<scale>/` — the template applied to a fictional project,
+1. `.agents/skills/design-doc/SKILL.md` — the conventions.
+2. `.agents/skills/design-doc/templates/` — a copy-ready tree mirroring
+   the target `docs/` layout.
+3. `docs/example/` — the template applied to a fictional project,
    marked as such.
-
-Then update the scale table in `SKILL.md`.
 
 ## Quality bar
 
@@ -49,5 +47,19 @@ Then update the scale table in `SKILL.md`.
 ## Shell script style
 
 Every shell file — scripts shipped inside skills
-(`.agents/skills/*/scripts/`) and everything under `tests/` — follows
+(`.agents/skills/*/scripts/`) and each skill's `tests/` — follows
 `docs/reference/shell-style.md`.
+
+## Requirements
+
+| Tool | Needed for |
+|---|---|
+| bash, git, coreutils | runtime of the check scripts |
+| bats | each skill's tests — `bats .agents/skills/*/tests/*.bats` |
+| shellcheck | lint the shipped scripts — `shellcheck .agents/skills/*/scripts/*.sh` |
+| gh | PR workflows and `gh skill` install testing |
+
+CI additionally runs the skill layout check
+(`.agents/skills/agent-guidance/scripts/check-skills.sh`) and the
+installed `docs` job (see the `doc-checks-ci` skill) — no extra
+tooling, just the repo's own scripts.

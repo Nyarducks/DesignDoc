@@ -1,0 +1,33 @@
+{
+  "tags": {
+    "adr": "Architecture decision records — docs/adr/",
+    "api": "The api service and its contract surfaces",
+    "architecture": "Living architecture docs — the system as it is",
+    "auth": "Authentication and authorization — credentials, scopes, headers",
+    "design": "System-level design — the overview doc",
+    "design-doc": "Change proposals — docs/design-docs/",
+    "errors": "Error handling — envelopes, status codes, retry rules",
+    "eta": "ETA prediction — the model and its signals",
+    "events": "The shipment event stream — ingestion, ordering, projection",
+    "frontend": "The web app — routes, states, data contracts",
+    "glossary": "Ubiquitous domain terms",
+    "hpa": "Horizontal pod autoscaling",
+    "ingestion": "Event ingestion — carrier webhooks to the event log",
+    "infra": "Platform infrastructure — topology, mechanisms, scaling",
+    "issue": "A known problem — docs/issues/",
+    "issues": "The issues index and conventions",
+    "jobs": "Background jobs and the worker queue",
+    "keda": "KEDA event-driven autoscaling",
+    "map": "The tracking map — live shipment positions",
+    "overview": "Top-level system overview",
+    "platform": "Platform-wide conventions and topology",
+    "process": "Process and tooling conventions",
+    "rate-limiting": "API rate limiting — quotas, 429s, Redis counters",
+    "redis": "Redis — rate-limit counters and shared state",
+    "reliability": "Reliability and failure-mode concerns",
+    "scaling": "Scaling behavior and limits",
+    "shipments": "The shipments domain — lifecycle and event contract",
+    "tracking": "Shipment tracking features",
+    "worker": "The worker service — jobs and event consumers"
+  }
+}

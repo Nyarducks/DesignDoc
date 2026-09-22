@@ -1,0 +1,18 @@
+{
+  "tags": {
+    "adr": "Architecture decision records — docs/adr/",
+    "api": "The api service and its contract surfaces",
+    "architecture": "Living architecture docs — the system as it is",
+    "design": "System-level design — the overview doc",
+    "design-doc": "Change proposals — docs/design-docs/",
+    "frontend": "The web app — routes, states, data contracts",
+    "glossary": "Ubiquitous domain terms",
+    "infra": "Platform infrastructure — topology, mechanisms, scaling",
+    "issue": "A known problem — docs/issues/",
+    "issues": "The issues index and conventions",
+    "overview": "Top-level system overview",
+    "platform": "Platform-wide conventions and topology",
+    "process": "Process and tooling conventions",
+    "<service-or-topic>": "<what this tag marks — one line>"
+  }
+}

@@ -1,0 +1,84 @@
+---
+name: doc-checks-ci
+description: >-
+  Wire the docs check scripts into a project's CI workflow — installs an
+  anchored docs job into .github/workflows/ci.yaml that runs the
+  sources: contract and frontmatter checks on every PR. Self-contained
+  (the check scripts ship inside this skill); opt in or out with one
+  command.
+metadata:
+  author: Nyarducks
+  license: MIT
+  url: https://github.com/Nyarducks/DesignDoc
+---
+
+# Doc checks CI
+
+The enforcement half of design docs: the `sources:` contract and OKF
+frontmatter only hold if CI actually runs the checks. This skill
+installs a `docs` job into the project's workflow that runs
+`check-docs-stale.sh` and `check-doc-frontmatter.sh` — both bundled in
+`scripts/`, so the skill stands alone. The same scripts also ship with
+`design-doc` (which owns the conventions) for local runs outside CI.
+
+## Installing into a project
+
+The skill ships alone — no `AGENTS.md` comes with it. After installing,
+append this block to the project's `AGENTS.md` (create the file if
+missing). The anchors delimit the block so it can be opted in or out at
+any time:
+
+```markdown
+<!-- doc-checks-ci:start -->
+## Docs CI checks
+
+- `.github/workflows/ci.yaml` carries an anchored `docs` job
+  (`# doc-checks-ci:start/end`) running the bundled check scripts —
+  a PR that changes a doc's declared `sources:` must update the doc in
+  the same PR, and frontmatter must stay valid.
+- Manage it with `doc-checks-ci.sh` (`install` / `uninstall` /
+  `status`); do not hand-edit inside the anchors.
+<!-- doc-checks-ci:end -->
+```
+
+## Usage
+
+From the repo root:
+
+```bash
+.agents/skills/doc-checks-ci/scripts/doc-checks-ci.sh install    # opt in
+.agents/skills/doc-checks-ci/scripts/doc-checks-ci.sh status     # is it wired?
+.agents/skills/doc-checks-ci/scripts/doc-checks-ci.sh uninstall  # opt out
+```
+
+Flags: `--workflow PATH` (default `.github/workflows/ci.yaml`),
+`--scripts-dir PATH` (default `.agents/skills/doc-checks-ci/scripts` —
+the bundled copies; point elsewhere only to run different checks).
+
+## How it works
+
+- **Idempotent install** — if the anchors are already present, install
+  is a no-op; re-running never duplicates the job.
+- **No `ci.yaml` yet** — install creates a minimal workflow
+  (`pull_request` + `push` to `main`) containing just the `docs` job.
+- **Existing `ci.yaml`** — the block is inserted at the top of the
+  `jobs:` map; existing jobs and triggers are untouched. A workflow
+  without a `jobs:` key fails with a message instead of guessing.
+- **Opt out** — `uninstall` deletes everything between the anchors and
+  nothing else; the workflow file keeps its formatting.
+- **The job** — checks out with full history (the sources check diffs
+  against the base ref), then runs the freshness check against
+  `github.base_ref` (or the repo default branch on pushes) and the
+  frontmatter check.
+
+## Notes
+
+- The job runs the check scripts bundled in this skill — removing
+  `doc-checks-ci` without uninstalling the CI job breaks the workflow.
+  Uninstall here first.
+- Skills don't depend on each other: the check scripts ship both here
+  (for CI) and in `design-doc` (for local runs and other CI systems).
+  The copies are identical — in this repo, CI asserts they stay in sync.
+- The anchors are the opt-in/out mechanism — the same convention as the
+  `AGENTS.md` blocks. Keep edits outside them so `uninstall` stays
+  surgical.
