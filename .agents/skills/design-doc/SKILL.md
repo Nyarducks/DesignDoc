@@ -16,9 +16,9 @@ metadata:
 
 # Design docs
 
-One documentation pattern for any project size — copy `templates/` into
-`docs/` and apply the conventions below. Scale changes depth and review
-formality, not the layout.
+One documentation pattern for any project size — copy the pieces you
+need from `templates/` into `docs/` and apply the conventions below.
+Scale changes depth and review formality, not the layout.
 
 ## Installing into a project
 
@@ -89,7 +89,8 @@ it to see what the install is missing.
 
 ## Layout
 
-`templates/` mirrors the target `docs/` tree — copy it and rename:
+`templates/` mirrors the target `docs/` tree — copy only the pieces you
+need and rename them:
 
 ```
 docs/
@@ -119,6 +120,14 @@ docs/
     ├── NNNN-<slug>.md           # one file per issue
     └── archived/                # done/deferred/wontfix — frozen records
 ```
+
+Take only what applies — `README.md` and the conventions files always;
+`adr/0001-…` if the project records decisions; each `architecture/`
+subtree only when a service of that kind exists. In template files,
+`<!-- -->` comments under each heading are fill-in prompts — **replace
+them with real content; never leave them in a shipped doc**. `<…>`
+tokens mark values to fill; `NNNN-`/`__x__` names mark files and dirs to
+rename.
 
 Two doc *kinds* do the work: **living docs** describe the system as it
 is (`architecture/` — updated in the same commit as code); **proposal
@@ -374,9 +383,10 @@ central index as organizational memory.
 
 ## Procedure
 
-1. **Starting a project's docs** — copy `templates/` to `docs/`; fill in
-   `README.md` and `architecture/`, keep `adr/0001-…` if the project
-   records decisions, drop the subtrees that don't apply.
+1. **Starting a project's docs** — copy only the pieces that apply from
+   `templates/` into `docs/`; fill the `<…>` placeholders, replace the
+   `<!-- -->` prompts with real content, and rename `NNNN-`/`__x__`
+   files as they get used.
 2. **Adding or changing a component** — write or update its service dir
    or component doc; update the overview's Components and "In this
    directory" tables.
