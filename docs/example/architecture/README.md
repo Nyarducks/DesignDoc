@@ -23,6 +23,10 @@ changes live in [../design-docs/](../design-docs/), not here.
   invariants, surface-wide conventions, the index of its docs); each
   `<topic>.md` documents one unit of change — a contract surface, a
   route, a mechanism.
+- A cross-cutting policy that outgrows a hub's Conventions section gets
+  its own file — e.g. `error-handling.md`, `authentication.md`.
 
 Name docs after the thing they describe, never after a document tier —
-a change should touch one doc, not the same section in three.
+a change should touch one doc, not the same section in three. Docs
+record behavior and decisions — never field lists or payloads; link
+the schema file and list it in `sources:` instead.

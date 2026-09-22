@@ -39,12 +39,19 @@ frontmatter and forces every parallel doc PR to edit the same rows.
 - Status legend: `draft` · `in-review` · `in-progress` · `done` ·
   `dropped`. `in-review` — the doc PR is open and the design is being
   weighed; `in-progress` — implementation has started.
+- A design doc is **self-contained for review** — Context (with a
+  `**Resolves:**` link to the issues it settles), goals, options and
+  trade-offs, proposed architecture, and rollout all live in the doc
+  itself. Compress, don't enumerate: interface tables and diagrams over
+  endpoint walkthroughs, and link schema sources of truth instead of
+  inlining payloads or field lists.
 - A multi-phase change gets a directory: `README.md` is the design doc
-  (context, trade-offs, rollout) and each `phase-N-<slug>.md` is the
-  execution surface — the smallest independently mergeable increment,
-  roughly one PR each. When a phase merges, the doc's `status:`/phase
-  index and the living docs listed in `designs:` are updated in the
-  same commit.
+  and each `phase-N-<slug>.md` is the execution surface — scope, task
+  checklist, acceptance criteria, PR link, progress log; roughly one PR
+  each. Design narrative stays in the README — a reviewer reads the
+  README alone. When a phase merges, the doc's `status:`/phase index
+  and the living docs listed in `designs:` are updated in the same
+  commit.
 - When a doc reaches `done` (or `dropped`), move its file or directory
   to `archived/`, set `status:` accordingly, and record the delivering
   PR in the body (e.g. "delivered via #123").

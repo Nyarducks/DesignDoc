@@ -20,31 +20,11 @@ designs: [architecture/web, architecture/infra, architecture/infra/autoscaling]
 | **Blocks** | — |
 | **Pull request** | #96 |
 
-## Problem
+## Scope
 
-Phase 1 enforces limits but operators can't see them — a throttled
-carrier looks identical to a quiet one. And the counter store is
-single-node Redis, now on the request path.
-
-## Evidence
-
-- `architecture/infra/` service map — Redis listed as single-node.
-- Phase 1 progress log — fail-open means a Redis outage silently
-  disables enforcement.
-
-## Impact
-
-Without HA, a Redis restart erases in-flight windows (briefly unlimited)
-then blocks nothing; without the usage meter, ops can't tune quotas or
-explain 429s to partners.
-
-## Proposed change
-
-1. Redis → primary/replica pair with sentinel failover; api reconnect
-   handling.
-2. `GET /v1/usage` — per-tenant current-window usage + quota.
-3. Dashboard: usage bar on the shipment detail panel; admin quota
-   editor (dispatcher role).
+Adds operator visibility — `GET /v1/usage`, dashboard usage bar, quota
+editor — and makes the counter store HA. The design and its rationale
+live in [README.md](README.md); this file tracks execution only.
 
 ## Task checklist
 

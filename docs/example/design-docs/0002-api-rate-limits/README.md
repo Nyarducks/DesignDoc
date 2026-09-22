@@ -5,6 +5,8 @@ description: Token-bucket rate limiting on the ingestion path — shared Redis c
 status: in-progress
 last_modified: 2026-09-22
 tags: [design-doc, api, rate-limiting]
+authors: [yamada]
+reviewers: [tanaka]
 issues: [0001]
 designs: [architecture/api/shipments, architecture/infra/autoscaling]
 ---
@@ -17,15 +19,16 @@ makes the counter store HA and surfaces usage to operators.
 
 - **Created**: 2026-09-15
 - **Repositories**: `acme/freightloop`
-- **Scope**: this design doc is maintained with the implementation — keep the
-  phase index and status column current.
+- **Scope**: this doc is self-contained for review — the design and its
+  trade-offs live here; the `phase-N-*.md` files track execution only.
 
 ## Context
 
-[Issue 0001](../../issues/0001-api-no-backpressure.md) — the events
-endpoint has no quota check; one carrier's retry loop already caused a
-fleet-wide 4-minute ingest lag incident. The queue absorbs bursts today
-but lag is shared across tenants.
+**Resolves:** [issue 0001 — API has no backpressure](../../issues/0001-api-no-backpressure.md)
+
+The events endpoint has no quota check; one carrier's retry loop
+already caused a fleet-wide 4-minute ingest lag incident. The queue
+absorbs bursts today but lag is shared across tenants.
 
 ### Operating assumptions
 
@@ -36,15 +39,61 @@ but lag is shared across tenants.
 | Counter store | Redis — see [ADR-0002](../../adr/0002-redis-rate-limit-state.md) |
 | Redis outage behavior | Fail open (log + allow) — never block ingestion |
 
-## Goal mapping
+## Goals and non-goals
 
-| Goal | Phases |
+| Goal | Phase |
 |---|---|
 | Enforce per-tenant limits on ingestion | 1 |
 | Operators can see and tune quotas | 2 |
 | Counter store survives a Redis failover | 2 |
 
-## Phase index
+Non-goals: per-shipment or per-route limits; self-serve quota
+management for carriers; edge DDoS protection (the CDN perimeter's
+job).
+
+## Options and trade-offs
+
+| Option | Cost / trade-off | Verdict |
+|---|---|---|
+| Token bucket in middleware, counters in Redis | Redis joins the request path — bounded by fail-open | **Accepted** |
+| Per-pod in-memory buckets | Limit becomes `quota × pod count` under HPA | Rejected ([ADR-0002](../../adr/0002-redis-rate-limit-state.md)) |
+| Queue-level shedding | Drops already-accepted work; punishes well-behaved tenants sharing the queue | Rejected |
+
+## Proposed architecture
+
+Token-bucket middleware ahead of the shipments handler:
+
+```mermaid
+flowchart LR
+    C[Carrier] --> MW["rate-limit middleware"]
+    MW -->|"INCR rl:tenant:minute + EXPIRE"| R[(Redis)]
+    MW -->|over quota| X["429 + Retry-After"]
+    MW -->|under quota| H["handler → queue"]
+```
+
+- Counter: `INCR rl:<tenant>:<minute>` + `EXPIRE`; over quota → `429`
+  + `Retry-After` in the API's standard problem shape.
+- Quotas per carrier key in `api/config/limits.yaml`; default 600
+  events/min.
+- **Fail-open**: Redis unreachable → log + allow. Limiting must never
+  block ingestion.
+- Phase 2 adds `GET /v1/usage` (current window + quota), a dashboard
+  usage bar with a dispatcher-role quota editor, and a Redis
+  primary/replica pair with sentinel failover.
+
+Field-level contract detail lives in `api/openapi.yaml` — not
+duplicated here.
+
+## Cross-cutting concerns
+
+- **Observability** — `rate_limit_exceeded_total` per tenant; Redis
+  call latency is measured on the request path.
+- **Fault tolerance** — fail-open bounds the new Redis dependency;
+  phase 2 removes the single-node failure mode.
+- **Security** — counter keys are carrier IDs, not PII; quota config
+  is ops-owned, not carrier-editable.
+
+## Rollout and migration
 
 | Phase | Title | Priority | Status | Pull request |
 |---|---|---|---|---|
@@ -54,16 +103,18 @@ but lag is shared across tenants.
 Status legend: Not started · In progress · In review · Merged ·
 Deferred · Dropped
 
-## Dependency order
-
 ```text
 Phase 1 ──> Phase 2
 (enforcement first; dashboard + HA build on the same counters)
 ```
 
-## Rejected alternatives
+- Phase 1 ships enforcement only — operators can't see or tune limits
+  until phase 2.
+- **Rollback**: disable the middleware flag → requests pass through
+  unchanged. Fail-open means a Redis outage never requires a rollback.
 
-- **Queue-level shedding** — drops already-accepted work and punishes
-  well-behaved tenants; rejected for unfair blast radius.
-- **Per-pod in-memory buckets** — limit becomes `quota × pod count`
-  under HPA; rejected (ADR-0002).
+## Open questions
+
+- [ ] What limit applies to `GET /v1/usage` itself — unbounded reads
+  are the same bug class this doc fixes.
+- [ ] Default quota for sandbox/trial carrier keys.
