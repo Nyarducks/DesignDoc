@@ -97,6 +97,7 @@ docs/
 ├── architecture/                # LIVING DOCS — the system as it is
 │   ├── README.md                #   architecture conventions
 │   ├── glossary.md              #   ubiquitous domain terms
+│   ├── tags.json                #   controlled tag vocabulary
 │   ├── <service>/               #   one dir per service or coherent
 │   │   ├── README.md            #     subsystem: hub + index of its docs
 │   │   └── <topic>.md           #     one doc per unit of change —
