@@ -26,17 +26,15 @@ template authoring only.
 - **Leave behind** — anything that answers "what does their system do"
   rather than "how do they document".
 
-## Per-scale deliverables
+## Deliverables
 
-Each scale ships three things:
+The doc conventions ship three things:
 
-1. A section in `.agents/skills/design-doc/SKILL.md` — the conventions.
-2. `.agents/skills/design-doc/templates/<scale>/` — a copy-ready tree
-   mirroring the target `docs/` layout.
-3. `docs/example/<scale>/` — the template applied to a fictional project,
+1. `.agents/skills/design-doc/SKILL.md` — the conventions.
+2. `.agents/skills/design-doc/templates/` — a copy-ready tree mirroring
+   the target `docs/` layout.
+3. `docs/example/` — the template applied to a fictional project,
    marked as such.
-
-Then update the scale table in `SKILL.md`.
 
 ## Quality bar
 

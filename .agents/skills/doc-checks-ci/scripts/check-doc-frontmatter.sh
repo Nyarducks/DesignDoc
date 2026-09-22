@@ -6,13 +6,14 @@
 # fields that check relies on.
 #
 # Rules:
-#   - Live docs MUST carry frontmatter. Archives — docs/plan/archived/,
-#     docs/issues/archived/, docs/reviews/ — are point-in-time records:
+#   - Live docs MUST carry frontmatter. Archives —
+#     docs/design-docs/archived/, docs/issues/archived/, docs/reviews/
+#     — are point-in-time records:
 #     frontmatter is optional, but when present it is validated like any
 #     other doc.
 #   - Frontmatter is --- delimited and contains the required keys:
 #       type, title, status, last_modified
-#   - type ∈ {Design Doc, ADR, Reference, Plan, Issue}
+#   - type ∈ {Architecture, Design Doc, ADR, Reference, Plan, Issue}
 #   - last_modified is a YYYY-MM-DD date
 #   - No unquoted scalar containing ': ' (breaks YAML renders)
 #   - Inline lists [a, b] have no empty items and no character-split
@@ -37,7 +38,7 @@ err() { echo "FRONTMATTER: $1 — $2"; violations=$((violations + 1)); }
 
 is_archive() {
   case "$1" in
-    */plan/archived/* | */issues/archived/* | */reviews/*) return 0 ;;
+    */design-docs/archived/* | */issues/archived/* | */reviews/*) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -46,7 +47,7 @@ while IFS= read -r file; do
   # --- delimiters: first line must be exactly ---, and a closing ---
   # must exist before any non-frontmatter content.
   if ! head -n 1 "$file" | grep -qx -- '---'; then
-    is_archive "$file" || err "$file" "missing frontmatter (archives exempt: plan/archived/, issues/archived/, reviews/)"
+    is_archive "$file" || err "$file" "missing frontmatter (archives exempt: design-docs/archived/, issues/archived/, reviews/)"
     continue
   fi
   if ! awk 'NR>1 && /^---/{found=1; exit} END{exit !found}' "$file"; then
@@ -66,8 +67,8 @@ while IFS= read -r file; do
   if [[ -n "$type_line" ]]; then
     type_val=$(printf '%s' "${type_line#type:}" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
     case "$type_val" in
-      "Design Doc" | "ADR" | "Reference" | "Plan" | "Issue") ;;
-      *) err "$file" "unknown type: ${type_val} (expected Design Doc|ADR|Reference|Plan|Issue)" ;;
+      "Architecture" | "Design Doc" | "ADR" | "Reference" | "Plan" | "Issue") ;;
+      *) err "$file" "unknown type: ${type_val} (expected Architecture|Design Doc|ADR|Reference|Plan|Issue)" ;;
     esac
   fi
 

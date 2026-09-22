@@ -11,9 +11,9 @@ Design-doc conventions packaged as agent skills, organized by project scale.
    `doc-checks-ci` wires the check scripts into a project's CI, and
    `agent-guidance` decides where agent-facing guidance lives. Template
    rules live in `CONTRIBUTING.md`; its no-leak rule is non-negotiable.
-3. **Every scale ships a template tree + fictional example** —
-   `templates/<scale>/` mirrors the target `docs/` layout;
-   `docs/example/<scale>/` is a worked example for an invented project.
+3. **Ship a template tree + fictional example** — `templates/` mirrors
+   the target `docs/` layout; `docs/example/` is a worked example for
+   an invented project.
 
 ## Pointers
 

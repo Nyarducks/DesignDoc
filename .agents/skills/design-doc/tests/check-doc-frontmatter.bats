@@ -50,14 +50,14 @@ EOF
 
 @test "valid doc passes" {
   new_repo
-  good_doc "$REPO/docs/design/a.md"
+  good_doc "$REPO/docs/architecture/a.md"
   run run_check
   [ "$status" -eq 0 ]
 }
 
 @test "missing frontmatter fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"; echo "# no fm" > "$REPO/docs/design/a.md"
+  mkdir -p "$REPO/docs/architecture"; echo "# no fm" > "$REPO/docs/architecture/a.md"
   run run_check
   [ "$status" -eq 1 ]
   contains "missing frontmatter"
@@ -65,7 +65,7 @@ EOF
 
 @test "unterminated frontmatter fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"; printf -- '---\ntype: Design Doc\n' > "$REPO/docs/design/a.md"
+  mkdir -p "$REPO/docs/architecture"; printf -- '---\ntype: Design Doc\n' > "$REPO/docs/architecture/a.md"
   run run_check
   [ "$status" -eq 1 ]
   contains "unterminated"
@@ -73,8 +73,8 @@ EOF
 
 @test "missing required key fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: Design Doc
 title: Sample
@@ -89,8 +89,8 @@ EOF
 
 @test "unknown type fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: NotAType
 title: Sample
@@ -104,17 +104,33 @@ EOF
   contains "unknown type: NotAType"
 }
 
-@test "type Plan accepted" {
+@test "type Plan accepted (phase doc)" {
   new_repo
-  mkdir -p "$REPO/docs/plan/p"
-  cat > "$REPO/docs/plan/p/README.md" <<'EOF'
+  mkdir -p "$REPO/docs/design-docs/p"
+  cat > "$REPO/docs/design-docs/p/README.md" <<'EOF'
 ---
 type: Plan
-title: Sample plan
+title: Sample design doc
 status: in-progress
 last_modified: 2026-09-21
 ---
-# plan
+# design doc
+EOF
+  run run_check
+  [ "$status" -eq 0 ]
+}
+
+@test "type Architecture accepted" {
+  new_repo
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
+---
+type: Architecture
+title: Sample living doc
+status: current
+last_modified: 2026-09-21
+---
+# doc
 EOF
   run run_check
   [ "$status" -eq 0 ]
@@ -122,8 +138,8 @@ EOF
 
 @test "bad date fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: Design Doc
 title: Sample
@@ -139,8 +155,8 @@ EOF
 
 @test "unquoted colon-space fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: Design Doc
 title: Sample
@@ -157,8 +173,8 @@ EOF
 
 @test "char-split list fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: Design Doc
 title: Sample
@@ -175,8 +191,8 @@ EOF
 
 @test "empty list item fails" {
   new_repo
-  mkdir -p "$REPO/docs/design"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/docs/architecture"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: Design Doc
 title: Sample
@@ -193,10 +209,10 @@ EOF
 
 @test "archives exempt" {
   new_repo
-  mkdir -p "$REPO/docs/plan/archived" "$REPO/docs/reviews" "$REPO/docs/example/medium/plan/archived" "$REPO/docs/issues/archived"
-  echo "# old plan" > "$REPO/docs/plan/archived/p.md"
+  mkdir -p "$REPO/docs/design-docs/archived" "$REPO/docs/reviews" "$REPO/docs/example/design-docs/archived" "$REPO/docs/issues/archived"
+  echo "# old design doc" > "$REPO/docs/design-docs/archived/p.md"
   echo "# review record" > "$REPO/docs/reviews/r.md"
-  echo "# nested archive" > "$REPO/docs/example/medium/plan/archived/x.md"
+  echo "# nested archive" > "$REPO/docs/example/design-docs/archived/x.md"
   echo "# closed issue" > "$REPO/docs/issues/archived/i.md"
   run run_check
   [ "$status" -eq 0 ]
@@ -204,8 +220,8 @@ EOF
 
 @test "archive frontmatter still validated" {
   new_repo
-  mkdir -p "$REPO/docs/plan/archived"
-  printf -- '---\ntype: Bogus\n---\n# old plan\n' > "$REPO/docs/plan/archived/p.md"
+  mkdir -p "$REPO/docs/design-docs/archived"
+  printf -- '---\ntype: Bogus\n---\n# old design doc\n' > "$REPO/docs/design-docs/archived/p.md"
   run run_check
   [ "$status" -eq 1 ]
   contains "unknown type"

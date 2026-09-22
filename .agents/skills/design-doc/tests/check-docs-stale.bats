@@ -44,8 +44,8 @@ doc() {
 
 @test "clean repo passes" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/design"; echo x > "$REPO/src/a.c"
-  doc "$REPO/docs/design/a.md" src/a.c
+  mkdir -p "$REPO/src" "$REPO/docs/architecture"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/architecture/a.md" src/a.c
   commit_all
   run run_check
   [ "$status" -eq 0 ]
@@ -53,8 +53,8 @@ doc() {
 
 @test "stale doc fails" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/design"; echo x > "$REPO/src/a.c"
-  doc "$REPO/docs/design/a.md" src/a.c
+  mkdir -p "$REPO/src" "$REPO/docs/architecture"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/architecture/a.md" src/a.c
   commit_all; git -C "$REPO" checkout -qb feat
   echo y > "$REPO/src/a.c"; commit_all
   run run_check
@@ -64,18 +64,18 @@ doc() {
 
 @test "same-commit update passes" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/design"; echo x > "$REPO/src/a.c"
-  doc "$REPO/docs/design/a.md" src/a.c
+  mkdir -p "$REPO/src" "$REPO/docs/architecture"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/architecture/a.md" src/a.c
   commit_all; git -C "$REPO" checkout -qb feat
-  echo y > "$REPO/src/a.c"; echo update >> "$REPO/docs/design/a.md"; commit_all
+  echo y > "$REPO/src/a.c"; echo update >> "$REPO/docs/architecture/a.md"; commit_all
   run run_check
   [ "$status" -eq 0 ]
 }
 
 @test "deleted source fails" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/design"; echo x > "$REPO/src/a.c"
-  doc "$REPO/docs/design/a.md" src/a.c
+  mkdir -p "$REPO/src" "$REPO/docs/architecture"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/architecture/a.md" src/a.c
   commit_all; git -C "$REPO" checkout -qb feat
   rm "$REPO/src/a.c"; commit_all
   run run_check
@@ -95,7 +95,7 @@ doc() {
 
 @test "example excluded" {
   new_repo
-  doc "$REPO/docs/example/small/design/x.md" no/such/file.c
+  doc "$REPO/docs/example/architecture/x.md" no/such/file.c
   commit_all; git -C "$REPO" checkout -qb feat
   run run_check
   [ "$status" -eq 0 ]
@@ -103,9 +103,9 @@ doc() {
 
 @test "dir source: sibling prefix not matched" {
   new_repo
-  mkdir -p "$REPO/src/pkg" "$REPO/src/pkgx" "$REPO/docs/design"
+  mkdir -p "$REPO/src/pkg" "$REPO/src/pkgx" "$REPO/docs/architecture"
   echo x > "$REPO/src/pkg/a.c"; echo x > "$REPO/src/pkgx/b.c"
-  doc "$REPO/docs/design/a.md" src/pkg
+  doc "$REPO/docs/architecture/a.md" src/pkg
   commit_all; git -C "$REPO" checkout -qb feat
   echo y > "$REPO/src/pkgx/b.c"; commit_all
   run run_check
@@ -114,9 +114,9 @@ doc() {
 
 @test "dir source: nested change flagged" {
   new_repo
-  mkdir -p "$REPO/src/pkg" "$REPO/src/pkgx" "$REPO/docs/design"
+  mkdir -p "$REPO/src/pkg" "$REPO/src/pkgx" "$REPO/docs/architecture"
   echo x > "$REPO/src/pkg/a.c"; echo x > "$REPO/src/pkgx/b.c"
-  doc "$REPO/docs/design/a.md" src/pkg
+  doc "$REPO/docs/architecture/a.md" src/pkg
   commit_all; git -C "$REPO" checkout -qb feat
   echo y > "$REPO/src/pkg/a.c"; commit_all
   run run_check
@@ -126,7 +126,7 @@ doc() {
 
 @test "empty sources passes" {
   new_repo
-  doc "$REPO/docs/design/a.md" ""
+  doc "$REPO/docs/architecture/a.md" ""
   commit_all; git -C "$REPO" checkout -qb feat
   run run_check
   [ "$status" -eq 0 ]
@@ -141,8 +141,8 @@ doc() {
 
 @test "block-style sources flagged" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/design"; echo x > "$REPO/src/a.c"
-  cat > "$REPO/docs/design/a.md" <<'EOF'
+  mkdir -p "$REPO/src" "$REPO/docs/architecture"; echo x > "$REPO/src/a.c"
+  cat > "$REPO/docs/architecture/a.md" <<'EOF'
 ---
 type: Design Doc
 sources:
@@ -157,10 +157,10 @@ EOF
   contains "STALE"
 }
 
-@test "archived plan excluded" {
+@test "archived design doc excluded" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/plan/archived/old"; echo x > "$REPO/src/a.c"
-  doc "$REPO/docs/plan/archived/old/README.md" src/a.c
+  mkdir -p "$REPO/src" "$REPO/docs/design-docs/archived/old"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/design-docs/archived/old/README.md" src/a.c
   commit_all; git -C "$REPO" checkout -qb feat
   echo y > "$REPO/src/a.c"; commit_all
   run run_check
@@ -187,10 +187,10 @@ EOF
   [ "$status" -eq 0 ]
 }
 
-@test "active plan sources still enforced" {
+@test "active design doc sources still enforced" {
   new_repo
-  mkdir -p "$REPO/src" "$REPO/docs/plan/p"; echo x > "$REPO/src/a.c"
-  doc "$REPO/docs/plan/p/README.md" src/a.c
+  mkdir -p "$REPO/src" "$REPO/docs/design-docs/p"; echo x > "$REPO/src/a.c"
+  doc "$REPO/docs/design-docs/p/README.md" src/a.c
   commit_all; git -C "$REPO" checkout -qb feat
   echo y > "$REPO/src/a.c"; commit_all
   run run_check
