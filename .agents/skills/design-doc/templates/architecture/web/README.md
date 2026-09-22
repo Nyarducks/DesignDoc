@@ -3,7 +3,6 @@ type: Architecture
 title: <App> frontend
 description: The web app's doc hub — app-level conventions plus the index of per-route docs.
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [frontend]
 sources: [<web app paths>]
 adrs: []

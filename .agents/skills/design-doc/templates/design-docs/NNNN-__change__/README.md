@@ -3,10 +3,7 @@ type: Design Doc
 title: <Change name>
 description: <One line — what this change delivers and why.>
 status: in-review            # draft | in-review | in-progress | done | dropped
-last_modified: <YYYY-MM-DD>
 tags: [<topic>]
-authors: []     # who's accountable for the design — e.g. [@yamada]
-reviewers: []   # who must weigh in before approval — e.g. [@lead, @sre]
 issues: []      # issue IDs this resolves — e.g. [0001]
 designs: []     # living docs this changes — paths under docs/, e.g. [architecture/worker, architecture/api/shipments]
 ---

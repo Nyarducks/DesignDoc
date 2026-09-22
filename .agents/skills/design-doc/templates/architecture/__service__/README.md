@@ -3,7 +3,6 @@ type: Architecture
 title: <Service name>
 description: <One line — what the service does and its boundary.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [<service>, architecture]
 sources: [<service paths>]
 adrs: []

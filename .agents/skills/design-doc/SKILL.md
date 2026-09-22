@@ -158,8 +158,8 @@ status: current            # living docs: current | deprecated
                            # design docs: draft | in-review | in-progress | done | dropped
                            # issues: open | investigating | planned | in-progress | done | deferred | wontfix
                            # ADRs: accepted | superseded | ...
-last_modified: YYYY-MM-DD  # bump on every edit
-tags: [<topics>]
+tags: [<topics>]           # every tag must be defined in
+                           # architecture/tags.json
 sources: [<files the doc is derived from>]   # architecture docs only
 adrs: []                   # ADR numbers governing this doc — e.g. [0002]
 issues: []                 # open issues affecting it — e.g. [0001, 0007]
@@ -170,16 +170,20 @@ services: []               # infra docs only — services a change to this
 
 **The `sources:` contract** — a living doc derived from code lists the
 files it summarizes; any commit that changes a source file must update
-the doc (and `last_modified`) in the same commit. Keep the list as
+the doc in the same commit. Keep the list as
 narrow as the doc's real dependencies. Prescriptive docs — pure
 conventions — set `sources: []`. Enforce the contract in CI with
 `scripts/check-docs-stale.sh` (shipped with this skill): it fails a PR
 that changes a declared source without touching its doc, or that leaves
 a `sources:` path dangling after a rename/delete. Its companion
 `check-doc-frontmatter.sh` validates the frontmatter itself — required
-keys, the `type` enum, `last_modified` shape — because a malformed
+keys, the `type` enum, malformed scalars and lists — because a malformed
 header silently escapes the sources check. Wire them into the project's
 workflow with the `doc-checks-ci` skill, which ships its own copies.
+
+**`tags:` is a controlled vocabulary** — `architecture/tags.json` maps
+each tag to a one-line meaning so tag searches stay meaningful. Define a
+tag there before using it on a doc.
 
 **`adrs:` / `issues:` / `designs:` / `resolved_by:` — the
 machine-readable doc graph.** Living docs declare the ADRs governing
@@ -372,8 +376,7 @@ central index as organizational memory.
    or component doc; update the overview's Components and "In this
    directory" tables.
 3. **Changing behavior** — update every living doc whose `sources:`
-   intersects the changed files, in the same commit; bump
-   `last_modified`.
+   intersects the changed files, in the same commit.
 4. **Proposing a change** — write `design-docs/NNNN-<change>.md` (one
    PR) or `NNNN-<change>/` (multi-PR); link the issues it resolves.
 5. **Making a significant decision** — add `docs/adr/NNNN-<slug>.md`.

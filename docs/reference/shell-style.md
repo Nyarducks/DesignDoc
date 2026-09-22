@@ -3,7 +3,6 @@ type: Reference
 title: Shell Script Style Guide
 description: Style conventions for every shell file in this repo — safety header, variable naming, quoting, function scope, lint annotations.
 status: current
-last_modified: 2026-09-20
 tags: [style, bash, conventions]
 sources: []
 ---

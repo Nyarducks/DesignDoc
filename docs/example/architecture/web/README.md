@@ -3,7 +3,6 @@ type: Architecture
 title: Freightloop dashboard design
 description: The web app's doc hub — app-level conventions plus the index of per-route docs.
 status: current
-last_modified: 2026-09-22
 tags: [frontend]
 sources: [web/]
 adrs: []

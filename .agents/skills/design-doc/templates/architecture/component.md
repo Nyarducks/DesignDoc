@@ -3,7 +3,6 @@ type: Architecture
 title: <Component>
 description: <One line — the component's responsibility and boundary.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [architecture, <component>]
 sources: [<paths this doc is derived from>]
 adrs: []

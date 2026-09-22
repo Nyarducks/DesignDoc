@@ -3,7 +3,6 @@ type: Architecture
 title: Worker — event processing and dispatch
 description: How the worker service consumes tracking events — ETA recomputation, notification dispatch, and retry rules.
 status: current
-last_modified: 2026-09-22
 tags: [worker, jobs, events]
 sources: [worker/pipeline/, worker/notify/]
 issues: []

@@ -3,7 +3,6 @@ type: Reference
 title: Freightloop glossary
 description: Ubiquitous domain terms — one definition per term, shared by every doc. Design docs link here rather than redefining; new terms are promoted here when their change ships.
 status: current
-last_modified: 2026-09-22
 tags: [glossary, architecture]
 sources: []
 ---

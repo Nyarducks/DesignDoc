@@ -3,7 +3,6 @@ type: Reference
 title: Freightloop — Issues
 description: Known problems and improvement backlog for Freightloop — one NNNN-<slug>.md file per issue; closed ones move to archived/.
 status: current
-last_modified: 2026-09-22
 tags: [issues]
 sources: []
 ---

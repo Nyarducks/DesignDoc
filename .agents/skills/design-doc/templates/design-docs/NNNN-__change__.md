@@ -3,9 +3,6 @@ type: Design Doc
 title: <NNNN — short title>
 description: <One line — the change and its rationale.>
 status: draft          # draft | in-review | in-progress | done | dropped
-authors: [<who wrote it>]
-reviewers: []          # who must sign off
-last_modified: <YYYY-MM-DD>
 tags: [design-doc, <topic>]
 issues: []             # issue numbers this resolves — e.g. [0001]
 designs: []            # living docs this change updates — e.g. [architecture/api]

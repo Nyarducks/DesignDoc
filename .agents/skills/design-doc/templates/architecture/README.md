@@ -3,7 +3,6 @@ type: Reference
 title: Architecture docs
 description: Living docs for the system as it is — one directory per service, updated in the same commit as the code they describe.
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [architecture]
 sources: []
 ---
@@ -30,6 +29,10 @@ changes live in [../design-docs/](../design-docs/), not here; an ADR in
 - **`glossary.md`** — ubiquitous domain terms; design docs link to it
   rather than redefining, and a term a proposal introduces is promoted
   here when the change ships.
+- **`tags.json`** — the controlled tag vocabulary for `tags:`
+  frontmatter across `docs/`: each entry maps a tag to its meaning.
+  Define a tag here before using it, so tag-based searches stay
+  meaningful.
 
 Name docs after the thing they describe, never after a document tier —
 a change should touch one doc, not the same section in three. Docs

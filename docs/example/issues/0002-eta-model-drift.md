@@ -3,7 +3,6 @@ type: Issue
 title: ETA model drifts during carrier-wide delays
 description: Weather events and strikes delay whole fleets at once; the ETA model keeps predicting per-shipment and drifts badly during correlated delays.
 status: open
-last_modified: 2026-09-22
 tags: [issue, worker, eta]
 sources: [worker/pipeline/]
 resolved_by:

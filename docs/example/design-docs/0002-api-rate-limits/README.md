@@ -3,10 +3,7 @@ type: Design Doc
 title: Per-tenant API rate limits
 description: Token-bucket rate limiting on the ingestion path — shared Redis counters, 429 + Retry-After, usage surfaced in the dashboard.
 status: in-progress
-last_modified: 2026-09-22
 tags: [design-doc, api, rate-limiting]
-authors: [yamada]
-reviewers: [tanaka]
 issues: [0001]
 designs: [architecture/api/shipments, architecture/infra/autoscaling]
 ---

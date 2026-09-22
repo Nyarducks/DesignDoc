@@ -3,7 +3,6 @@ type: Issue
 title: <Issue title>
 description: <One line — what's wrong or missing.>
 status: open                 # open | investigating | planned | in-progress | done | deferred | wontfix
-last_modified: <YYYY-MM-DD>
 tags: [issue, <topic>]
 sources: [<files involved>]
 resolved_by:    # design-docs/NNNN-<change>/ or PR — set when scheduled

@@ -3,7 +3,6 @@ type: Plan
 title: Phase 2 — Usage meter and Redis HA
 description: Surface per-tenant quota usage in the dashboard and make the rate-limit counter store survive failover.
 status: in-progress
-last_modified: 2026-09-22
 tags: [design-doc, frontend, infra, rate-limiting]
 issues: [0001]
 designs: [architecture/web, architecture/infra, architecture/infra/autoscaling]

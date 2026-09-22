@@ -3,7 +3,6 @@ type: Architecture
 title: Freightloop API — shipments surface
 description: The shipments surface — contract detail, lifecycle, request flow, failure modes.
 status: current
-last_modified: 2026-09-22
 tags: [api, shipments]
 sources: [api/internal/handlers/shipments.go, api/internal/routes/v1.go]
 adrs: []

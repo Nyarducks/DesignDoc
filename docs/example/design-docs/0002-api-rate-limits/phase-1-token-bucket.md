@@ -3,7 +3,6 @@ type: Plan
 title: Phase 1 — Token-bucket middleware
 description: Per-tenant token bucket enforced in the API middleware — 429 + Retry-After over quota, fail-open on Redis outage.
 status: merged
-last_modified: 2026-09-22
 tags: [design-doc, api, rate-limiting]
 issues: [0001]
 designs: [architecture/api/shipments]

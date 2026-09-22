@@ -12,9 +12,8 @@
 #     frontmatter is optional, but when present it is validated like any
 #     other doc.
 #   - Frontmatter is --- delimited and contains the required keys:
-#       type, title, status, last_modified
+#       type, title, status
 #   - type ∈ {Architecture, Design Doc, ADR, Reference, Plan, Issue}
-#   - last_modified is a YYYY-MM-DD date
 #   - No unquoted scalar containing ': ' (breaks YAML renders)
 #   - Inline lists [a, b] have no empty items and no character-split
 #     items ("[f, r, o, n]" — a generator bug shape)
@@ -58,7 +57,7 @@ while IFS= read -r file; do
   fm=$(awk 'NR==1{next} /^---/{exit} {print}' "$file")
 
   # Required keys
-  for key in type title status last_modified; do
+  for key in type title status; do
     grep -qE "^${key}:" <<< "$fm" || err "$file" "missing required key: ${key}"
   done
 
@@ -70,15 +69,6 @@ while IFS= read -r file; do
       "Architecture" | "Design Doc" | "ADR" | "Reference" | "Plan" | "Issue") ;;
       *) err "$file" "unknown type: ${type_val} (expected Architecture|Design Doc|ADR|Reference|Plan|Issue)" ;;
     esac
-  fi
-
-  # last_modified date shape
-  lm_line=$(printf '%s\n' "$fm" | grep -E '^last_modified:' | head -1 || true)
-  if [[ -n "$lm_line" ]]; then
-    lm_val=${lm_line#last_modified:}
-    lm_val=$(printf '%s' "$lm_val" | tr -d '[:space:]"'"'"'')
-    grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' <<< "$lm_val" \
-      || err "$file" "last_modified is not YYYY-MM-DD: ${lm_val}"
   fi
 
   # Unquoted scalars containing ': ' — a YAML error ("mapping values are

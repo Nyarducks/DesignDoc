@@ -3,7 +3,6 @@ type: Architecture
 title: Freightloop API — error handling
 description: The shared error contract — problem-shape envelope, status taxonomy, and caller retry rules. Per-surface docs link here instead of restating it.
 status: current
-last_modified: 2026-09-22
 tags: [api, errors]
 sources: [api/internal/errors/, api/openapi.yaml]
 adrs: []

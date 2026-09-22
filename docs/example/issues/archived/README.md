@@ -3,7 +3,6 @@ type: Reference
 title: Freightloop — Archived issues
 description: Done, deferred, and wontfix issues — frozen point-in-time records kept for history.
 status: current
-last_modified: 2026-09-22
 tags: [issues]
 sources: []
 ---

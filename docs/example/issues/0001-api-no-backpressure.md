@@ -3,7 +3,6 @@ type: Issue
 title: API has no backpressure on ingestion bursts
 description: Partner integrations can send unbounded event bursts; the API accepts everything and the queue absorbs the damage.
 status: in-progress
-last_modified: 2026-09-22
 tags: [issue, api, reliability]
 sources: [api/internal/handlers/shipments.go]
 resolved_by: ../design-docs/0002-api-rate-limits/

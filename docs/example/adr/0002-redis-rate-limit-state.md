@@ -3,7 +3,6 @@ type: ADR
 title: Rate-limit counters live in shared Redis
 description: Token-bucket state is shared per-cluster in Redis so limits hold regardless of which api pod serves the request.
 status: accepted
-last_modified: 2026-09-22
 tags: [adr, api, rate-limiting, redis]
 ---
 

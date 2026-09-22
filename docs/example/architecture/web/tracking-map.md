@@ -3,7 +3,6 @@ type: Architecture
 title: Tracking map
 description: The dashboard's main screen — live shipment map with per-shipment timeline and delay alerts.
 status: current
-last_modified: 2026-09-22
 tags: [frontend, tracking, map]
 sources: [web/src/routes/shipments.tsx, web/src/routes/shipment-detail.tsx, web/src/api/]
 adrs: []

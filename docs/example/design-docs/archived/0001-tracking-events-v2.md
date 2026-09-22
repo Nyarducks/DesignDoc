@@ -3,7 +3,6 @@ type: Design Doc
 title: Tracking events v2 schema
 description: Migrated the event payload to schema v2 — carrier-specific fields moved into a typed detail map.
 status: done
-last_modified: 2026-09-22
 tags: [design-doc, api, events]
 issues: []
 designs: [architecture/api/shipments]

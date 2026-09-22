@@ -3,7 +3,6 @@ type: Architecture
 title: <System name>
 description: <One line — why it exists, what it does, how the parts fit.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [overview, architecture, design]
 sources: [<files this doc is derived from>]  # [] if prescriptive
 adrs: []        # ADR numbers governing this design — e.g. [0002]

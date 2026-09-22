@@ -40,7 +40,6 @@ good_doc() {
 type: Design Doc
 title: Sample
 status: current
-last_modified: 2026-09-21
 tags: [topic]
 sources: []
 ---
@@ -78,7 +77,6 @@ EOF
 ---
 type: Design Doc
 title: Sample
-last_modified: 2026-09-21
 ---
 # body
 EOF
@@ -95,7 +93,6 @@ EOF
 type: NotAType
 title: Sample
 status: current
-last_modified: 2026-09-21
 ---
 # body
 EOF
@@ -112,7 +109,6 @@ EOF
 type: Plan
 title: Sample design doc
 status: in-progress
-last_modified: 2026-09-21
 ---
 # design doc
 EOF
@@ -128,29 +124,11 @@ EOF
 type: Architecture
 title: Sample living doc
 status: current
-last_modified: 2026-09-21
 ---
 # doc
 EOF
   run run_check
   [ "$status" -eq 0 ]
-}
-
-@test "bad date fails" {
-  new_repo
-  mkdir -p "$REPO/docs/architecture"
-  cat > "$REPO/docs/architecture/a.md" <<'EOF'
----
-type: Design Doc
-title: Sample
-status: current
-last_modified: yesterday
----
-# body
-EOF
-  run run_check
-  [ "$status" -eq 1 ]
-  contains "not YYYY-MM-DD"
 }
 
 @test "unquoted colon-space fails" {
@@ -161,7 +139,6 @@ EOF
 type: Design Doc
 title: Sample
 status: current
-last_modified: 2026-09-21
 description: covers the bug: a race in teardown
 ---
 # body
@@ -179,7 +156,6 @@ EOF
 type: Design Doc
 title: Sample
 status: current
-last_modified: 2026-09-21
 tags: [f, r, o, n, t, e, n, d]
 ---
 # body
@@ -197,7 +173,6 @@ EOF
 type: Design Doc
 title: Sample
 status: current
-last_modified: 2026-09-21
 tags: [a, , b]
 ---
 # body

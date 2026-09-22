@@ -3,7 +3,6 @@ type: Reference
 title: Design docs
 description: Per-change proposal docs — written before implementation, reviewed as a PR, updated by the PRs that implement them. No hand-maintained index; each doc's frontmatter carries its own status, issues, and designs.
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [design-doc]
 sources: []
 ---

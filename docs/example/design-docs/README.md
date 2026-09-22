@@ -3,7 +3,6 @@ type: Reference
 title: Freightloop — design docs
 description: Per-change design docs for Freightloop — written before implementation, updated by the PRs that implement them. No hand-maintained index; each doc's frontmatter carries its own status, issues, and designs.
 status: current
-last_modified: 2026-09-22
 tags: [design-doc]
 sources: []
 ---

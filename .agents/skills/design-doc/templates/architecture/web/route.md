@@ -3,7 +3,6 @@ type: Architecture
 title: <Route name>
 description: <One line — what the screen does and who uses it.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [frontend, <route>]
 sources: [<route/component/api-client paths>]
 adrs: []

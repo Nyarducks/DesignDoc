@@ -3,7 +3,6 @@ type: Plan
 title: Phase 1 — <title>
 description: <One line — what this phase delivers.>
 status: not-started            # not-started | in-progress | in-review | merged | deferred | dropped
-last_modified: <YYYY-MM-DD>
 tags: [design-doc, <topic>]
 issues: []      # issue IDs this phase resolves
 designs: []     # living docs this phase modifies — paths under docs/, e.g. [architecture/worker, architecture/api/shipments]

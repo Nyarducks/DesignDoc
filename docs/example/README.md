@@ -3,7 +3,6 @@ type: Architecture
 title: Freightloop
 description: Why this platform exists, what it does, and how the parts fit together — the entry point to docs/.
 status: current
-last_modified: 2026-09-22
 tags: [overview, architecture, design]
 sources: [docs/architecture]
 issues: [0001]

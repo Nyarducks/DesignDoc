@@ -3,7 +3,6 @@ type: Architecture
 title: Freightloop API — authentication
 description: Caller identity and authorization — scoped carrier keys for integrations, SSO sessions for the dashboard, and the header conventions both share.
 status: current
-last_modified: 2026-09-22
 tags: [api, auth]
 sources: [api/internal/middleware/auth.go]
 adrs: []

@@ -3,7 +3,6 @@ type: Architecture
 title: Glossary
 description: Ubiquitous domain terms — the single source of truth every other doc links instead of redefining.
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [glossary]
 sources: []
 ---

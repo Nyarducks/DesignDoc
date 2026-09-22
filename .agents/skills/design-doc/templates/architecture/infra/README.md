@@ -3,7 +3,6 @@ type: Architecture
 title: Infrastructure
 description: Platform doc hub — topology, service map, observability, and the scaling model. Per-mechanism docs live alongside.
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [infra, platform]
 sources: [<infra paths>]
 adrs: []

@@ -3,7 +3,6 @@ type: Architecture
 title: Autoscaling
 description: How api and worker replicas scale — HPA/KEDA triggers, ceilings, and what saturates first.
 status: current
-last_modified: 2026-09-22
 tags: [infra, scaling, hpa, keda]
 sources: [infra/k8s/hpa.yaml, infra/k8s/scaled-object.yaml, infra/terraform/cluster.tf]
 services: [api, worker]

@@ -3,7 +3,6 @@ type: Architecture
 title: <Service> API
 description: <One line — the surface and its audiences; this hub owns the service contract.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [api]
 sources: [<api service paths>]
 adrs: []

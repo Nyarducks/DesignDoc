@@ -3,7 +3,6 @@ type: Architecture
 title: Infrastructure
 description: Platform design hub — cluster topology, service map, observability, and the scaling model. Per-mechanism docs live alongside.
 status: current
-last_modified: 2026-09-22
 tags: [infra, platform]
 sources: [infra/]
 adrs: []

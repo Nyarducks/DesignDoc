@@ -3,7 +3,6 @@ type: Issue
 title: Duplicate event deliveries on client retry
 description: Carriers retrying a timed-out POST could double-enqueue an event batch — same shipment event appeared twice on timelines.
 status: done
-last_modified: 2026-08-30
 tags: [issue, api, ingestion]
 sources: [api/internal/handlers/shipments.go]
 resolved_by: "#58"

@@ -3,7 +3,6 @@ type: Architecture
 title: <Service> API — <resource> surface
 description: <One line — the surface's contract, lifecycle, and request flow.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [api]
 sources: [<handler/router paths>]
 adrs: []

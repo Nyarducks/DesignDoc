@@ -3,7 +3,6 @@ type: Reference
 title: Freightloop — architecture docs
 description: Living docs for Freightloop's current state — one directory per service, updated in the same commit as the code they describe.
 status: current
-last_modified: 2026-09-22
 tags: [architecture]
 sources: []
 ---
@@ -28,6 +27,10 @@ changes live in [../design-docs/](../design-docs/), not here.
 - **[`glossary.md`](glossary.md)** — ubiquitous domain terms; design
   docs link to it rather than redefining, and a term a proposal
   introduces is promoted here when the change ships.
+- **[`tags.json`](tags.json)** — the controlled tag vocabulary for
+  `tags:` frontmatter across `docs/`: each entry maps a tag to its
+  meaning. Define a tag here before using it, so `grep -rl 'api'` hits
+  stay meaningful.
 
 Name docs after the thing they describe, never after a document tier —
 a change should touch one doc, not the same section in three. Docs

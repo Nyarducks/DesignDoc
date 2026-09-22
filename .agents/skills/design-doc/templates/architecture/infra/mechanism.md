@@ -3,7 +3,6 @@ type: Architecture
 title: <Mechanism>
 description: <One line — what the mechanism does and when it matters.>
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [infra, <topic>]
 sources: [<manifest/terraform/config paths>]
 services: [<service names this mechanism affects>]

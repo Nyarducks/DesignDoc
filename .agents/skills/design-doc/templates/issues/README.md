@@ -3,7 +3,6 @@ type: Reference
 title: Issues
 description: Known problems and improvement backlog — one NNNN-<slug>.md file per issue; closed ones move to archived/.
 status: current
-last_modified: <YYYY-MM-DD>
 tags: [issues]
 sources: []
 ---
